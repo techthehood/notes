@@ -45,11 +45,13 @@ keytool -genkey -v -keystore new_test.keystore -alias new_test -keyalg RSA -keys
 C:\Users\LocAdmin\AppData\Local\Android\sdk\platform-tools;
 C:\Users\LocAdmin\AppData\Local\Android\sdk\tools;
 
-### it all starts on the plugin page
-[initial website](https://www.npmjs.com/package/cordova-plugin-googleplus)
-SHA-1 FINGERPRINT
-SHA-1 signing certificate fingerprint example:
+### [it all starts on the plugin page](https://www.npmjs.com/package/cordova-plugin-googleplus)
+
+## SHA-1 FINGERPRINT
+**SHA-1 signing certificate fingerprint example:**
+```
 keytool -exportcert -keystore 'C:\Users\LocAdmin\version-control\phonegap\'$app_name'.keystore' -list -v -alias $app_name
+```
 *above works*
 
 without quotes you get the url without slashes
@@ -68,6 +70,8 @@ location: C:\Users\LocAdmin\.android\debug.keystore
 keytool -exportcert -list -v -alias androiddebugkey -keystore 'C:\Users\LocAdmin\.android\debug.keystore'
 ```
 ### add the cordova plugin
+```
 cordova plugin add https://github.com/EddyVerbruggen/cordova-plugin-googleplus --save --variable REVERSED_CLIENT_ID=us.suzao.goosi
+```
 
-##I built a bash script that will do this - (research how it works)
+## I built a bash script that will do this - (research how it works)
