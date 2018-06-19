@@ -175,16 +175,16 @@ function dummy(ev,str){
     }
 }//end dummy
 
-function placeItem(ev,targEl,mover)
-{
-let sibling = targEl.nextSibling;
-let bigDaddy = targEl.parentNode;
-if(targEl != bigDaddy.firstChild || targEl != bigDaddy.lastChild ){
-  bigDaddy.insertBefore(mover,sibling);
-}else if(mover != targEl){
-  bigDaddy.insertBefore(mover,targEl);
-}
-}//end placeItem
+	function placeItem(ev,targEl,mover)
+	{
+	let sibling = targEl.nextSibling;
+	let bigDaddy = targEl.parentNode;
+	if(targEl != bigDaddy.firstChild || targEl != bigDaddy.lastChild ){
+	  bigDaddy.insertBefore(mover,sibling);
+	}else if(mover != targEl){
+	  bigDaddy.insertBefore(mover,targEl);
+	}
+	}//end placeItem
 
 function removeItem(ev,targEl,mod){
    let every_place = document.querySelectorAll(".placeMe");
@@ -217,4 +217,121 @@ function stop_the_press(ev)
     ev.target.className = move_obj.className.replace(" ghost","");
 }//end stop_the_press
 
+```
+
+updated place item
+
+
+child node interferance
+
+```
+[child node interferance](https://stackoverflow.com/questions/12509602/html5-is-there-a-way-to-prevent-children-interfering-with-drag-events)
+
+```
+
+this.drop_handler = function(ev) {
+       ev.preventDefault();
+          //console.log("drop recognized");
+       // Get the id of the target and add the moved element to the target's DOM
+       var data = ev.dataTransfer.getData("text");
+       let mover = document.getElementById(data);
+	   
+	   //this prevents childnode from becoming the target
+       let targEl = boss.drop_target(ev.target);
+	   
+	   ...
+	   
+	   //drop_target script
+	   
+	  this.drop_target = function(targ)
+      {
+        let current_el = targ;
+        let lvl = 5;
+        while(current_el && lvl > 0){
+
+          if(current_el.dataset.moving != undefined) return current_el;
+
+          current_el = current_el.parentNode;
+          lvl --;
+        }//end while
+
+        return current_el;
+		
+      }//drop_target
+	  
+	  //also applied to the dummy
+	  
+	   this.dummy = function(ev,str){
+        ev.preventDefault();
+        let targEl =  boss.drop_target(ev.target);
+        //console.log("my id = ",targEl.id);
+		
+		...
+	  
+```
+
+variations of place item
+
+``` 
+//somewhat of a disaster on conflicting/similar containers but it may work well by itself or where you didn't cookie cut clones
+      /*
+        if(mover == younger){
+          bigDaddy.insertBefore(mover,targEl);
+        }else if(mover == older && targEl != bigDaddy.lastElementChild){
+          bigDaddy.insertBefore(mover,younger);
+        }else if(targEl == bigDaddy.lastElementChild && mover == older){
+          /*bigDaddy.appendChild(mover);*//* bigDaddy.insertBefore(targEl,mover);
+        }else if(targEl != bigDaddy.lastElementChild){
+          bigDaddy.insertBefore(mover,younger);
+        }else if(targEl == bigDaddy.lastElementChild){
+          /*bigDaddy.appendChild(mover);*//* bigDaddy.insertBefore(targEl,mover);
+        }*/
+
+```
+
+simplist and most effective - doesn't work on the top most item
+
+```
+
+        if(targEl != bigDaddy.firstElemetChild || targEl != bigDaddy.lastElementChild ){
+          bigDaddy.insertBefore(mover,younger);
+        }else if(mover != targEl){
+          bigDaddy.insertBefore(mover,targEl);
+        }
+		
+```
+
+another workable section - works with top item, probably good for single use
+
+```
+
+      this.placeItem = function(ev,targEl,mover)
+      {
+		
+		let younger = targEl.nextElementSibling;
+        let older = targEl.previousElementSibling;
+
+        let moving = targEl.dataset.moving;
+        let bigDaddy = targEl.parentNode;
+        //if(bigDaddy.className.indexOf(`${moving}_dropzone`) == -1) return;
+        if(bigDaddy.className.indexOf(`${orderCtrlr.mode}_dropzone`) == -1) return;
+
+        if(mover == younger){
+          bigDaddy.insertBefore(mover,targEl);
+        }else if(mover == older && targEl != bigDaddy.lastElementChild){
+          bigDaddy.insertBefore(mover,younger);
+        }else if(targEl == bigDaddy.lastElementChild && mover == older){
+          bigDaddy.appendChild(mover);
+        }
+		
+```
+
+[clear data](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/clearData)
+
+```
+
+	event.dataTransfer.clearData();
+
+    // Set the drag's format and data (use event target's id for data)
+    event.dataTransfer.setData('text/plain', event.target.id);
 ```

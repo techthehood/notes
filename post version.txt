@@ -1,0 +1,47 @@
+post version:
+makeContact Ajax test result data = arc_input return = 
+{
+	"mod":"edit",
+	"data_id":"m-1029",
+	"data_str":"{
+		\"id\":\"1029\",
+		\"data_id\":\"m-1029\",
+		\"type\":\"media\",
+		\"data_type\":\"link\",
+		\"user_id\":\"630\",
+		\"category\":\"quick link\",
+		\"ancestor\":\"m-0\",
+		\"core_data\":\"https://www.youtube.com/watch?v=ogeOPnwfH7w\",
+		\"desc_data\":\"Anthony Hamilton - I'm Cool (feat. David Banner)\",
+		\"other_data\":\"\",
+		\"note_data\":\"\",
+		\"tag_data\":\"\",
+		\"meta_data\":\"{
+			&quot;title&quot;:&quot;Anthony%20Hamilton%20-%20I%27m%20Cool%20%28feat.%20David%20Banner%29&quot;,
+			&quot;image&quot;:&quot;https://i.ytimg.com/vi/ogeOPnwfH7w/hqdefault.jpg&quot;,&quot;description&quot;:&quot;Anthony%20Hamilton%20-%20I%27m%20Cool%20%28feat.%20David%20Banner%29&quot;
+		}\",
+		\"task_data\":\"\",
+		\"created\":\"2017-07-29 19:52:33\",
+		\"modified\":\"1501375953000\",
+		\"picture\":\"\",
+		\"published\":\"0\",
+		\"extra\":\"\",
+		\"admin\":\"0\",
+		\"container\":\"0\",
+		\"order\":\"0\"
+	}",
+	"published":0,
+	"category":"quick link",
+	"data_type":"link",
+	"desc_data":"Anthony Hamilton - I'm Cool (feat. David Banner)",
+	"core_data":"https://www.youtube.com/watch?v=ogeOPnwfH7w",
+	"note_data":"",
+	"tag_data":"",
+	"meta_data":"{
+		\"title\":\"Anthony%20Hamilton%20-%20I%27m%20Cool%20%28feat.%20David%20Banner%29\",
+		\"description\":\"Anthony%20Hamilton%20-%20I%27m%20Cool%20%28feat.%20David%20Banner%29\",
+		\"image\":\"https://i.ytimg.com/vi/ogeOPnwfH7w/hqdefault.jpg\"
+	}",
+	"modified":1527127056381,
+	"ancestor":"m-0"
+}

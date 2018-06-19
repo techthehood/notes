@@ -1,4 +1,6 @@
 
+**admin side process**
+
 ##the system begins in the mod_psmod.php file (same code in the view.html.php)
 
 ##parse the tool_templates directory to:

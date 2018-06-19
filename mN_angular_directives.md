@@ -128,6 +128,54 @@ and i added the js file to the view.html.php
 });
 })();
 
+//scope variables - 
+strName: '@',
+objName: '=',
+aryName: '='
+
+for passing strings use '@' passing anything else use '='
+
+once passed the controller can access these scope variables by using this or whatever controller variables references this followed by the scope variable name in dot notation
+
+```
+let some_var = this.strName;
+```
+
+if i pass an object as an scope variable attribute and i want to use it to update the objects value don't use the entire object because the new value will substitute the value.
+
+ie.
+```
+//html invokes class directive
+
+incorrect:
+data-destination="take1.tool.details.main.bg_color"
+
+correct:
+data-destination="take1.tool.details.main"
+data-property="bg_color"
+ 
+
+<div class="advanced_colors" data-destination="take1.tool.details.main" data-property="bg_color"
+              data-callout="take1.prep_color2" data-params="['color','main']"></div>
+			  
+//.js
+	let color_object = boss.destination;
+
+	let color = tinycolor("red");
+	console.log("conv color is ",color.toHexString());
+	let new_color = color.toHexString();
+	
+	incorrect:
+	color_object = new_color;
+	//which totally overwrites the color_object variable  replacing the "take1.tool.details.main.bg_color" object reference with the string hex value for red.
+	
+	correct:
+	color_object[boss.property] = new_color;
+	using the property keeps the object reference in tact and only replaces the objects given propery value.
+
+
+```
+
 //HTLM FILE - assets.html
 <div class='tp_head'>{{display.head}}</div>
 <div class='tp_body'>{{display.body}}</div>

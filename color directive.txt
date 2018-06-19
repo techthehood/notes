@@ -1,0 +1,30 @@
+## color directive
+
+<div class="advanced_colors" data-destination="take1.tool.details.nav"  data-property="border_color" 
+data-callout="take1.prep_color2" data-params="['color','nav']"  data-collection="take1.getMyColors" 
+data-expandto="mM_stgs_sect_cont"></div>
+
+//actual paste section
+
+//section with params for sections that process bg_colors
+<div class="advanced_colors" data-destination="take1.tool.details.content" data-property="bg_color"
+              data-callout="take1.prep_color2" data-params="['color','content']" data-collection="take1.getMyColors"
+              data-expandto="mM_stgs_sect_cont"></div>
+
+for the details section - leave out the params part
+
+//all other sections (not processing bg_color) use this (w/o params & callout)
+<div class="advanced_colors" data-destination="take1.service.tool.details" data-property="background"
+            data-collection="take1.getMyColors" data-expandto="bM_stgs_sect_cont" ></div>
+			
+
+add to html input
+
+```
+//alone
+ng-change="take1.service.color_change();"
+
+//or in an existing change fn
+ng-change="take1.service.color_change(); take1.prep_color('color
+
+```

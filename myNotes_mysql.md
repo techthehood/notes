@@ -297,3 +297,10 @@ megabus cancellation policy
 	input_type_btn.setAttribute("onclick",options_array[i].clkEvt+"()");//works
 
 	****/
+	
+[get size of database](http://www.uponmyshoulder.com/blog/2010/get-database-size-in-phpmyadmin/)
+
+```
+SELECT table_schema `nfojm_arc_my_data`, sum( data_length + index_length ) / 1024 / 1024 "Data Base Size in MB" FROM information_schema.TABLES GROUP BY table_schema
+```
+

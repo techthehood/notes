@@ -3,7 +3,7 @@ targeting words or characters to be removed or replaced with something
 
 it removes all occurances of whatever - (later: i can make it remove only a given number of occurances as an option or remove every occurance)
 
-	this.removeSomething = function(val,char,rep)
+	this.removeSomething = function(targ,char,repl)
     {
       /*
       //sample
@@ -16,7 +16,7 @@ it removes all occurances of whatever - (later: i can make it remove only a give
       pal = ShowData.removeSomething(pal,'-');
       */
       //removes multiple spaces leading and trailing
-      let curVal = val;
+      let curVal = targ;
       //let pattern1 =
       let multi_converter = new RegExp(char + '+','g');//  '/'+ char + '+/g or / +/g
       curVal = curVal.replace(multi_converter,char); //convert all multispaces to space
@@ -24,9 +24,9 @@ it removes all occurances of whatever - (later: i can make it remove only a give
       curVal = curVal.replace (start_converter,"");  //remove space from start /^ /g
       let end_converter = new RegExp(char + '$','g');
       curVal = curVal.replace (end_converter,"");  //and end / $/g
-      if(rep != undefined && rep != ""){
+      if(repl != undefined && repl != ""){
         let replacer = new RegExp(char,'g');
-        curVal = curVal.replace(replacer,rep);
+        curVal = curVal.replace(replacer,repl);
       }
       return curVal;
     };//end removeSomething

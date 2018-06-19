@@ -1,0 +1,55 @@
+## comparisons
+
+var ary = [0,"0"]
+undefined
+
+var my1 = ary[0].toString();
+undefined
+
+my1
+"0"
+
+var my2 = ary[1].toString()
+undefined
+
+my2
+"0"
+
+my1 == my2
+true
+
+my1 === my2
+true
+
+ary[0] == "0"
+true
+
+ary[0]
+0
+
+ary[0] === "0"
+false
+
+ary[1] === "0"
+true
+
+ary[1] == 0
+true
+
+ary[1] === 0
+false
+
+var bry = []
+undefined
+
+bry[0] == 0
+false
+
+bry[0]
+undefined
+
+bry[0] = ""
+""
+
+bry[0] == 0
+true

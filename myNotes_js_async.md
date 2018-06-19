@@ -1,4 +1,5 @@
 
+	see other notes: mN_async_await.md
   Im testing out async
   here are the links
   https://hackernoon.com/6-reasons-why-javascripts-async-await-blows-promises-away-tutorial-c7ec10518dd9

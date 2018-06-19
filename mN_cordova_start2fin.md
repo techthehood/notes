@@ -4,12 +4,12 @@
 
 1. create a cordova app and directory
 ```
-	cordova create s2f_test com.example.s2f_test 'start to finish test'
+	cordova create [alias] com.example.[alias] ['app name']
 ```
 
 2. navigate to new app folder
 ```
-	cd $appName
+	cd [alias]
 ```
 
 3. add the android platform
@@ -212,7 +212,33 @@ Note: cordova run android creates a build then deploys to device
 	cordova run android
 ```
 
+debug apk location [alias] dir\platforms\android\app\build\outputs\apk\debug
+
 [cordova detection](http://damien.antipa.at/blog/2014/02/08/3-ways-to-detect-that-your-application-is-running-in-cordova-slash-phonegap/)
+
+11. create a signed apk then a build.json file
+```
+keytool -genkey -v -keystore [alias].keystore -alias [alias] -keyalg RSA -keysize 2048 -validity 10000
+
+{
+  "android":{
+    "release":{
+      "keystore":"[alias].keystore",
+      "storePassword":"test123",
+      "alias":["alias"],
+      "password":"test123",
+      "keystoreType":""
+    }
+  }
+}
+```
+
+12. publish a released apk
+```
+cordova build android --release
+```
+13. [upload to the play](https://play.google.com/apps/publish)
+
 ---
 ## arrange google sign in
 

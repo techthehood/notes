@@ -14,6 +14,24 @@ https://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
     src: url(sansation_light.woff);
 }
 
+## _fonts.scss mixin
+```
+/* actual code */
+  @font-face {
+    font-family: Airstream;
+    src: url("/Joomla/core/fonts/Airstream.ttf");
+  }
+ ```
+ 
+ change the mixin
+ change the main scss file (make a small change so it re compiles)
+ upload the new compiled css file to (you can also upload the other 2 files)
+ 
+ ** learn to use a relative path from the mixins folder **
+ 
+ to activate font mixin in your site
+ change the path to match the path of the site the font file is stored in.
+
 //article on top 5 font places
 https://www.sitepoint.com/5-of-the-best-css3-font-tools/
 
@@ -50,6 +68,20 @@ open the content.css file
   }
   
   //there are probably other methods but this one didn't raise any CORS errors
+  
+  heres some relative testing
+  
+  ```
+  
+    @font-face {
+    font-family: Airstream;
+    src: url("../fonts/Airstream.ttf");
+    /*src: url("/Joomla/core/fonts/AlexBrush-Regular.ttf");*/
+  }
+  
+  ```
+  this worked because the current css file im using is in the site's site_root/core/css folder.  the fonts are in site_root/core/fonts
+  
   
   //GO TO ADMIN BACKEND
   //COMPONENTS
