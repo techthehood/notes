@@ -1,0 +1,23 @@
+let edCont = document.querySelector(".wf-editor-tabs")
+undefined
+edCont
+//<ul class=​"wf-editor-tabs nav nav-tabs">​…​</ul>​
+
+edTabs = edCont.getElementsByTagName("a")
+//HTMLCollection(3) [a, a, a]
+
+
+let targTab2;
+
+edTabs[1]
+<a href=​"#wf-editor-source">​Code​</a>​
+edTabs[1].href
+"http://sunzao.us/jakeel/administrator/index.php?option=com_psmod&view=psmod&layout=edit&id=59#wf-editor-source"
+
+
+for(let i = 0; i < edTabs.length; i++){ if(edTabs[i].href.indexOf("#wf-editor-wysiwyg") != -1){targTab2 = edTabs[i];}}
+//<a href=​"#wf-editor-wysiwyg">​Editor​</a>​
+targTab2
+//<a href=​"#wf-editor-wysiwyg">​Editor​</a>​
+
+targTab2.click()
