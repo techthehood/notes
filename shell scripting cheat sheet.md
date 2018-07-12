@@ -216,6 +216,67 @@ find . -type f -name "tart*.md" -print0 | while read -r -d '' file; do
 done
 ```
 lets try to change the all into txt files
+```
 find . -type f -name "*.md" -print0 | while read -r -d '' file; do
     mv "$file" "${file//.md/.txt}"
 done
+```
+
+yes its done. all the md files in all subdirectories are now .txt
+
+[if statements](https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php#ifelse)
+
+GOTCHA - make sure brackets have some breathing room
+//incorrect
+if[command]
+
+corrent
+if [ command ]
+
+GOTCHA if statements conditions can't be wrapped in the same brackets
+incorrect  
+if [ $mode_letter == "t" || $mode_letter == "z" || $mode_letter == "b" ]
+
+correct
+  if [ $mode_letter == "t" ] || [ $mode_letter == "z" ] || [ $mode_letter == "b" ]
+
+GOTCHA setting variables requires no spaces around = sign
+incorrect
+work_mode = "zip"
+
+correct
+work_mode="zip"
+
+## checking filetypes in scripts
+[helpful page](https://unix.stackexchange.com/questions/176157/how-to-check-the-file-type-in-a-script)
+
+```
+	echo $(file --mime-type -b "pkg_psmod_v1.1.0")
+```
+GOTCHA
+incorrect this style doesn't work (escaped slashes)
+```
+echo "directory is $(file --mime-type -b  \"pkg_psmod_v1.1.0\")"
+```
+
+returns
+directory is cannot open `"pkg_psmod_v1.1.0"' (No such file or directory)
+
+correct
+```
+echo $(file --mime-type -b  "pkg_psmod_v1.1.0")
+ 
+echo "directory is $(file --mime-type -b  "pkg_psmod_v1.1.0")"
+
+```
+
+[testing for substring](https://stackoverflow.com/questions/229551/string-contains-a-substring-in-bash)
+
+correct
+```
+if [[ $(file --mime-type -b  "$template_url") = *"directory"* ]]
+```
+
+//Note that spaces in the string need to be placed between double quotes, and the * wildcards should be outside.
+
+
