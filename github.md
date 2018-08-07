@@ -18,3 +18,35 @@ git push -u origin master
 ```
 
 thats it.
+
+# [deleting files](https://discoposse.com/2016/11/08/git-remove-multiple-deleted-files/)
+
+## //the issue
+```
+d3pot (master *) notes $ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        deleted:    New Text Document.txt
+        deleted:    boilerplate css media queries.md
+        deleted:    boilerplate_cdn_protection.md
+        deleted:    boilerplate_google_icons.md
+        deleted:    boilerplate_js_hold_fn.md
+        deleted:    boilerplate_view_html_php.md
+        deleted:    bookmark constructor.md
+        deleted:    bp_BTK_tags.md
+        deleted:    bp_angular_controller_sample.md
+
+```
+
+## //the cure
+```
+git ls-files --deleted -z | xargs -0 git rm
+```
+
+
+

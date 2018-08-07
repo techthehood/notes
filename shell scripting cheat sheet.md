@@ -279,4 +279,88 @@ if [[ $(file --mime-type -b  "$template_url") = *"directory"* ]]
 
 //Note that spaces in the string need to be placed between double quotes, and the * wildcards should be outside.
 
+# [No argument supplied or empty input string](https://stackoverflow.com/questions/6482377/check-existence-of-input-argument-in-a-bash-shell-script)
 
+no arguments supplied
+```
+if [ $# -eq 0 ]
+  then
+    echo "No arguments supplied"
+fi
+```
+
+is an empty string
+```
+if [ -z "$1" ]
+  then
+    echo "No argument supplied"
+fi
+```
+
+## my example (using both)
+```
+
+```
+
+GOTCHA closing tags need space
+incorrect
+```
+fn fname() {
+}#fname
+```
+
+correct
+```
+fn fname() {
+} #fname
+//space after bracket
+```
+## using case
+GOTCHA
+case variable need a dollar sign ($)
+single line variables don't need quotes
+
+```
+  case $mode in
+	"destroy" | "remove" | "delete")
+```
+
+## using multiple values
+better code
+```
+  case $mode in
+	destroy | remove | delete)
+```
+## [add and remove directory](https://www.computerhope.com/issues/ch000798.htm)
+```
+	//add directory
+	mkdir $my_dir_name
+   
+	//remove
+	rm -rf $my_dir_name
+
+```
+
+## [exit a script](https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs)
+```
+exit
+```
+## create default values with parameter substitution
+note: the colon helps it to work even when the variable is unset(undefined)
+GOTCHA
+
+incorrect
+// use {} not ()
+```
+	my_dir_name=$(1 := `who`)
+	//returns ./test-script: line 11: 1: command not found
+	
+	my_dir_name=${1 := `who`}
+	//returns bad substitution
+```
+
+correct
+```
+	
+	my_dir_name=${1:-'who'}
+```
