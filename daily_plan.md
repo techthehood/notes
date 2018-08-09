@@ -3,6 +3,15 @@
 ## coursework 8-8-18
 
 ### setup atom
+
+open settings
+```
+	[ctrl] [,]
+```
+#### install packages
+- click install tab > packages
+
+**search for**
 - minimap
 - project-manager
 - setup keybindings
@@ -17,7 +26,11 @@
   'ctrl-alt-left':'pane:show-previous-item'
   'ctrl-alt-right':'pane:show-next-item'
 ```
-+ get themes
+#### get themes
+- go to install > themes
+
+**search for**
+??? maybe not
 
 setup git bash
 colors
