@@ -2,6 +2,76 @@
 # Webpack
 
 ### define dependency experiment
+day 5
+
+**regular require statement**
+```
+makeContact = require('./lib/makeContact.js');//this seems to work like the exports-loader
+
+document.addEventListener('DOMContentLoaded', function () {
+
+	//both of these work with above
+	try{console.log("window makeContact = ", window.makeContact);}catch(err){console.log(err)}
+	try{console.log("makeContact = ",makeContact);}catch(err){console.log(err)}
+}
+```
+
+**regular require statement**
+```
+require('exports-loader?makeContact!./lib/makeContact.js');
+
+document.addEventListener('DOMContentLoaded', function () {
+
+	//both of these work with above
+	try{console.log("arc_site window makeContact = ", window.makeContact);}catch(err){console.log(err)}
+	try{console.log("arc_site makeContact = ",makeContact);}catch(err){console.log(err)}
+}
+```
+
+*if require is creating my global variable then why do i need expose-loader?*
+
+these work outside of the loading block but are not recognized yet in the modules that load before this statment is called
+```
+	try{console.log("arc_site window makeContact = ", window.makeContact);}catch(err){console.log(err)}
+	try{console.log("arc_site makeContact = ",makeContact);}catch(err){console.log(err)}
+
+```
+
+the modules recognize the global variable if run after content is loaded.
+i think it needs window.varname within an object to distinguish the function from its own methods.
+
+**no variation of Provideplugin seems to be working
+```
+resolve: {
+    extensions: ['.js', '.json'],
+    modules:[path.resolve(__dirname, 'js','lib'),'node_modules'],
+    alias: {
+      //libr: path.resolve(__dirname, 'js/lib/')
+      'makeContact0': path.resolve(__dirname, 'js','lib','makeContact.js'),
+      makeContact5: 'makeContact',
+      makeContact4: 'makeContact',
+      makeContact3: path.resolve(__dirname, 'lib','makeContact'),
+      makeContact6: path.resolve(__dirname, 'js','lib','makeContact.js'),
+      testjs:'./js/lib/'
+    }
+  },
+  plugins:[
+    new webpack.ProvidePlugin({
+      /*$ : "jquery",
+      jQuery : "jquery",*/
+      makeContact6:"makeContact6",
+      makeContact:'/js/lib/makeContact.js',
+      makeContact0:'lib/makeContact.js',
+      makeContact1:'/js/lib/makeContact',
+      makeContact2:'lib/makeContact',
+      makeContact3:'makeContact3',
+      'makeContact4':'makeContact4',
+      'makeContact5':"makeContact5"/*,
+      testjs:'testjs'*/
+    })
+  ]
+```
+
 
 this seems to work
 ```
@@ -23,7 +93,7 @@ Module not found: Error: Can't resolve 'add_bookmark.js' in 'C:\xampp\apps\jooml
 
  ```
 
-###what do these functions do?
+### what do these functions do?
 these work with the command line in the webpack.config.js file - not necessarily in the
 html - app environment. they are useful to help webpack bundle files.  if used after
 bundling they don't return the same types of values if at all.
@@ -133,3 +203,13 @@ var makeContact = window.makeContact.bind(this);
 
 observations:
 - no the recognized value of this is the window/document/global object
+
+### Optimization minimize
+**I can get jquery to load from the cdn and use its $ variable because of optimization.minimize is set to false***
+```
+module.export = {
+  optimization: {
+    minimize: false
+  }
+}
+```

@@ -1,7 +1,8 @@
 # Javascript object access
 
 ```
-external_function = function(caller_id){
+// function external_function(caller_id){}//same as below
+var external_function = function(caller_id){
   //what can this function access?
   console.log(caller_id);
   console.log(this.name);
