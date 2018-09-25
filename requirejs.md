@@ -11,5 +11,39 @@ basic require.js loader
 ```
 
 it doesn't need data-main="scripts/main"
+data-main defines the modules root if you don't define it it will read whats inside the script tag.(?)
 
 once its loaded its ready to use. it doesn't need a configuration file either.
+
+uses require and define
+
+example
+```
+
+	//use the filename w/o extension in the dep-name array
+	require(['dependency-name','message','another-module'],function(ref-var,mod,aMod){
+		//once you call this everything inside will run
+		
+	});
+	
+
+```
+
+define works similar
+
+message.js
+```
+
+	//use the filename w/o extension in the dep-name array
+	define(function(ref-var){
+		//once you call this everything inside will run
+		
+	});//creates a default function
+	
+	define(['another-module'],function(ref-var){
+	//once you call this everything inside will run
+	
+	});//a named function gives a reference to a module other than default
+	
+
+```

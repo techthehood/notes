@@ -113,11 +113,28 @@ css media queries
     html{font-size:1.15vw !important;}
   }
   
- ```
+
  
 ## calculating in js:
 
 ```
 let view_cont_w = target_element.offsetWidth; 
+```
+
+### js version of css media calculations
+```
+      this.view_widths = [
+        {min:0,max:299,view:5.0},
+        {min:300,max:479,view:3.9},
+        {min:480,max:768,view:1.8},
+        {min:769,max:992,view:1.5},
+        {min:993,max:1239,view:1.4},
+        {min:1240,max:1343,view:1.25},
+        {min:1344,max:1468,view:1.15},
+        {min:1469,view:1.0}
+      ];//used with v_units
+```
+
+
 
 

@@ -70,9 +70,18 @@ i tried to use same image and let the manifest zoom in
       "type": "image/png",
       "sizes": "512x512"
     }
-	
+
 result: unsuccessful //this resulted in a tiny image.
 
 once i update the manifest file the changes are available to the add to home screen button upon next reload - no history/clear cache neccessary
 
 i liked this navy blue color #1a3867 but decided to go with a similar gray that is use on the business card in order to stay consistent. #323436
+
+my manifest.json splash screen icon is too small
+### [splash screen hint 1](https://stackoverflow.com/questions/48596064/bad-icon-displayed-on-pwa-android-chrome-splashscreen)
+### [splash screen hint 2](https://github.com/GoogleChrome/lighthouse/issues/291)
+
+
+i used only the 512 and got a small image
+i tried 192 - still tiny
+i actually don't have any images connected to the manifest.json file
