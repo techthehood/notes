@@ -1001,7 +1001,7 @@ GOTCHA - local vars fail when passing to function params
 ```
 **works without the local var**
 
-### test for empty directory
+### [test for empty directory](https://superuser.com/questions/352289/bash-scripting-test-for-empty-directory)
 ```
 	if [ -z "$(ls -A /path/to/dir)" ]; then
 	   echo "Empty"
@@ -1025,3 +1025,7 @@ zip -r $zip_pkg_dir".zip" "temp_zip"
 ```
 **the zip files do not replace the original files**
 ### [using zip](https://ranxing.wordpress.com/2016/12/13/add-zip-into-git-bash-on-windows/)
+### git remove multiple deleted files
+```
+git ls-files --deleted -z | xargs -0 git rm
+```

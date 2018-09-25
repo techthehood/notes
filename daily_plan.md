@@ -1,5 +1,9 @@
 # Daily Plan
 
+9-25
+explored specificity - intro to id's
+nested divs
+
 ## coursework 8-8-18
 
 ### setup atom
