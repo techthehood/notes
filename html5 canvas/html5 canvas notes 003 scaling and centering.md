@@ -26,8 +26,8 @@ scales image by drawing src image outside destination canvas
 			</div>
 		</body>
 	</html>
-	
-	
+
+
 //js
 
 	var canvas = document.getElementById('canvas'),
@@ -37,7 +37,7 @@ scales image by drawing src image outside destination canvas
 	scale = 1.0,
 	MINIMUM_SCALE = 1.0,
 	MAXIMUM_SCALE = 3.0;
-		
+
 	function drawImage() {
 		var w = canvas.width,
 		h = canvas.height,
@@ -46,7 +46,7 @@ scales image by drawing src image outside destination canvas
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(image, -sw/2 + w/2, -sh/2 + h/2, sw, sh);
 	}
-	
+
 	function drawScaleText(value) {
 		var text = parseFloat(value).toFixed(2);
 		var percent = parseFloat(value - MINIMUM_SCALE) /
@@ -63,7 +63,7 @@ scales image by drawing src image outside destination canvas
 		drawScaleText(scale);
 		drawImage();
 	};
-	
+
 	// Initialization......................................................
 	context.fillStyle = 'cornflowerblue';
 	context.strokeStyle = 'yellow';

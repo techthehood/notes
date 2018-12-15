@@ -1,4 +1,4 @@
-# service worker
+# service worker plugin
 
 i want to make the service worker script more universal using a plugin so what ive done is moved
 the firebase folder to a plugin file. to be activated on system trigger Events

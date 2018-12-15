@@ -1,4 +1,5 @@
 # MYSQL data transfer
+**can also be used to back up database**
 
 
 use the export tab on all the basic settings to export a .sql file.
@@ -13,7 +14,7 @@ maybe i can tell it where i want to start from.
 
 [Delete all data](https://www.electrictoolbox.com/article/mysql/delete-all-data-mysql/)
 ```
-DELETE FROM tablename; 
+DELETE FROM tablename;
 ```
 note: truncate doesn't work wih the primary keys referencing another table()
 

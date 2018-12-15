@@ -1,4 +1,5 @@
 # css grids
+[favorite reference](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
 .html file
 ```
@@ -69,3 +70,100 @@ css file
     border:1px solid red;
   }
 ```
+### GOTCHA - [word wrapping issue](https://www.w3schools.com/cssref/css3_pr_text-overflow.asp)
+```
+  white-space:normal;
+```
+
+### GOTCHA - [fill the space without specifying number of columns](https://css-tricks.com/auto-sizing-columns-css-grid-auto-fill-vs-auto-fit/)
+**items will auto stretch to fill the available space**
+```
+.resrc_ctrls_cont{
+  grid-area:ctrls;/*needed to span the container across its parents columns*/
+
+  display:grid;/*to create a grid enviromment for the target child nodes (nested grid)*/
+  grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+  /*the 20% represents its fullest state where the item is at its smallest. 20% for 5 columns*/
+  /*the 1fr is at its largest state if there is only a single item - here 1fr says take up 100% of the available space at max*/
+
+  what if i just did repeat 1fr? it would fail.
+```
+
+### my code without the comments
+```
+grid-area:ctrls;
+display:grid;
+grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+```
+## **!important: auto-fit** not ~~auto-fill~~
+
+### create a single column grid with variable height rows
+```
+.build_section3{
+  display:grid;
+  grid-template:"h_label" 1fr "h_input" 1fr "ctrls" 1fr "c_label" 1fr "c_input" 4fr/auto;
+  grid-gap:.5rem;
+}
+```
+**template is built in shortcut syntax**
+**the /auto at the end is for column width, if there were 3 columns it could be written
+as**
+```
+/1fr 25px auto
+```
+
+### finished form - b4 final changes
+.html
+```
+<div class="build_section3 build_sections"  ng-show="scene.seeSection == '3'">
+  <label class="h_label">css targets</label>
+  <input type="text" class="h_input" value="" title="use space or commas"
+  placeholder="space or comma separators">
+  <button type="button" class="style_btn button w3-btn" >style</button>
+  <button type="button" class="class_btn button w3-btn" >class</button>
+  <label class="c_label">{{}} array</label>
+  <textarea class="c_txtarea style_ta" rows="8" cols="80"
+  placeholder="create a double quoted array"></textarea>
+  <textarea class="c_txtarea class_ta" rows="8" cols="80"
+  placeholder="create a double quoted array"></textarea>
+</div>
+```
+.css
+```
+.build_section3{
+  display:grid;
+  grid-template:"h_label h_label" auto
+  "h_input h_input" auto
+  "style_btn class_btn" .8fr
+  "c_label c_label" auto
+  "c_txtarea c_txtarea" 4fr/1fr 1fr;
+  grid-gap:.5rem;
+  padding: .5rem 1rem 1rem !important;
+  .h_label{grid-area:h_label; justify-self: start;}
+  label{ margin: unset; font-size: 1.2rem;}
+  .h_input{grid-area:h_input; justify-self: stretch; width:100%; height:2.5rem;}
+  .ctrls{grid-area:ctrls; justify-self: stretch;}
+  button{border-radius:7px; border: 1px solid #ccc; padding:unset;}
+  .c_label{grid-area:c_label;justify-self: start;}
+  .c_txtarea{grid-area:c_txtarea; justify-self: stretch; width:100%;}
+}
+
+```
+
+### advanced display
+**asset elements can be customized have individual display designs**
+
+on container 'main'
+```
+grid-template-columns: repeat(4,1fr);
+grid-template-rows: repeat(4,1fr);
+```
+
+on 'content' container
+```
+grid-column:1/span3;
+grid-row:2/span4;
+```
+
+GOTCHA - module wouldn't show up on the Page
+**module wasn't activated on the pages menu**

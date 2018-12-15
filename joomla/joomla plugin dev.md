@@ -17,3 +17,26 @@ plugins have events that are called before and after certain triggers
 ```
   window[\'ROOT_URL\'] =  "' . JUri::root() . '";
 ```
+
+### [get menu item id](https://stackoverflow.com/questions/19067435/joomla-get-menu-item-id)
+```
+  $app = JFactory::getApplication();
+  $menu = $app->getMenu()->getActive()->id;
+  echo $menu;
+```
+my example
+```
+  public function onBeforeCompileHead()
+  {
+    $app = JFactory::getApplication();
+    $menu = $app->getMenu()->getActive()->id;
+
+    $scriptLink = JFactory::getDocument();
+    // this is the last thing that runs since i can't get onAfterRender running
+    $scriptLink->addScriptDeclaration('
+
+      console.log("rich page menu id = ' . $menu . '");
+
+    ');
+  }
+```

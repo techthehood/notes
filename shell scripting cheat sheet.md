@@ -846,10 +846,6 @@ ${}
 exit 1
 ```
 
-### [bash json hint](https://medium.com/cameron-nokes/working-with-json-in-bash-using-jq-13d76d307c4)
-```
-
-```
 # GOTCHA
 **if statements have a hard time making comparisons when i use quotes around the sub word**
 ```
@@ -1028,4 +1024,155 @@ zip -r $zip_pkg_dir".zip" "temp_zip"
 ### git remove multiple deleted files
 ```
 git ls-files --deleted -z | xargs -0 git rm
+```
+
+### [bash json hint](https://medium.com/cameron-nokes/working-with-json-in-bash-using-jq-13d76d307c4)
+[install on npm article](https://www.npmjs.com/package/jq-cli-wrapper)
+[hint for a windows package manager](https://chocolatey.org/)
+```
+//install failed
+	npm install --global jq-cli-wrapper
+```
+jq test code
+```
+echo '{ "foo": 123, "bar": 456 }' | jq '.foo'
+```
+[try jq.node](https://www.npmjs.com/package/jq.node)
+```
+	npm install jq.node -g
+```
+working test code
+**this works**
+```
+	 echo '{ "foo": 123, "bar": 456 }' | jqn keys
+	 echo '{ "foo": 123, "bar": 456 }' | jqn 'property("foo")'
+	 echo '{ "foo": 123, "bar": 456 }' | jqn 'property(["foo"])'
+	 echo '[{ "foo": 123, "bar": 456 },{ "foo": 789, "bar": 101112 }]' | jqn 'property("foo")'
+	 echo '{ "foo": 123, "bar": 456 , "task": {"foo": 789}}' | jqn 'property("task.foo")'
+	 echo '{ "foo": 123, "bar": 456 , "task": [{"foo": 789},{"foo": 101112}]}' | jqn 'property("task[1].foo")'
+	 echo '{ "foo": 123, "bar": 456 , "task": [{"foo": 789},{"foo": 101112}]}' | jqn 'property("task[1]")'
+	 echo '[{ "foo": 123, "bar": 456 },{ "foo": 789, "bar": 101112 }]' | jqn 'property("[1].foo")'
+```
+**the variable kind of/basically gets its name from an initial container property**
+```
+	{"objectName":[rest_of_the_data...]}
+	//or
+	{"objectName":{rest_of_the_data...}}
+	// or - you can write as if the object has already been named
+	["x"]theRest or [0].theRest - almost like your're starting with a multidimensional array
+```
+**this is the only way for me to call an initial array**
+**the nature of the jqn object is a multidimensional array**
+
+
+they all failed
+```
+echo '{ "foo": 123, "bar": 456 }' | jqn -j obj | obj.foo
+echo '{ "foo": 123, "bar": 456 }' | jqn 'filter(has("foo")) | groupBy(function(u){return u.foo}) | csv'
+
+echo '{ "foo": 123, "bar": 456 }' | jqn 'forEach(function(entry){console.log(entry.foo)})
+echo '{ "foo": 123, "bar": 456 }' | jqn 'map(\"foo\")'
+echo '{ "foo": 123, "bar": 456 }' | jqn '| groupBy( function(u){return u.foo} )'
+```
+
+### here i added a json string to a file and extracted the json data from the file using cat
+```
+	echo '{ "foo": 123, "bar": 456 }' > file_test
+	cat file_test | jqn 'property("foo")'
+```
+
+### create auto_bundle config json file
+ab.config.json
+```
+[
+	{
+		"output":"dist/bundle.js",
+		"remote":"/c/xampp/apps/joomla/htdocs/plugins/system/psmod/dist/bundle.js"
+	},
+	{
+		"output":"src/app.js",
+		"remote":"/c/xampp/apps/joomla/htdocs/plugins/system/psmod/src/app.js"
+	},
+	{
+		"output":"src/lib/test_es2015.js",
+		"remote":"/c/xampp/apps/joomla/htdocs/plugins/system/psmod/src/lib/test_es2015.js"
+	},
+	{
+		"output":"src/lib/test_common.js",
+		"remote":"/c/xampp/apps/joomla/htdocs/plugins/system/psmod/src/lib/test_common.js"
+	}
+]
+```
+### [bash array hint](https://opensource.com/article/18/5/you-dont-know-bash-intro-bash-arrays)
+[another iteration - while count](http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_10_02.html)
+```
+
+```
+how do i get the output of the file and jqn into a useable variable?
+```
+allkeys=$( echo '{ "foo": 123, "bar": 456 }' | jqn keys )
+echo ${allkeys[0]}
+```
+**this works but it produces the resulting array as a single string**
+
+try a map
+```
+allkeys=$( echo '{ "foo": 123, "bar": 456 }' | jqn ' keys | map( u => { console.log(u) })' )
+echo ${allkeys[0]}
+```
+**failed - try again**
+```
+allkeys=$( echo '[{ "foo": 123, "bar": 456 }]' | jqn 'map("foo")')
+echo ${allkeys[0]}
+
+allkeys=$( echo '[{ "foo": 123, "bar": 456 },{ "foo": 789, "bar": 101112 }]' | jqn 'map("foo")' )
+echo ${allkeys[0]}
+```
+**if json object starts as an array object map works**
+
+try join
+```
+allkeys=$( echo '{ "foo": 123, "bar": 456 }' | jqn ' keys | join("\n")' )
+echo ${allkeys[0]}
+
+allkeys=$( echo '{ "foo": 123, "bar": 456 }' | jqn ' keys | thru(a => a.join("\n"))' )
+echo ${allkeys}
+```
+
+try foreach
+```
+allkeys=$( echo '[{ "foo": 123, "bar": 456 }]' | jqn 'forEach(entry => { console.log(`my entry = ${entry.foo}`)})' )
+echo ${allkeys[0]}
+
+allkeys=$( echo '[{ "foo": 123, "bar": 456 },{ "foo": 789, "bar": 101112 }]' | jqn 'forEach(entry => { console.log(`my entry = ${entry.foo}`);
+printf entry.foo })' )
+echo ${allkeys[0]}
+```
+**i cant do any meaningful scripting with bash - its a js environment**
+read a files contents
+**this works but i need a persistent variable**
+```
+cat "ab_remote_location" | while read -r path_prefix;
+do
+	echo $path_prefix
+
+done
+
+printf "my path prefix = ${path_prefix}"
+//my path prefix = [null]
+```
+try to use a [here-string ](https://unix.stackexchange.com/questions/80362/what-does-mean) **also found above**
+```
+while read -r path_prefix;
+do
+	echo $path_prefix
+  bundle_path="$path_prefix"
+
+done <<< $( cat "ab_remote_location" )
+
+printf "my path prefix = ${bundle_path}"
+```
+**this works**
+```
+while read -r path_prefix;
 ```
