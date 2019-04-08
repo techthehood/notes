@@ -6,7 +6,7 @@ use the export tab on all the basic settings to export a .sql file.
 
 make sure all the queries are entering data into the correct tables.
 
-user file and replace to change the table names - there is a way to export the file using the correct table names but its not neccessary.
+use file and replace to change the table names - there is a way to export the file using the correct table names but its not neccessary.
 
 
 prep the table by deleteing all the exising fields - i don't know how to add records to an existing table
@@ -32,3 +32,15 @@ update user_id if needed (localhost)
 ```
 UPDATE `jos_arc_my_data` SET `user_id` = 42 WHERE `user_id` = 630;
 ```
+
+## DB backup
+### exporting entire table
+1. choose export tab
+2. choose ok (quick export)
+  - the quick option will include both data and structure. it will include the script to create the table first, you can change the tablename in the file to create duplicate table
+  - the quick option creates a new import statement every x amount of lines
+  - also note the custom option is pretty self explanitory (no need for notes)
+
+### importing the backup data
+*_see above for resetting auto increment_*
+importing was simple just point to file and click go.

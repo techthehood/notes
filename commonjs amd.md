@@ -1,1 +1,0 @@
-# commonjs amd modules

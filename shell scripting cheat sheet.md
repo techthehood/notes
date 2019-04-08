@@ -712,6 +712,7 @@ echo $substr
 
 echo "foobarbaz" | grep -o 'b[aeiou]r'
 ```
+>note: returns the matching substring not the unmatching part
 
 ### [using if to match patterns](https://stackoverflow.com/questions/7203662/how-do-i-perform-a-simple-regular-expression-match-in-bash)
 
@@ -1175,4 +1176,21 @@ printf "my path prefix = ${bundle_path}"
 **this works**
 ```
 while read -r path_prefix;
+```
+#### [Replace one substring for another string in shell script](https://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-script)   
+```
+	read svg_file_path
+
+	error_string="file:///"
+
+	empty_string=""
+
+	if [[ $svg_file_path =~ file:///* ]]
+	then
+	  echo "file:/// was found"
+
+	  svg_file_path="${svg_file_path/$error_string/$empty_string}"
+
+	  echo "new file path is $svg_file_path"
+	fi
 ```

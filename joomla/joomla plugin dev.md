@@ -10,6 +10,7 @@
 [a good plugin article](https://webhostingmedia.net/start-joomla-plugin-development/)
 
 ### [Plugin Events](https://docs.joomla.org/Plugin/Events)
+**LifeCycle hooks**
 plugins have events that are called before and after certain triggers
 - [i think for my purposes i want to use this system] trigger(https://docs.joomla.org/Plugin/Events/System#onAfterInitialise)
 
@@ -19,11 +20,17 @@ plugins have events that are called before and after certain triggers
 ```
 
 ### [get menu item id](https://stackoverflow.com/questions/19067435/joomla-get-menu-item-id)
+**Joomla pages are represented by menus - each menu has an id. use this the get the active page = active menu id**
 ```
   $app = JFactory::getApplication();
   $menu = $app->getMenu()->getActive()->id;
   echo $menu;
 ```
+[GOTCHA: admin had problem with getActive()](https://joomla.stackexchange.com/questions/10012/menu-getactive-returns-trying-to-get-property-of-non-object-in-search-compon)
+```
+  if(!is_object($app->getMenu()->getActive())){return;}
+```
+
 my example
 ```
   public function onBeforeCompileHead()

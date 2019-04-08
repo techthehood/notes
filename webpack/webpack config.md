@@ -131,3 +131,5 @@ package.json dependencies
     "jquery-mobile-babel-safe": "^1.4.5-1"
   }
 ```
+### worker-loader is for making web-workers work in webpack   
+**see web-worker/web_worker_notes.md**   

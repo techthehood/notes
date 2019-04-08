@@ -1,5 +1,6 @@
 # css grids
 [favorite reference](https://css-tricks.com/snippets/css/complete-guide-grid/)
+[w3schools css grid docs](https://www.w3schools.com/css/css_grid.asp)
 
 .html file
 ```
@@ -98,6 +99,7 @@ grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
 ## **!important: auto-fit** not ~~auto-fill~~
 
 ### create a single column grid with variable height rows
+**[grid template shorthand](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template)**   
 ```
 .build_section3{
   display:grid;
@@ -111,6 +113,22 @@ as**
 ```
 /1fr 25px auto
 ```
+
+**here is my failed test trial**
+```
+grid-template:"title title title ctrls" 1fr/1fr
+"content content content content" 4fr/1fr;
+```
+
+**so i just did it with regular syntax**
+```
+grid-template-areas:"title title title ctrls"
+"content content content content";
+grid-template-columns: auto 20%;
+grid-template-rows: 10% auto;
+```
+[align-items vs align-content](https://stackoverflow.com/questions/40740553/what-is-the-difference-between-align-items-vs-align-content-in-grid-layout)   
+
 
 ### finished form - b4 final changes
 .html

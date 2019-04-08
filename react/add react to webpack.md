@@ -1,5 +1,30 @@
 # adding react to webpack
 adding react to webpack poses a problem because webpack has a tendency to rename variables during optimization.
+[install using npm hint video](https://www.youtube.com/watch?v=deyxI-6C2u4)
+index.js file
+```
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import App from './components/App'
+
+  ReactDOM.render(<App />,document.getElementById('app'));
+```
+**index.js and are ./components/App authors customizations**
+
+App.js
+```
+import React from 'react';
+
+class App extends Component {
+  render(){
+    <div>
+      <h1>My React App</h1>
+    </div>
+  }
+}
+
+export default App;
+```
 
 ### webpack using a CDN
 [externals docs](https://webpack.js.org/configuration/externals/)   
@@ -69,6 +94,7 @@ $fileLink->addScript($scriptLoc,array(), array('crossorigin' => 'true'));
 [good babel explainer video](https://sunzao.us/beta/alight/arc#&ui-state=dialog)   
 
 ### add babel to webPack
+**once added through npm we won't need to add babel to the main script tag. the babel-loader is set to add babel to each available .js file**
 [babel setup docs - select 'webpack' btn](https://babeljs.io/setup#installation)   
 [babel webpack setup video](https://www.youtube.com/watch?v=iWUR04B42Hc)   
 [a later watched video with presets in package.json](https://youtu.be/DhKKNYGFVi8)   
@@ -76,6 +102,11 @@ $fileLink->addScript($scriptLoc,array(), array('crossorigin' => 'true'));
 ```
 npm install --save-dev babel-loader @babel/core @babel/preset-env
 ```
+**core is the @babel/core transpiler, babel-loader helps compile jsx**
+
+[this article may have had everything if i read it all the way through](https://www.valentinog.com/blog/react-webpack-babel/)
+**covered presets at least - missing plugin-transform-regenerator && plugin-proposal-class-properties**   
+
 **3 packages core loader and preset**
 [module.rules vs module.loaders whats the diff?](https://stackoverflow.com/questions/43002099/rules-vs-loaders-in-webpack-whats-the-difference)   
 
@@ -302,6 +333,7 @@ display.js
 ```
 
 ## Summary
+**i used react CDN and babel node module**
 ```
 npm install --save-dev babel-loader @babel/core @babel/preset-env
 npm install --save-dev @babel/plugin-transform-runtime
@@ -348,8 +380,8 @@ final webpack.config.js
     */
     /*externals: {
       jquery: 'jQuery'
-      /*used to maintain access to CDN global variables*/
-    },
+
+    },// used to maintain access to CDN global variables
     */
     devtool: isProd ? false : 'cheap-module-eval-source-map',
     plugins:[

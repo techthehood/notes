@@ -1,3 +1,75 @@
+# MYSQL Notes
+
+### move all the data in one column to another column based on criteria (where)
+**create tables**
+- title_data
+- url_data
+```
+  ALTER TABLE `nfojm_arc_my_data` ADD `title_data` TEXT NOT NULL DEFAULT '';
+  ALTER TABLE `nfojm_arc_my_data` ADD `url_data` TEXT NOT NULL DEFAULT '';
+```
+[move column hint](https://stackoverflow.com/questions/7435309/need-to-move-data-from-one-field-to-another-within-the-same-table)
+
+**move core_data to url_data in links**
+```
+UPDATE
+  `uavz2_psmod`
+SET
+  url_data = core_data, core_data = ''
+WHERE
+  data_type = 'link'
+AND
+  core_data != '';
+```
+**move desc_data to title_data in links,activity,text,folder,tab**
+```
+UPDATE
+  `uavz2_psmod`
+SET
+  title_data = desc_data, desc_data = ''
+WHERE
+  data_type = 'tab'
+AND
+  desc_data != '';
+```
+
+**move desc_data to title_data in links,activity,text,folder,tab**
+```
+UPDATE
+  `uavz2_psmod`
+SET
+  title_data = desc_data, desc_data = ''
+WHERE
+  type = 'group'
+AND
+  category = 'name'
+AND
+  desc_data != '';
+
+UPDATE
+  `uavz2_psmod`
+SET
+  title_data = core_data, core_data = ''
+WHERE
+  type = 'info'
+AND
+  category = 'social%20community'
+AND
+  core_data != '';
+```
+
+update group
+```
+UPDATE
+  `uavz2_psmod`
+SET
+  title_data = desc_data, desc_data = ''
+WHERE
+  type = 'group'
+AND
+  desc_data != '';
+```
+
 
 /*******************************   MySQL Section ********************************/
 
@@ -297,10 +369,20 @@ megabus cancellation policy
 	input_type_btn.setAttribute("onclick",options_array[i].clkEvt+"()");//works
 
 	****/
-	
+
 [get size of database](http://www.uponmyshoulder.com/blog/2010/get-database-size-in-phpmyadmin/)
 
 ```
 SELECT table_schema `nfojm_arc_my_data`, sum( data_length + index_length ) / 1024 / 1024 "Data Base Size in MB" FROM information_schema.TABLES GROUP BY table_schema
 ```
 
+**[article on mysql timestamp](http://www.mysqltutorial.org/mysql-timestamp.aspx)**    
+```
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+  vs
+
+  ALTER TABLE categories ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+```
+**ON UPDATE CURRENT_TIMESTAMP**

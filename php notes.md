@@ -107,3 +107,13 @@ so because i have to use bindTo with variables to avoid errors (undefined consta
 ```
   $og_image = '<meta property="og:image" content="' . urldecode($rich_obj->url) . '">';
 ```
+**create a php object - object sample**
+```
+  $host_data = (object)[];
+  $host_data->data_id = $my_data->ancestor;
+
+  $detach_data = (object)[];
+  $detach_data->host_data = $host_data;
+  $detach_data->link_id = $value;
+  $detach_value = $this->detachMyInfo(json_encode($detach_data));
+```

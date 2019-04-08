@@ -7,9 +7,9 @@
 
 ### [droplet how tos](https://www.digitalocean.com/docs/droplets/how-to/)
 
-choose an image
+choose an image (under marketplace)
 at first i had ubuntu 18.04 highlighted
-then i went to 1 click apps and chose to do a lamp on 18.04
+then i went to 1 click apps and chose to do a lamp on 18.04 (deprecated)
 [digitalocean LAMP tutorials](https://www.digitalocean.com/docs/one-clicks/lamp/)
 
 then i destroyed that one and created a phpmyadmin droplet
@@ -97,7 +97,7 @@ a root password is sent to your email account but says you will be asked to chan
 **seems like its ok**
 
 ### create ssh key
-**i navigated into the target dir**
+**i navigated into the target dir (local .ssh dir)**
 ```
 $   ssh-keygen.exe
 ```
@@ -129,7 +129,7 @@ output
 
 ### [add domain names](https://www.digitalocean.com/docs/networking/dns/how-to/add-domains/)
 [How To Point to DigitalOcean Nameservers From Common Domain Registrars](https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars)
-**find your hosting providers and follow the illustrations**
+**open the link, find your hosting providers and follow the illustrations**
 >It will take some time for the name server changes to propagate after you've saved them. During this time, the domain registrar communicates the changes you've made with your ISP (Internet Service Provider). In turn, your ISP caches the new nameservers to ensure quick site connections. This process usually takes about 30 minutes, but could take up to a few hours depending on your registrar and your ISP's communication methods.
 
 [An Introduction to DigitalOcean DNS](https://www.digitalocean.com/docs/networking/dns/)
@@ -244,7 +244,7 @@ IMPORTANT NOTES:
 
 ### access phpMyAdmin
 ```
-phpMyAdmin: http://111.11.111.111/phpmyadmin
+phpMyAdmin: http://111.11.111.111/phpmyadmin (fake/dummy ip)
 username: admin
 password:
 

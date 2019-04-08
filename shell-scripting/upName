@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# script for changing something in the filename of multiple files in a directory
+# put this file in the same directory of the files you want to change
+
+
+printf "\n\nupName file name updating is running \n\n"
+
+find . -type f -name "*-compressor.*" -print0 | while read -r -d '' file; do
+    mv "$file" "${file//-compressor./.}"
+    printf "$file changed... \n"
+done
+
+printf "\n\nfile changes complete\n\n"

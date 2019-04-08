@@ -191,3 +191,12 @@ document.addEventListener('DOMContentLoaded', function () {
 ```
 __webpack_public_path__ = '/js/dist/';
 ```
+
+web workers can pass any type of data - they can use JSON objects too
+```
+  let w = new d3Worker();
+	w.postMessage({task:"test"});
+```
+
+**web workers can use indexedDB**
+>But you can use a large number of items available under window, including WebSockets, and data storage mechanisms like IndexedDB and the Firefox OS-only Data Store API. See Functions and classes available to workers for more details.   

@@ -4,5 +4,13 @@
 
 the solution that worked - found lower in the docs
 ```
-document.body.addEventListener("contextmenu", function(evt){evt.preventDefault();return false;}); 
+document.body.addEventListener("contextmenu", function(evt){evt.preventDefault();return false;});
+```
+
+[detect mobile devices](https://coderwall.com/p/i817wa/one-line-function-to-detect-mobile-devices-with-javascript)
+```
+  function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") ||
+    (navigator.userAgent.indexOf('IEMobile') !== -1);
+};
 ```

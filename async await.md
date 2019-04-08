@@ -34,6 +34,7 @@ for example:
 
 the async/return combo makes a fn thenable even without using await.
 
+```
   this.getData = async function()
     {
       trans = {};
@@ -54,9 +55,11 @@ the async/return combo makes a fn thenable even without using await.
 
 	  console.log("getData finished running!");
     }//getData
+```
 
-	adding async/await to getData and putting timeout in its then function worked - (onInit is not using async/await to help delay its processes)
 
+adding async/await to getData and putting timeout in its then function worked - (onInit is not using async/await to help delay its processes)
+```
 	this.$onInit = function() {
 
       await boss.getData()
@@ -69,8 +72,10 @@ the async/return combo makes a fn thenable even without using await.
         });
       });
     };//onInit
+```
 
-	##Adding async to onInit function and adding await to getData also works to delay the timeout without using .then
+## Adding async to onInit function and adding await to getData also works to delay the timeout without using .then
+```
 	this.$onInit = async function() {
 
       await boss.getData()
@@ -81,10 +86,10 @@ the async/return combo makes a fn thenable even without using await.
           //sTCtrlr.showDivs(slideIndex);
         });
     };//onInit
-
+```
 
 	##removing await async await from getData fails this setup
-
+```
 	this.getData = function()
     {
       trans = {};
@@ -93,7 +98,7 @@ the async/return combo makes a fn thenable even without using await.
 
       //this await here works to delay the processing of this function until the data returns from the db...
       boss.service.request(trans)
-
+```
 	in this case all the console.log("getData finished running!"); run b4
 	console.log("places results = ",results);
 
@@ -118,6 +123,7 @@ the async/return combo makes a fn thenable even without using await.
 
 
   //my async function in my custom service
+```
   this.updateShowData = async function(){
     //$http.post()
     try{
@@ -129,8 +135,10 @@ the async/return combo makes a fn thenable even without using await.
       return err;
     }
   };//end updateShowData
+```
 
   //the function called in my controller
+	```
   ShowData.updateShowData().then(function(data){
     console.log("then data is ", data);
     //here you would take the data and andd it to the view
@@ -138,7 +146,7 @@ the async/return combo makes a fn thenable even without using await.
   }).catch(function(err){
     console.log("catch error found ",err);
   });
-
+```
   NOTES:
   concerns that i will need a transpiler with js async/await
 
@@ -155,6 +163,7 @@ the async/return combo makes a fn thenable even without using await.
   test 2: i want to try to see if it will work without a try catch.
 
 	//remove the try/catch block
+```
     this.updateShowData = async function(){
     //$http.post()
 
@@ -163,6 +172,7 @@ the async/return combo makes a fn thenable even without using await.
       return "finished";
 
   };//end updateShowData
+```
 
   //my result seemed to pass the error the the thenable .catch() function
 
@@ -171,7 +181,7 @@ the async/return combo makes a fn thenable even without using await.
 
   test4: google.com
   //this threw a nice error
-
+```
   this.updateShowData = async function(){
     await $http.post('google.com');
 
@@ -180,8 +190,9 @@ the async/return combo makes a fn thenable even without using await.
       return "finished";
 
   };//end updateShowData
-
+```
   //result
+```
   /*
   angular.js:12587 POST http://localhost/Joomla/administrator/google.com 404 (Not Found)
   (anonymous) @ angular.js:12587
@@ -204,7 +215,7 @@ the async/return combo makes a fn thenable even without using await.
   ?
   ?", status: 404, config: {�}, statusText: "Not Found", headers: �}
   */
-
+```
   ### another experiments
 
   total script
@@ -265,3 +276,75 @@ the async/return combo makes a fn thenable even without using await.
 	then it grabbed the return statement - el obj data returning!
 	next it ran the beginning of the .then function - el obj thenable running
 	finally if finished the .then function - console.log(targ_ary);
+
+# Making it wait
+
+here is my original pattern
+
+app.js
+```
+let some_var = some_fn({params});
+```
+
+some_fn.js
+```
+	let some_fn =	async function (){
+
+		switch(){
+			case "":
+
+		      await add_data(obj)
+		      .then(async function () {
+		        await remove_data(obj)
+		      })
+		      .catch(function (err) {
+		        console.error(`[modify_data] move error`,err);
+		      });
+
+			break;
+		}
+
+		return;
+
+	}
+```
+but the fn was returning before the remove_data process was completed.
+
+```
+
+	let some_fn =	async function (){
+
+		switch(){
+			case "":
+
+		      await add_data(obj)
+		      .then(async function () {
+		        await remove_data(obj)
+		      })
+		      .catch(function (err) {
+		        console.error(`[modify_data] move error`,err);
+		      });
+
+					return;// this return was added
+			break;
+		}
+
+		// return;// this return was taken out
+
+	}
+```
+removing the return from the bottom of the fn and adding it somewhere in a code blocks
+made the fn truely asyncronous.  now it waits for the entire section to complete before returning.
+
+# async needs return to work
+
+**returning after .then**
+```
+      let result = switch_display({state,ancestor,sort_by})
+      .then(function (results) {
+        // create a wait_a_minute delay - use object args/params
+        return "im done";// this actually returns the value that will be saved
+      });
+```
+>to return data to a variable after running .then, process the fn parameter and user return with the results. it still seems to wait here like normal, viewed as part of the unfinished original function.
+>return here acts like a promises resolve().

@@ -23,7 +23,7 @@ then i learned that for removing to work i needed an external function
 ```
 	// so i made this adjustment
 	move_element.addEventListener(use_event,process_hold.bind(this,{e,move_element,el,state,move_timer,use_event,hold_mode}),{once:true});
-	
+
 	//the external function
 	export const process_hold = function(hld_obj)
 	{
@@ -59,9 +59,9 @@ hint example
           this.removeEventListener('click',arguments.callee,false);
       }
 	  ...
-	  
+
 	  // this doesn't work in strict mode
-	  
+
 ```
 
 
@@ -116,3 +116,46 @@ unfortunately using the once option i may never need to use the arguments.callee
 				// let icon_click = (e.target.className.indexOf("my_info_icon") != -1 || e.target.className.indexOf("arc_meta_img") != -1) ? true : false;
 				// let is_admin = (move_element.dataset.is_admin_data == "true") ? true : false;
 				// if(icon_click && is_admin)return;
+
+
+# removeEventListenervent notes
+
+#### using removeEventListener
+
+[removeEventListener docs](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener)   
+the key to removeEventListener is that the callouts signature be the same.  anonymous functions
+have different signatures. they can't be used.  using .bind() also changes the listeners signature. Only binding to a common fn as a variable solves the parameter issue. but if you declare that fn within a fn being called then call the same fn in another instance to remove it the signature is still different.
+[using .bind() also changes the listeners signature](https://stackoverflow.com/questions/11565471/removing-event-listener-which-was-added-with-bind)   
+[removeEventListener and this](https://kostasbariotis.com/removeeventlistener-and-this/)   
+
+```
+  dummy_fn = function(obj){
+  let state = obj.state;
+  let declared_bind = target_fn.bind(state,'param');
+  let mode = obj.mode;
+  switch(mode){
+    case "add":
+      element.addEventListener('click',declared_bind);    
+    break;
+
+    case "remove":
+      element.removeEventListener('click',declared_bind);    
+    break;
+  }
+}
+```
+
+in the instance above the add and remove are called in different events.  the declared_bind fn in each event instance would produce a different signature because they were created in separate instances of the same fn block.
+
+a solution would be to use onclick
+```
+  element.onclick = function(){target_fn(state,'param');}
+
+```
+the drawback to this would be onclick overwrites other onclick functions and addEventListener doesn't.
+[addEventListener vs onclick](https://stackoverflow.com/questions/6348494/addeventlistener-vs-onclick)   
+
+[using a named fn without binding works](https://stackoverflow.com/questions/10444077/javascript-removeeventlistener-not-working)   
+>in the example above with the switch statements if you take the binding out and use the fn name set from the import/require statement it works.
+
+[no way to inspect attached event listeners yet](https://stackoverflow.com/questions/2623118/inspect-attached-event-handlers-for-any-dom-element)   
