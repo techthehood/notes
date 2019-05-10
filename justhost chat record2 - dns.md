@@ -40,7 +40,7 @@ R
 Could you please provide me the nameserver information which you want to change?
 
 D
-the wrote: 'I see that your both domains getalight.org and sunzao.us are transferred to Justhost.com , so you will need to contact them to change domain name servers'
+the wrote: 'I see that your both domains getalight.org and example.com are transferred to Justhost.com , so you will need to contact them to change domain name servers'
 
 then they wrote:
 

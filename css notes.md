@@ -95,3 +95,19 @@ react.scss
   	animation-duration: .5s;
   }
 ```
+
+pseudo styles
+[Enable CSS active pseudo styles in Mobile Safari](https://alxgbsn.co.uk/2011/10/17/enable-css-active-pseudo-styles-in-mobile-safari/)   
+[hover comes after link & visited. active comes after hover](https://www.w3schools.com/css/css_pseudo_classes.asp)   
+
+
+remove btn highlight outline
+```
+.buttonClass:focus {
+  outline: 0;
+}
+```
+remove chrome tap highlight outline
+```
+  -webkit-tap-highlight-color: transparent;/*removes chrome tap hightlight color*/
+```

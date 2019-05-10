@@ -39,7 +39,7 @@ Daniel
 no problem
 8:03:01 PM
 Daniel
-getalight.org formerly sunzao.us
+getalight.org formerly example.com
 8:05:14 PM
 Ashwith K
 I have sent the verification email to your primary email address. Please reply back to the email for verification.
@@ -69,7 +69,7 @@ Daniel
 no problem
 8:11:27 PM
 Ashwith K
-I see that your both domains getalight.org and sunzao.us are transferred to Justhost.com , so you will need to contact them to change domain name servers
+I see that your both domains getalight.org and example.com are transferred to Justhost.com , so you will need to contact them to change domain name servers
 8:12:56 PM
 Daniel
 i told them that. they told me i needed to contact you. the global dns site whatsmydns.net/#NS/getalight.org has ns141.ehosts.com as its target

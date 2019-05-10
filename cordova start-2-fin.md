@@ -49,7 +49,7 @@ test for connection
 	cordova plugin add https://github.com/inspectaTech/cordova-plugin-second-webview.git
 	
 	//and in the index.js file add below this.receivedEvent('deviceready');
-	var URL = "https://sunzao.us/beta/alight/arc/";
+	var URL = "https://example.com/beta/alight/arc/";
 	webview.Show(URL);
 ```
 
@@ -110,12 +110,12 @@ add this line:
 
 i can make a website the startup page instead of index.html using this in the config.xml file
 ```
-<content src="https://sunzao.us/beta/alight/arc/" />
+<content src="https://example.com/beta/alight/arc/" />
 
 ```
 
 ** 	"start_url": "/beta/index.php/alight/arc" old manifest start_url 
-	"start_url": "https://sunzao.us/beta/alight/arc/" new one
+	"start_url": "https://example.com/beta/alight/arc/" new one
 **
 
 ```
@@ -145,8 +145,8 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
 		//webview.Show(URL);//for second-webview
-        //window.location.href = "https://sunzao.us/beta/alight/arc";
-		window.location.replace("https://sunzao.us/beta/alight/arc");
+        //window.location.href = "https://example.com/beta/alight/arc";
+		window.location.replace("https://example.com/beta/alight/arc");
     },
 
     // Update DOM on a Received Event

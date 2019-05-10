@@ -32,6 +32,7 @@ app.js
 
 actions.js
 ```
+  import blanket from '../elements/blanket'
 
   export default class Actions extends React.Component {
     constructor(props){
@@ -66,7 +67,9 @@ actions.js
     render() {
       // enter logic here
       return(
+        <blanket>
         <div></div>
+        </blanket>
         );
     }
 

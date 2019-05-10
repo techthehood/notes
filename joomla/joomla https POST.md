@@ -4,13 +4,13 @@
 ```
 	uploadData.arc_input = JSON.stringify(arc_input);
 	uploadData.display_data = display_data;
-	
+
 	var form_token = FORM_TOKEN;
 
 	var urlMod = (mkr_mod == "add") ? "addMyInfo" : (mkr_mod == "edit") ? "editMyInfo" : (mkr_mod == "delete") ? "deleteMyInfo" : (mkr_mod == "move") ? mov_task : "";//put controller.php method call here
 
 	var ctrl_Url = "index.php?option=com_arc&task=" + urlMod + "&format=raw&" + form_token + "=1";//this works
-	
+
 	$(document).ready(function()
 	{
 	   //alert("getMenuData running!");
@@ -62,33 +62,33 @@ table.php
 			data:{data:uploadData},
 
 	its not the first data that is being red its the attributes within the object you are sending and for my purposes its looking for the data property of that object.
-	
+
 	&& it still needs to be stringified
 
 	/*
 	//works for angularjs json https request
 	$postData = JFactory::getApplication()->input->json;
 	$position = $postData->get('data','no such thing','RAW');
-	
+
 	//NOTE:
-	//with the angular data i can send the json without stringify and 
+	//with the angular data i can send the json without stringify and
 	//and without json_decoding on the server
-	
+
 	//no it actually turns it into an array and then its difficult to
 	//access
-	
+
 	//**OK SO I DO HAVE TO STRINGIFY IT!!!!**
-	
-	
-	
+
+
+
 	//works for regular post data ajax call
 	$postData = JFactory::getApplication()->input->post;
 	$searchStr = $postData->get('data', 'defaultvalue', 'filter');
-	
+
 	//NOTE: this stringifies the json object when uploaded
-		
+
 	//ajax sample
-	
+
 	var uploadData = {};
 			uploadData.data = http_obj.data;//still in the form or ajax data
 
@@ -102,13 +102,13 @@ table.php
 							url:ctrl_Url,
 							data:uploadData,
 	*/
-	
+
 	//here is the working uCheck ajax example
-	
+
 	jQuery.ajax(
            {
             url:ctrlrUrl,data:{data:JSON.stringify(tData)},type:"POST",
-			
+
 	//on the controller
 	        //works for regular post data ajax call
             $postData = JFactory::getApplication()->input->post;
@@ -120,8 +120,8 @@ table.php
               $postData = JFactory::getApplication()->input->json;
               $uCheckData = $postData->get('data','no such thing','RAW');
             }
-	
-	
+
+
 	//GENERIC REQUEST
 	this.someGeneric = function()
 	{
@@ -139,10 +139,10 @@ table.php
         });
         return check_results;
 	}
-	
+
 	GENERIC CONTROLLER.PHP FN
-	
-	```	
+
+	```
 	      function savePallet()
         {
             JSession::checkToken( "get" ) or die( "Invalid Token" );
@@ -162,15 +162,15 @@ table.php
 
         }//end savePallet
 	```
-	
+
 	userdata format
-	
+
 ```
 
 	G_name:"12345"
 	activation:"0"
 	block:"0"
-	email:"d3po@sunzao.com"
+	email:"me@example.com"
 	groups:{5: "5", 8: "8"}
 	guest:0
 	id:"488"
@@ -198,7 +198,7 @@ taken from this php script
 
       if($col_user_id == 0){return "unregistered user";}
       return json_encode($cur_arc_user);
-	
+
 ```
 
 here is my official conversion of my joomla makeContact script
@@ -207,7 +207,7 @@ arc_site.js
 ```
 	uploadData.arc_input = JSON.stringify(arc_input);
 	uploadData.display_data = display_data;
-	
+
 	let payloadData = {data:JSON.stringify(uploadData)};//**key stringified
 ```
 
@@ -243,13 +243,13 @@ arc_site.js
 ```
 	uploadData.arc_input = JSON.stringify(arc_input);
 	uploadData.display_data = display_data;
-	
+
 	let payloadData = {data:uploadData};//**key - not stringified
 
 ```
 
 so now i don't need to stringify the data nor decode it on the server
-later... 
+later...
 the problem with this is it doesn't recognize the stringified code i send it.
 it doesn't error out as invalid json, it just turns blank.
 
@@ -260,8 +260,8 @@ public function editMyInfo($inStr,$dsp_Dta)
     //return "editMyInfo running";
 		$arc_input = json_decode($inStr);
     return "arc_input = " . $arc_input;// ""
-	
-``` 
+
+```
 
 [google came back with this answer](https://stackoverflow.com/questions/11738655/json-decode-returns-blank-but-its-valid-json)
 

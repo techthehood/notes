@@ -15,8 +15,8 @@ my manifest example:
   "//": "It is the same for all projects, this is not your project's sender ID",
   "gcm_sender_id": "103953800507",
   "//": "I changed this location and added firebase manifest to one for A2HS",
-  "short_name": "sunzao alight",
-  "name": "sunzao | life together",
+  "short_name": "example alight",
+  "name": "example | life together",
   "icons": [
     {
       "src": "../../images/flame@xs.png",

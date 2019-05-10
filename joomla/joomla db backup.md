@@ -42,7 +42,7 @@ I could open the control panel for the hosting plan
 1. ~~!important:  prep the .sql db backup file by making sure its  database mirrors the name of the newly created database~~
 ```
   --
-  -- Database: `sunzaous_jkltst`
+  -- Database: `examplecom_jkltst`
   --
 ```
 **on second thought it looks like its just a comment so you may not actually have to change it**
@@ -76,7 +76,7 @@ if you copied and pasted the previous password you won't have to modify it here
 somehow i got a 404 error through my angular file for some reason then i went to the gym and came back and the error happened one last time, clear cache/refresh and everything was in working order
 
 ### GOTCHA
-i made a clone of the sunzao.us/beta site but the index.php keeps being added to the url.
+i made a clone of the example.com/beta site but the index.php keeps being added to the url.
 how do i get rid of it?
 
 **i think i gave up an recopied the .htaccess file (?)**

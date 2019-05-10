@@ -1,4 +1,4 @@
-# digitalocean setup
+# DigitalOcean LAMP setup
 
 - [ ] setup digital ocean account
 - [ ] create phpMyAdmin droplet
@@ -211,7 +211,7 @@ www
 ## Notice - i setup the apache server next
 
 ### SSL certificate setup
-[](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)   
+[How To Secure Apache with Let's Encrypt on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)   
 **NOTE: there seems to be an updated instruction for each os version - ubuntu 18.04 doesn't have certbot installed && "Certbot doesn't know how to automatically configure the web server on this system."**
 ```
   ~~$ sudo apt install certbot~~
@@ -721,9 +721,20 @@ rename the plugin
   $ sudo mv twofactorauth twofactorauth2
 ```
 
-[update an error in the phpmyadmin files](https://stackoverflow.com/questions/48001569/phpmyadmin-count-parameter-must-be-an-array-or-an-object-that-implements-co)   
+
+#### [update an error in the phpmyadmin files](https://stackoverflow.com/questions/48001569/phpmyadmin-count-parameter-must-be-an-array-or-an-object-that-implements-co)   
+
+#### libraries dir
+```
+  $ cd usr/share/phpmyadmin/libraries/
+```
+
+```
+  $ sudo nano /usr/share/phpmyadmin/libraries/sql.lib.php
+```
 
 to find in nano is ctrl - w
+goto :  shift ctrl _
 
 the problem code
 ```
@@ -736,6 +747,10 @@ replace with
 ```
 
 [another error in phpmyadmin dealing with php 7.2](https://medium.com/@chaloemphonthipkasorn/แก้-bug-phpmyadmin-php7-2-ubuntu-16-04-92b287090b01)   
+
+```
+  $ /usr/share/phpmyadmin/libraries/plugin_interface.lib.php
+```
 ```
   if ($options != null && count($options) > 0) {
     to
@@ -746,9 +761,9 @@ force (array)
 ## goto line (nano)
  ```
  alt g
+ shift ctrl _
  ```
  > ctrl c to show line numbers
-
 
 **worked**
 
@@ -768,3 +783,36 @@ $ sudo systemctl start service
 ```
 
 [another shutdown hint (untested)](https://askubuntu.com/questions/397502/reboot-a-server-from-command-line)   
+
+## important redirect
+.htaccess
+>this is what i was using and it was working
+
+```
+  <VirtualHost *:80>
+      <Directory "/var/www/example.com/html" >
+         Options Indexes FollowSymLinks Multiviews
+         AllowOverride All
+         Require all granted
+      </Directory>
+
+      ServerAdmin admin@example.com
+      ServerName example.com
+      ServerAlias www.example.com
+      DocumentRoot /var/www/example.com/html
+      ErrorLog ${APACHE_LOG_DIR}/error.log
+      CustomLog ${APACHE_LOG_DIR}/access.log combined
+      RewriteEngine On
+      RewriteCond %{SERVER_NAME} =example.com [OR]
+      RewriteCond %{SERVER_NAME} =www.example.com
+      # RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+      RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [NE,R=permanent]
+  </VirtualHost>
+```
+[hint on letsencrypt's involvement](https://serverfault.com/questions/862788/rewrite-cond-for-domain-and-www-domain-letsencrypt)   
+>'The lines Rewrite* have been added by letsencrypt'
+
+> But i don't know where i got this from - and couldn't duplicate it b/c its not documented
+> it may have been added to the port 80 virtual host file by letsencrypt but i had to modify it by taking away 'END' flag so i would recognize joomlas menus example.com/whatever
+
+> maybe removing END doesn't do anything - so lets leave it there for a while

@@ -117,3 +117,21 @@ so because i have to use bindTo with variables to avoid errors (undefined consta
   $detach_data->link_id = $value;
   $detach_value = $this->detachMyInfo(json_encode($detach_data));
 ```
+[dynamic object properties](https://stackoverflow.com/questions/12571197/how-do-i-dynamically-write-a-php-object-property-name)   
+
+reorder.js
+```
+  arrangment = {"m_234":1,"m_445": 0}
+```
+
+order.php
+```
+$arrange_obj = $order_obj->arrangement;
+
+  foreach ($data_ary as $key => $value) {
+
+    $order = (strpos($mode,'custom') !== false) ? $arrange_obj->{$value} : 0;
+
+
+```
+>curly braces in object props around $varNames are similar to multidirectional arrays with square brackets

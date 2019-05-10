@@ -159,3 +159,24 @@ the drawback to this would be onclick overwrites other onclick functions and add
 >in the example above with the switch statements if you take the binding out and use the fn name set from the import/require statement it works.
 
 [no way to inspect attached event listeners yet](https://stackoverflow.com/questions/2623118/inspect-attached-event-handlers-for-any-dom-element)   
+
+
+# working with 2-n-1 devices
+[detect mobile devices](https://coderwall.com/p/i817wa/one-line-function-to-detect-mobile-devices-with-javascript)
+```
+  if(view_prefix == "arc_" && !is_mobile_device()){
+    document.getElementById(mAW_id).addEventListener("touchstart",function(e) {
+      set_hold_mode(e,this.id,triggerMove.trigger_move,{state,"title":data1,"prefix":view_prefix});
+    });
+  }//end if
+```
+is_mobile_device.js
+```
+  export const is_mobile_device = function () {
+
+    return (typeof window.orientation !== "undefined") ||
+    (navigator.userAgent.indexOf('IEMobile') !== -1);
+
+  }// is_mobile_device
+
+```

@@ -1,8 +1,8 @@
 #GETTING STARTED STEPS
 
-1. $ cordova create us.sunzao.bones bareBones
+1. $ cordova create com.example.bones bareBones
 2. navigate to folder $ cordova platform add android
-3. add to script     window.location.href = "https://sunzao.us/beta/alight/arc";
+3. add to script     window.location.href = "https://example.com/beta/alight/arc";
 4. add to config.xml  <allow-navigation href="*" />
 5. cordova run android
 thats it.
@@ -49,7 +49,7 @@ onDeviceReady: function() {
 
 
   //code i added
-    window.location.href = "https://sunzao.us/beta/alight/arc";
+    window.location.href = "https://example.com/beta/alight/arc";
 
   //no other plugins were available - no crosswalk, not InAppBrowser
   //i should be able to access the cordova api's
@@ -79,13 +79,13 @@ it seems only to name the outer folder not the app
 
 I ran this code
 ```
-$ cordova create us.sunzao.bones2 bareBones2
+$ cordova create com.example.bones2 bareBones2
 
 ```
 
 ### config.xml output:
 
-folder name was: us.sunzao.bones2
+folder name was: com.example.bones2
 ```
 <widget id="bareBones2"...
     <name>HelloCordova</name>
@@ -95,13 +95,13 @@ seems like output is in reverse of what i need it to be
 ##try this
 
 ```
-$ cordova create bareBones3 us.sunzao.bones3
+$ cordova create bareBones3 com.example.bones3
 ```
 
 ### config.xml output:
 
 ```
-<widget id="us.sunzao.bones3"...
+<widget id="com.example.bones3"...
 <name>HelloCordova</name>
 ```
 its better but the name is still generic

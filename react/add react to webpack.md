@@ -91,7 +91,7 @@ $fileLink->addScript($scriptLoc,array(), array('crossorigin' => 'true'));
 ### add babel standalone
 [babel standalone docs](https://babeljs.io/docs/en/next/babel-standalone.html)  
 [babel standalone on github](https://github.com/babel/babel-standalone)   
-[good babel explainer video](https://sunzao.us/beta/alight/arc#&ui-state=dialog)   
+[good babel explainer video](https://example.com/beta/alight/arc#&ui-state=dialog)   
 
 ### add babel to webPack
 **once added through npm we won't need to add babel to the main script tag. the babel-loader is set to add babel to each available .js file**

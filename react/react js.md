@@ -55,7 +55,7 @@ GOTCHA:
 
 	[react cdn](https://reactjs.org/docs/cdn-links.html)
 
-GOTCHA:
+GOTCHA: ?
 ```
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"><script>
@@ -331,3 +331,26 @@ stateful[my_var] = "more of the same";
 my_action.setState({...stateful});
 undefined
 ```
+[dynamically set custom tag names](https://stackoverflow.com/questions/33471880/dynamic-tag-name-in-jsx-and-react)   
+
+
+react example
+```
+		let sel_tag = (typeof value == "string" && value.indexOf("http") != -1) ? "a" : "div",
+	  let Custom_tag = tag || "div";
+
+	      ret_El = (
+					<Custom_tag id={`${name}_TDTag_${iUN}`}
+	      		className={custom_class}>
+	        	{value}
+	      	</Custom_tag>
+				);
+```
+**Custom_tag has to begin with a capital letter
+
+[dynamically set attributes](https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs)   
+
+[unmounting](https://reactjs.org/blog/2015/10/01/react-render-and-top-level-api.html)
+
+mounting multiple components -
+multiple apps(components) can't be rendered to the same container.

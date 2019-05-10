@@ -167,3 +167,5 @@ sw.js
   })
 ```
 **GOTCHA: the key to the public path is the './' instead of '/' the ./ is used for the root directory**
+
+[debugging service-workers](https://developers.google.com/web/fundamentals/codelabs/debugging-service-workers/)   

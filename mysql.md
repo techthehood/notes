@@ -87,7 +87,7 @@ VALUES (14, 74, 488,488);
 INSERT INTO table_name (column1, column2, column3, ...)
 VALUES (value1, value2, value3, ...);
 
-"DELETE FROM `sunzaous_jmln2`.`nfojm_ali_gpscnx` WHERE `nfojm_ali_gpscnx`.`id` = 441"?
+"DELETE FROM `examplecom_jmln2`.`nfojm_ali_gpscnx` WHERE `nfojm_ali_gpscnx`.`id` = 441"?
 
 DELETE FROM `#__ali_gpscnx` WHERE `expires` < 1475683716579;
 

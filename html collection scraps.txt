@@ -12,7 +12,7 @@ let targTab2;
 edTabs[1]
 <a href=​"#wf-editor-source">​Code​</a>​
 edTabs[1].href
-"http://sunzao.us/jakeel/administrator/index.php?option=com_psmod&view=psmod&layout=edit&id=59#wf-editor-source"
+"http://example.com/jakeel/administrator/index.php?option=com_psmod&view=psmod&layout=edit&id=59#wf-editor-source"
 
 
 for(let i = 0; i < edTabs.length; i++){ if(edTabs[i].href.indexOf("#wf-editor-wysiwyg") != -1){targTab2 = edTabs[i];}}

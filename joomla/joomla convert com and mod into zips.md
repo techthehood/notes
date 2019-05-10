@@ -35,9 +35,9 @@ example.xml file
     <name>com_psmod</name><!-- com_folio  this is used as the name on the component folder-->
     <author>inspectaTech</author>
     <creationDate>08-2017</creationDate>
-    <copyright> (c) 2017 sunzao tech llc. All rights reserved.</copyright>
-    <authorEmail>inspectaTech@sunzao.us</authorEmail>
-    <authorUrl>https://sunzao.us</authorUrl>
+    <copyright> (c) 2017 example tech llc. All rights reserved.</copyright>
+    <authorEmail>inspectaTech@example.com</authorEmail>
+    <authorUrl>https://example.com</authorUrl>
     <version>1.1.0</version>
     <description>COM_PSMOD_XML_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
