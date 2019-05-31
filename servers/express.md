@@ -162,3 +162,28 @@ working example
     ...
 ```
 **set the option b4 each post request**
+
+## setting up a testing environment
+> i want to be able to create quick apps to test features and practice workflows
+
+#### set up another express server on a different port
+> use nginx server block to direct traffic to that block using the url path
+
+sites-enabled/example.com
+```
+  location /req {
+  add_header X-app2-message "nodereq section entered" always;
+  proxy_pass http://localhost:3000;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection 'upgrade';
+  proxy_set_header Host $host;
+  proxy_cache_bypass $http_upgrade;
+}
+
+```
+
+> replace /req with /desired-path
+> replace localhost:3000 with localhost:desired-port#
+
+copy

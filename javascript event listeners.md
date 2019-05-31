@@ -180,3 +180,31 @@ is_mobile_device.js
   }// is_mobile_device
 
 ```
+
+### Eureka - i successfully removed a listener of an anonymous fn (semi-anonymous)
+```
+export const prep_elements = function(obj)
+{
+	let state = obj.state;
+
+	//...
+
+    let dragEnd_fn = function(e){
+      // let fn = this;//fails - this == window
+      if(state.sort_mode != "false"){
+        drag_end(e,{state,"class":selector_str});
+      }else{
+        window.removeEventListener("mouseup",dragEnd_fn);//works and successfully removes listener
+        window.removeEventListener("touchend",dragEnd_fn, false);
+      }
+    }//dragEnd_fn
+
+    window.addEventListener("mouseup",dragEnd_fn, false);
+
+    window.addEventListener("touchend",dragEnd_fn, false);
+
+	//...
+
+}// prep_elements
+```
+**this way the method still has access to the state variable**

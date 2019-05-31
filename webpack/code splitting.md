@@ -4,9 +4,11 @@
 [migrating to splitChunks - has a good splitchunks example](https://gist.github.com/gricard/e8057f7de1029f9036a990af95c62ba8)   
 [splitChunks video](https://www.youtube.com/watch?v=sX_6ezKfvn0)   
 [nice splitChunks article](https://engineering.wingify.com/posts/demystifying-split-chunks-plugin/)   
+> i don't know if its nice   
 
 
-**forget about trying to this format it doesn't work like this**
+
+**forget about trying to use this format it doesn't work like this**
 ```
 new webpack.optimization.splitChunks(
 

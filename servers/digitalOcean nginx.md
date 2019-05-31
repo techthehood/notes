@@ -6,6 +6,8 @@
 
 [setting up nodejs on Nginx](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04)   
 
+[How to setup nginx (with directory structure, virtual hosts, port forwarding), mysql, php, fastcgi](https://www.codero.com/knowledge-base/content/3/304/en/how-to-setup-nginx-with-directory-structure-virtual-hosts-port-forwarding-mysql-php-fastcgi.html)   
+
 #### [installing nginx on ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04)   
 
 ```
@@ -101,13 +103,13 @@ final server block example
   	server_name example.com www.example.com;
       return 404; # managed by Certbot
 
-
-
-
   }
 
 ```
-GOTCHA: nginx not running location paths
+**https sample found in digitalOcean server block**
+> listen 443;
+
+## GOTCHA: nginx not running location paths
 [How to Configure NGINX](https://www.linode.com/docs/web-servers/nginx/how-to-configure-nginx/)   
 
 [nginx joomla server block config](https://docs.joomla.org/Nginx)   
@@ -261,3 +263,84 @@ Joomla server block sample
 [How to setup http password authentication with nginx](https://medium.com/@MicroPyramid/how-to-setup-http-password-authentication-with-nginx-38855fe5938)   
 **see Setting up Node, MySQL and Nginx on Digital Ocean above**
 [How To Set Up Password Authentication with Nginx on Ubuntu 14.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-nginx-on-ubuntu-14-04)   
+
+#### create a .bash_profile in the users Directory
+>for custom color coded terminal prompts
+
+.bash_profile
+```
+  # Enable tab completion
+  source ~/git-completion.bash
+
+  #PS1='\n\W\n[\h][\u]->'
+
+  # colors!
+  green="\[\033[0;32m\]"
+  blue="\[\033[0;34m\]"
+  purple="\[\033[0;35m\]"
+  red="\e[0;31m"
+  yellow='\e[0;33m'
+  reset="\[\033[0m\]"
+
+  # other colors
+  txtblk='\e[0;30m' # Black - Regular
+  txtred='\e[0;31m' # Red
+  txtgrn='\e[0;32m' # Green
+  txtylw='\e[0;33m' # Yellow
+  txtblu='\e[0;34m' # Blue
+  txtpur='\e[0;35m' # Purple
+  txtcyn='\e[0;36m' # Cyan
+  txtwht='\e[0;37m' # White
+
+  bldblk='\e[1;30m' # Black - Bold
+  bldred='\e[1;31m' # Red
+  bldgrn='\e[1;32m' # Green
+  bldylw='\e[1;33m' # Yellow
+  bldblu='\e[1;34m' # Blue
+  bldpur='\e[1;35m' # Purple
+  bldcyn='\e[1;36m' # Cyan
+  bldwht='\e[1;37m' # White
+
+  unkblk='\e[4;30m' # Black - Underline
+  undred='\e[4;31m' # Red
+  undgrn='\e[4;32m' # Green
+  undylw='\e[4;33m' # Yellow
+  undblu='\e[4;34m' # Blue
+  undpur='\e[4;35m' # Purple
+  undcyn='\e[4;36m' # Cyan
+  undwht='\e[4;37m' # White
+
+  bakblk='\e[40m'   # Black - Background
+  bakred='\e[41m'   # Red
+  badgrn='\e[42m'   # Green
+  bakylw='\e[43m'   # Yellow
+  bakblu='\e[44m'   # Blue
+  bakpur='\e[45m'   # Purple
+  bakcyn='\e[46m'   # Cyan
+  bakwht='\e[47m'   # White
+
+  txtrst='\e[0m'    # Text Reset
+
+
+  print_before_the_prompt () {
+      printf "\n$yellow%s\n" "$PWD"
+  }
+  PROMPT_COMMAND=print_before_the_prompt
+
+  # Change command prompt
+  source ~/git-prompt.sh
+  export GIT_PS1_SHOWDIRTYSTATE=1
+  # '\u' adds the name of the current user to the prompt
+  # '\$(__git_ps1)' adds git-related stuff
+  # '\W' adds the name of the current directory
+  export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
+
+```
+add a [server] tag and color its background
+```
+  # red background  w/ black text
+  printf "\n$txtblk$bakred[server] $yellow%s\n" "$PWD"
+
+  # blue background w/ black text
+  printf "\n$txtblk$bakblu[server] $yellow%s\n" "$PWD"
+```

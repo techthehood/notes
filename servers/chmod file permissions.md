@@ -7,7 +7,7 @@
 
 ### [Modify File Permissions with chmod](https://www.linode.com/docs/tools-reference/tools/modify-file-permissions-with-chmod/)   
 >great starting guide
-**guide teaches octal notation 755 also (-rwxr-xr-x) or (111 101 101) in base-8 binary**
+**Number system - guide teaches octal notation 755 also (-rwxr-xr-x) or (111 101 101) in base-8 binary**
 
 [what is a symbolic link?](https://www.computerhope.com/jargon/s/symblink.htm)   
 >If you are a new computer user, you can think of a symbolic link as a shortcut to a file or directory (folder). Unlike a traditional shortcut in Windows, symbolic links may be used in the command line, or in a script or another program.
@@ -125,6 +125,7 @@ $ sudo chown -R www-data:www-data /var/www/html/
 ```
   $ sudo chmod 775 html/
 ```
+**numbers see - Modify File Permissions with chmod (above)**
 or
 
 also change subdir Permissions

@@ -1194,3 +1194,4 @@ while read -r path_prefix;
 	  echo "new file path is $svg_file_path"
 	fi
 ```
+#### color coding .bash_profile

@@ -244,6 +244,11 @@ create server blocks
   $ cd etc/nginx/sites-available
 ```
 
+NOTE: copy the default as a starting template
+```
+  sudo cp digitalOcean example.com
+```
+
 there was a digitalOcean server block
 ```
   nano DigitalOcean
@@ -799,7 +804,8 @@ test for syntax errors and restart the nginx server
 ```
 [static file hint - (longshot help)](https://stackoverflow.com/questions/13395742/can-not-get-css-file)   
 **helped connect a piece of the puzzle in my mind**
-#### GOTCHA to get express to recognize the location path you have to add it
+
+#### GOTCHA: to get express to recognize the location path you have to add it
 [express app.use](http://expressjs.com/en/4x/api.html#app.use)   
 in app.js:
 app.use method - app.use('/location_path',

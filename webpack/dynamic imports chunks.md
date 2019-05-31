@@ -1,4 +1,7 @@
 # [Dynamic imports - lazy loading](https://medium.com/front-end-weekly/webpack-and-dynamic-imports-doing-it-right-72549ff49234)   
+
+
+
 1st attempt
 ```
 	export const get_user_data = async function(){
@@ -37,7 +40,7 @@ lazy loading articles
 [angular js webpack lazyload](https://medium.com/@var_bin/angularjs-webpack-lazyload-bb7977f390dd)   
 [code splitting webpack dynamic import react](https://blog.pusher.com/code-splitting-webpack-dynamic-import-react/)   
 [webpack 3 dynamic imports code splitting and long term caching made easy](https://blog.cloudboost.io/webpack-3-dynamic-imports-code-splitting-and-long-term-caching-made-easy-1892981e0ae7)   
-[webpack4 course part 3ight dynamic imports with prefetch and preload](https://wanago.io/2018/08/20/webpack-4-course-part-eight-dynamic-imports-with-prefetch-and-preload/)  
+[webpack4 course part eight dynamic imports with prefetch and preload](https://wanago.io/2018/08/20/webpack-4-course-part-eight-dynamic-imports-with-prefetch-and-preload/)  
 
 >Preload directive has a bunch of differences compared to prefetch:
 >
@@ -66,9 +69,15 @@ Preload example
 	)
 ```
 joomla doesn't use an html file so webpack won't be able to add prefetch or preload script tags
-[Is there a way to add rel='preload' using addScript/addStyleSheet?](https://joomla.stackexchange.com/questions/23778/is-there-a-way-to-add-rel-preload-using-addscript-addstylesheet)   
+[Is there a way to add rel='preload' using addScript/addStyleSheet?](https://joomla.stackexchange.com/questions/23778/is-there-a-way-to-add-rel-preload-using-addscript-addstylesheet)  
 
-script example:
+joomla framework example
+```
+	$this->addHeadLink($this->baseurl . '/templates/' . $this->template . '/js/template.js' . $mediaVersion, 'preload', 'rel', array('as' => 'script'));
+```
+**my test worked**
+
+script only example:
 ```
 	<script>
 	// Lazy load all your CSS and fonts
@@ -188,3 +197,334 @@ const d3_main = async function(){
 [this one kind of explains the how](https://medium.com/front-end-weekly/webpack-and-dynamic-imports-doing-it-right-72549ff49234)   
 [some more insight](https://itnext.io/react-router-and-webpack-v4-code-splitting-using-splitchunksplugin-f0a48f110312)   
 [Code Splitting hint - search how it works topic](https://survivejs.com/webpack/building/code-splitting/)   
+
+
+### Test import with react
+
+react test_option.js
+```
+	  // import React from 'React';
+	  console.log("test_option ready");
+	  // import AWrapr from '../templates/aWrapr';
+	  const removeSomething = require('../../tools/remove_something.js');
+	  const dropView = require('../../data/drop_view.js');
+	  // const {test_fn} = require('./test/test_fn.js');
+
+	  import Box from '../../elements/Box';
+
+	  const test_option = (props) => {
+	    //sample:
+	    // <AWrapr tVar={tVar} ></AWrapr>
+	    let tVar = props.tVar;
+	    let s = tVar.s;
+	    let mode = props.mode;
+
+	    if(s.app_state.data_mode == "full" ||
+	    tVar.is_admin_data == "true" && tVar.is_native_data == "true" ||
+	    tVar.test_class == " arc_collection " ){
+
+	      let iUN = s.iUN || Math.round(Math.random() * 10000);
+	      let value = "change";//null;
+
+	      let tstName = `test_options_${mode}_${tVar.binder}_${tVar.myIn_id}`;
+	      let tstName_cls_str = removeSomething.removeSomething(`${tstName} my_info test_options test_${mode} li_opt_btn info_dot d3-icon-up`," ");
+
+	      let tstName_attr = {
+	        id:`_${tstName}`,
+	        className:tstName_cls_str,
+	        title:`test something`,
+	        "href":"#"
+	      };
+
+	      let test_callout = async function(e)
+	      {
+	        // test_fn();
+	        // w/o await test_fn == [[PromiseStatus]]: "pending"
+	        const testFn = await import(/* webpackChunkName: "test" */'./test/test_fn');// this works
+	        // this version returns module test_fn: (...)
+	        // this will be my regular way to do this
+
+	        // lets try it using destructuring
+	        // const {testFn} = await import(/* webpackChunkName: "test" */'./test/test_fn');// fails
+
+	        // try with export default test_fn
+	        // const testFn = await import(/* webpackChunkName: "test" */'./test/test_fn');// this works
+	        // can use testFn.default works - testFn.test_fn  fails
+
+	        //this long version also works with export default
+	        // const test_fn = await import(/* webpackChunkName: "test" */'./test/test_fn')
+	        // .then(({default:test_fn}) =>{
+	        //   return test_fn;
+	        // })
+	        // test_fn();
+
+
+
+	        let mesee = 1;
+	        // return testFn.test_fn;// this fails
+	        // return testFn.test_fn();// this works
+	        testFn.test_fn();// this also works
+	      }// test_callout
+
+	      let tstName_events = {};
+
+	      tstName_events.onClick = {
+	        callout:test_callout,
+	        data:[
+	          {
+	            state:s.app_state,
+	            mode,
+	            tVar
+	          }
+	        ]
+	      }//click
+
+
+	      let tstName_obj = (
+	        <Box data={{
+	          tag:"button",
+	          attributes:tstName_attr,
+	          events:tstName_events
+	        }}>
+	        {value}
+	        </Box>
+	      );
+
+	      return tstName_obj;
+	    }else{
+	      return null;
+	    }//else
+
+	  }// test_option
+
+	  export default test_option;
+
+```
+[Destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)   
+[hint from webpack code-splitting docs](https://webpack.js.org/guides/code-splitting/)   
+
+#### outputs to test.chunk.js
+```
+	await import(/* webpackChunkName: "test" */'./test/test_fn');
+```
+#### set in output
+```
+output: {
+		path: path.resolve(__dirname, 'dist/'),
+		chunkFilename: '[name].chunk.js',
+
+		...
+
+```
+> chunk is optional - could be bundle or anything else
+
+#### test 1
+```
+	const testFn = await import(/* webpackChunkName: "test" */'./test/test_fn');// this works
+	testFn.test_fn();// this also works
+
+```
+> w/o await test_fn == [[PromiseStatus]]: "pending"
+> this version returns module test_fn: (...)
+> this will be my regular way to do this
+
+#### test 2
+> lets try it using destructuring
+```
+	const {testFn} = await import(/* webpackChunkName: "test" */'./test/test_fn');// fails
+```
+**fails**
+
+#### test 3
+> try with export default test_fn
+```
+  const testFn = await import(/* webpackChunkName: "test" */'./test/test_fn');// this works
+	testFn.default();
+```
+> can use testFn.default works - testFn.test_fn  fails
+
+#### test 4
+> this long version also works with export default
+```
+  const test_fn = await import(/* webpackChunkName: "test" */'./test/test_fn')
+  .then(({default:test_fn}) =>{
+    return test_fn;
+  })
+  test_fn();
+```
+
+test_fn.js
+```
+	// const test_fn = require('./test/test_fn.js');//sample
+
+	// export const test_fn = async function(e,obj)
+	const test_fn = async function(e,obj)
+	{
+	  let meseeks = "testing, testing";
+	  console.log("test in progress.");
+	  alert("test in progress!");
+	}
+
+	export default test_fn;// not good with {test_fn} = import ...
+	// module.exports = test_fn;// fails
+```
+
+#### regular test
+```
+		export const test_fn = async function(e,obj)
+		{
+		  let meseeks = "testing, testing";
+		  console.log("test in progress.");
+		  alert("test in progress!");
+		}
+```
+
+#### default test
+```
+	const test_fn = async function(e,obj)
+	{
+	  let meseeks = "testing, testing";
+	  console.log("test in progress.");
+	  alert("test in progress!");
+	}
+
+	export default test_fn;// not good with {test_fn} = import ...
+```
+
+
+### Joomla lazy load experiment
+> this is the hint im doing my experiment off of
+
+[JDocumentHTML::addHeadLink - joomla docs](https://docs.joomla.org/API17:JDocumentHTML::addHeadLink)   
+[JDocumentHTML::addHeadLink doesn't allow adding different links to same URI ](https://github.com/joomla/joomla-cms/issues/6117)   
+> addHeadLink example
+
+```
+	$document = JFactory::getDocument();
+	$document->addHeadLink('/mysite/site-map', 'next', 'rel');
+	$document->addHeadLink('/mysite/site-map', 'contents', 'rel');
+```
+> returns: <link href="/mysite/site-map" rel="next"/>
+<link href="/mysite/site-map" rel="contents"/>
+
+
+
+[Joomla adding javascript](https://docs.joomla.org/Adding_JavaScript)   
+```
+	// this style worked for me see below
+	JHtml::_('script', 'com_example/example.min.js', array('version' => 'auto', 'relative' => true));
+
+	JHtml::script(Juri::base() . 'templates/custom/js/sample.js');
+
+	$doc->addScript('templates/'.$this->template.'/js/fancy-script.js');
+```
+
+[Is there a way to add rel='preload' using addScript/addStyleSheet?](https://joomla.stackexchange.com/questions/23778/is-there-a-way-to-add-rel-preload-using-addscript-addstylesheet)   
+
+```
+  $scriptLoc = JUri::base() . "components/com_arc/xfiles/js/dist/test.chunk.js";
+  // $fileLink->addScript($scriptLoc);
+
+  $fileLink->addHeadLink($scriptLoc, 'preload', 'rel', array('as' => 'script'));
+  JHtml::_('script', 'test.chunk.js', array('version' => 'auto', 'relative' => true));
+```
+**failed**
+
+> actually ...
+```
+	$fileLink->addHeadLink($scriptLoc, 'preload', 'rel', array('as' => 'script'));
+```
+worked, but i need to research more to know - i think im missing a part
+
+[<link rel=”prefetch/preload”> in webpack](https://medium.com/webpack/link-rel-prefetch-preload-in-webpack-51a52358f84c)   
+> webpack 4.6.0 adds support for prefetching (and preloading).
+
+**Multiple magic comments hint**
+>I already have a magic comment at import(). Can I add multiple magic comments?
+Yes, either separated with , or in separate comments:
+
+```
+	import(
+	  /* webpackChunkName: "test", webpackPrefetch: true */
+	  "LoginModal"
+	)
+	// or
+	import(
+	  /* webpackChunkName: "test" */
+	  /* webpackPrefetch: true */
+	  "LoginModal"
+	)
+	// spacing optional
+```
+
+[mozilla preloading content docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content)   
+
+> this works but not a what i need - its a regular script
+```
+	JHtml::_('script', $scriptLoc, array('version' => 'auto', 'relative' => true));
+```
+
+#### GOTCHA: [Uncaught (in promise) Error: Loading chunk # failed.](https://github.com/webpack/webpack/issues/7502)   
+> try adding a path?
+
+```
+	output: {
+    chunkFilename: '[id].[hash].js',
+    // https://reactjs.org/docs/cross-origin-errors.html
+    crossOriginLoading: "anonymous",
+    filename: '[name].[hash].js',
+    path: path.resolve(__dirname,'js', 'dist'),
+  },
+```
+**failed**
+
+> try public path
+[Added publicPath to output ](https://github.com/webpack/webpack.js.org/pull/2420)
+```
+	publicPath: 'dist/'
+```
+
+[What does “publicPath” in Webpack do? - (article)](https://stackoverflow.com/questions/28846814/what-does-publicpath-in-webpack-do)   
+
+> By using /assets/, the app will find webpack assets at: http://server/assets/. Under the hood, every urls that webpack encounters will be re-written to begin with "/assets/".
+
+```
+	src="picture.jpg" Re-writes ➡ src="/assets/picture.jpg"
+
+	Accessed by: (http://server/assets/picture.jpg)
+
+	src="/img/picture.jpg" Re-writes ➡ src="/assets/img/picture.jpg"
+
+	Accessed by: (http://server/assets/img/picture.jpg)
+```
+
+[webpack Public Path docs](https://webpack.js.org/guides/public-path/)   
+
+```
+	...
+		publicPath: 'components/com_arc/xfiles/js/dist/'
+	...
+```
+**works**
+
+what about using path.resolve?
+```
+	publicPath: path.resolve(__dirname,'js', 'dist'),
+```
+**fails**
+> returns: C:/xampp/apps/joomla/htdocs/components/com_arc/xfiles/js/disttest.chunk.js
+
+### [Webpack Bundle analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer)   
+
+my test
+```
+	var webpack = require("webpack");
+	const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+	module.exports = {
+		...
+
+		  plugins:[
+		    new BundleAnalyzerPlugin(),
+				new webpack.ProvidePlugin({
+```

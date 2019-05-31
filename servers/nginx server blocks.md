@@ -114,7 +114,8 @@ preliminary joomla server block
 
 
   }
-      server {
+
+  server {
       if ($host = www.example.com) {
           return 301 https://$host$request_uri;
       } # managed by Certbot
@@ -131,9 +132,6 @@ preliminary joomla server block
 
   	server_name example.com www.example.com;
       return 404; # managed by Certbot
-
-
-
 
   }
 

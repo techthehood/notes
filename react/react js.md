@@ -54,6 +54,7 @@ GOTCHA:
 	i assume python server can't go outside of its own root to find a file so i try using a cdn
 
 	[react cdn](https://reactjs.org/docs/cdn-links.html)
+	>CDN Links
 
 GOTCHA: ?
 ```
@@ -182,6 +183,53 @@ issue with import
 		</div>
 	)
 	...
+
+```
+
+**GOTCHA: you can't use skip (continue) in a map you have to use myArray.reduce((result,entry)=>{},[]);**
+
+#### using map
+```
+	var t_ary =  ["one","two","three","four"];
+
+	var n_val = t_ary.map(function(something)
+	{
+ 		if(something == "two"){return;};
+		console.log("something = ",something);
+		return something;
+	});
+
+ //n_val === ["one", undefined, "three", "four"]
+```
+
+#### using reduce
+```
+	var t_ary =  ["one","two","three","four"];
+
+  var n_val = t_ary.reduce(function(result,something,what)
+  {
+    // to skip "two" return the result without making any changes
+    // otherwise you're pushing to undefined
+    if(something == "two"){return result;};
+
+    // let mesee the array values
+    console.log("result = ",result);
+    console.log("something = ",something);
+    console.log("what =",what);
+
+    result.push(something);
+    return result;
+
+    // the key to this working is this empty array set here as the
+    // 2nd parameter of the reduce fn
+  },[]);
+
+	// n_val === ["one", "three", "four"]
+
+```
+
+#### [lists need keys](https://reactjs.org/docs/lists-and-keys.html)
+```
 
 ```
 
@@ -332,6 +380,7 @@ my_action.setState({...stateful});
 undefined
 ```
 [dynamically set custom tag names](https://stackoverflow.com/questions/33471880/dynamic-tag-name-in-jsx-and-react)   
+>Dynamic tag name in jsx and React
 
 
 react example
@@ -346,11 +395,24 @@ react example
 	      	</Custom_tag>
 				);
 ```
-**Custom_tag has to begin with a capital letter
+**Custom_tag has to begin with a capital letter**
 
-[dynamically set attributes](https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs)   
+[dynamically set attributes](https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs)
+>Dynamic attribute in ReactJS   
 
 [unmounting](https://reactjs.org/blog/2015/10/01/react-render-and-top-level-api.html)
 
 mounting multiple components -
 multiple apps(components) can't be rendered to the same container.
+
+#### GOTCHA: checkbox fails to appearc checked due to jQuery - stopPropagation of jQuery doesn't work in react
+
+[checkbox fix](https://stackoverflow.com/questions/24415631/reactjs-syntheticevent-stoppropagation-only-works-with-react-events)   
+
+```
+  $(`.${chkName}`).on('click', function(e){
+      e.stopPropagation();
+  });
+```
+**has to be fixed in jQuery**
+>React uses event delegation with a single event listener on document for events that bubble, like 'click' in this example, which means stopping propagation is not possible; the real event has already propagated by the time you interact with it in React. stopPropagation on React's synthetic event is possible because React handles propagation of synthetic events internally.

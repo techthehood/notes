@@ -116,3 +116,8 @@ Note that running pm2 without any arguments will also display a help page with e
 
 #### other reading
 [You should never ever run directly against Node.js in production. Maybe.](https://medium.freecodecamp.org/you-should-never-ever-run-directly-against-node-js-in-production-maybe-7fdfaed51ec6)   
+
+[loging more lines](http://pm2.keymetrics.io/docs/usage/log-management/)   
+````
+  pm2 logs uniqueName --lines 1000
+```

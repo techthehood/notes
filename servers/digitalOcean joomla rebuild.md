@@ -146,7 +146,7 @@ rename a directory
 [disable mod_rewrite](https://htaccessbook.com/disable-mod_rewrite-specific-directory/)   
 [How to Enable/Disable Modules in Apache2 on Ubuntu & LinuxMint](https://tecadmin.net/enable-disable-modules-in-apache2-on-ubuntu-linuxmint/)   
 
-#### GOTCHA: Had to be added to the ssl vertificate conf
+#### GOTCHA: Had to be added to the ssl certificate conf
 /etc/apache2/sites-available/example.com-le-ssl.conf
 ```
   <IfModule mod_ssl.c>

@@ -98,3 +98,18 @@ tutorials example.js
     alert(window.childComponent.returnCounter());
   });
 ```
+### [Hooks API Reference](https://reactjs.org/docs/hooks-reference.html)   
+useState
+```
+  const [stateName, setStateName]  React.useState("initial value");
+```
+useEffect
+```
+  React.useEffect(() => {
+    //set something after the elements have been rendered
+    let targ_el = document.querySelector(`.${elemenNameString}`);
+    targ_el.click = (e) => {
+      callout_fn();
+    }
+  })
+```

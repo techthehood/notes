@@ -96,11 +96,15 @@ suggested using console.log(msg) to see whats available
 **both return values**
 
 [simply put this one works](https://github.com/GoogleChrome/puppeteer/issues/2756)   
+*_GOTCHA:  needs to be placed b4 you need it (before page.evaluate)_*
 
 ```
       page.on('console', msg => {
         console.log("msg txt = ",msg.text());
       });
+
+      page.evaluate = () => { ...
+
 ```
 
 ```
@@ -234,7 +238,8 @@ power selector
 
 > i like the new one although it negates my entire process since it comes in narrowed down
 
->here is the real delay culpret. i had it waiting until 10s - (crazy)
+>here is the real delay culpret. i had it waiting until 10s - (crazy) -
+*_GOTCHA: waitFor happens after page returns from page.goto - use waitUntil to wait during request_*
 ```
       // await page.waitForSelector('meta');
       console.log("[time stamp] ",Date());

@@ -14,3 +14,25 @@ document.body.addEventListener("contextmenu", function(evt){evt.preventDefault()
     (navigator.userAgent.indexOf('IEMobile') !== -1);
 };
 ```
+
+#### using reduce
+```
+  var n_val = t_ary.reduce(function(result,something,what)
+  {
+    // to skip "two" return the result without making any changes
+    // otherwise you're pushing to undefined
+    if(something == "two"){return result;};
+
+    // let mesee the array values
+    console.log("result = ",result);
+    console.log("something = ",something);
+    console.log("what =",what);
+
+    result.push(something);
+    return result;
+
+    // the key to this working is this empty array set here as the
+    // 2nd parameter of the reduce fn
+  },[]);
+
+```
