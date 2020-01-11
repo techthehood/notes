@@ -1,3 +1,4 @@
+# joomla jce fonts
 //2 good sites
 
 //GOOGLE
@@ -22,13 +23,13 @@ https://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
     src: url("/Joomla/core/fonts/Airstream.ttf");
   }
  ```
- 
+
  change the mixin
  change the main scss file (make a small change so it re compiles)
  upload the new compiled css file to (you can also upload the other 2 files)
- 
+
  ** learn to use a relative path from the mixins folder **
- 
+
  to activate font mixin in your site
  change the path to match the path of the site the font file is stored in.
 
@@ -48,7 +49,7 @@ step by step process
 you need to set up the font in 2 places
 
 1. EDITOR SETUP
-//NAVIGATE TO THE JCE SKINS DEFAULT FOLDER 
+//NAVIGATE TO THE JCE SKINS DEFAULT FOLDER
 - paste this url into the explorer window
 C:\xampp\htdocs\Joomla\components\com_jce\editor\tiny_mce\themes\advanced\skins\default
 
@@ -60,33 +61,33 @@ open the content.css file
     font-family: alexBrush;
     src: url("/Joomla/core/fonts/AlexBrush-Regular.ttf");
   }
-  
+
   the relative path must be from the deeply nested folder out to joomlas root
     @font-face {
     font-family: Airstream;
     src: url("../../../../../../../../core/fonts/Airstream.ttf");
   }
-  
+
   //there are probably other methods but this one didn't raise any CORS errors
-  
+
   heres some relative testing
-  
+
   ```
-  
+
     @font-face {
     font-family: Airstream;
     src: url("../fonts/Airstream.ttf");
     /*src: url("/Joomla/core/fonts/AlexBrush-Regular.ttf");*/
   }
-  
+
   ```
   this worked because the current css file im using is in the site's site_root/core/css folder.  the fonts are in site_root/core/fonts
-  
-  
+
+
   //GO TO ADMIN BACKEND
   //COMPONENTS
   //EDITOR PROFILES
-  //COPY THE DEFAULT(*recommended) - FOR FIRST TIME OR CREATE A NEW ONE 
+  //COPY THE DEFAULT(*recommended) - FOR FIRST TIME OR CREATE A NEW ONE
   //PLUGIN PARAMETERS TAB
   //FONT-FAMILY
   //NAVIGATE TO THE BOTTOM AND CHOOSE ADD NEW FONT
@@ -94,25 +95,25 @@ open the content.css file
   //enter the exact name you used in font-family in the second box (ex:'alexBrush',serif) followed by a similar or default fallback font.
   //note: the name you used in the css file can also be anyname you want but
   //but it has be the same as the one you choose everywhere else.
-  
+
 2. YOUR CSS SETUP
 	//GO TO YOUR CSS FILE AND PASTE IN THE NEW FONT FACE RULE
-	
+
 	IF THE FONT FACE IS ONE YOU DOWNLOADED FROM A SITE PLACE THE FONT
 	IN A FOLDER YOU CAN REFER TO FROM THE URL - HERE I USED THE CORE FOLDER
-	
+
 	@font-face {
 		font-family: alexBrush;
 		src: url("/Joomla/core/fonts/AlexBrush-Regular.ttf");
 	}
-	
+
 	IF ITS A CDN OR LINK URL - CLICK THE URL AND COPY THE FONT-FACE RULE
 	FROM THE PAGE INTO YOUR CSS FILE
-	
+
 	THIS ONE CAME FROM GOOGLE
 	<link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Tangerine">
-		  
+
 	@font-face {
 		font-family: 'Tangerine';
 		font-style: normal;
@@ -132,22 +133,22 @@ TESTS
     font-family: alexBrush;
     src: url("/Joomla/core/fonts/AlexBrush-Regular.ttf");
   }
-  
+
 TEST1 - fail
       src: url(/core/fonts/AlexBrush-Regular.ttf);//didn't work either
 	  //needs quotes or folder doesn't reference the true root
-	  
+
 TEST2 - works
     src: url("/Joomla/core/fonts/AlexBrush-Regular.ttf");
-	
+
 TEST3 - works
 	//try witout quotes
 	src: url(/Joomla/core/fonts/AlexBrush-Regular.ttf);
-	
+
 TEST4 - aborted - it was the location
 	//try again with quotes from core
 	src: url("/core/fonts/AlexBrush-Regular.ttf");
-	  
+
 THE NEXT ISSUE IS THE JCE EDITOR IS IN AN IFRAME WITH ITS OWN STYLESHEET
 TO SHOW UP IN THE EDITOR I WOULD HAVE TO MANIPULATE THE STYLESHEET
 

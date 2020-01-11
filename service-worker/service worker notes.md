@@ -3,6 +3,7 @@
 ### creating a service worker
 
 [how to set up a very basic service worker](https://youtu.be/BfL3pprhnms)
+[chrome service worker monitor](chrome://serviceworker-internals/) 
 
 register the service worker
 

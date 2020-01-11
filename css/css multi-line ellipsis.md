@@ -5,6 +5,10 @@ my research trail
 [clampin doc](https://css-tricks.com/line-clampin/)
 [another pen](https://codepen.io/chriscoyier/pen/iBtep)
 
+[another working version](http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/)   
+**modify the padding-right to 1.2 so the ... has some breathing room**
+> i think both versions do the same thing
+
 ## 'strict height style' && 'ellipsis overflow'
 NOTE: ** strict vs flex height ***
 'strict' height works best with title and body 'ellipsis overflow' turned off
@@ -101,5 +105,5 @@ full example
       return txt_style;
 
     }//getTextStyle
-	
+
 ```

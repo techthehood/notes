@@ -45,6 +45,13 @@ but...
 ```
   sudo systemctl status mysql
 ```
-[]()   
-[]()   
-[]()   
+[mysql restart limit?](https://serverfault.com/questions/845471/service-start-request-repeated-too-quickly-refusing-to-start-limit)   
+
+you can see issues here
+```
+  journalctl -xe
+```
+
+[]()
+[]()
+[]()

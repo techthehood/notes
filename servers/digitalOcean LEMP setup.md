@@ -239,7 +239,7 @@ actually i needed to do:
   </html>
 ```
 
-create server blocks
+### create server blocks
 ```
   $ cd etc/nginx/sites-available
 ```
@@ -828,3 +828,14 @@ but not in form index.html
 ```
   <form class="" action="index.html" method="post">
 ```
+### [Manage DNS records](https://www.digitalocean.com/docs/networking/dns/how-to/manage-records/)   
+[DNS quickstart - (not really helpful)](https://www.digitalocean.com/docs/networking/dns/quickstart/)   
+A records(IPv4), AAAA records(IPv6)
+```
+@
+www
+*
+```
+>enter the 1st symbol choose the ip from the dropdown menu and select create record (i did A & AAAA)
+**3rd pary nameservers also have to be updated for changes to take effect**
+**GOTCHA: cloudflare has to be updated for new subdomains to work**

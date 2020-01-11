@@ -94,3 +94,51 @@ working example with an external function passed in
 [Handling events](https://reactjs.org/docs/handling-events.html)   
 [original pen by Dan Abramov](https://codepen.io/gaearon/pen/xEmzGg?editors=0010)   
 [dynamic attributes hint](https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs)   
+
+#### [React SyntheticEvent reuse](https://medium.com/trabe/react-syntheticevent-reuse-889cd52981b6)   
+[React SyntheticEvent docs](https://reactjs.org/docs/events.html#event-pooling)   
+```
+    export const set_hold_mode = function(e,el,fn,hdta)
+    {
+      //e.preventDefault();//prevent default here kills the ability for touch screen scrolling
+      e.persist();// used for react event pooling (synthetic events)
+      let state = hdta.state;
+      if(state.sort_mode == "true") return;
+```
+[Error Boundaries](https://reactjs.org/docs/error-boundaries.html)   
+
+ErrorBoundary.js
+```
+  class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    logErrorToMyService(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+app.js
+```
+  <ErrorBoundary>
+    <MyWidget />
+  </ErrorBoundary>
+```

@@ -103,7 +103,7 @@ test: require.resolve('./js/lib/makeContact.js'),
 
 
 
-these work outside of the loading block but are not recognized yet in the modules that load before this statment is called
+these work outside of the loading block but are not recognized yet in the modules that load before this statement is called
 ```
 	try{console.log("arc_site window makeContact = ", window.makeContact);}catch(err){console.log(err)}
 	try{console.log("arc_site makeContact = ",makeContact);}catch(err){console.log(err)}
@@ -448,3 +448,29 @@ app.js
 	const default_dimensions = require('./lib/default_dimensions.js').default;
 ```
 **this works**
+
+[Difference between export const foo, export default foo and module.exports = foo](https://stackoverflow.com/questions/42461330/difference-between-export-const-foo-export-default-foo-and-module-exports-foo)   
+[Difference between “module.exports” and “exports” in the CommonJs Module System](https://stackoverflow.com/questions/16383795/difference-between-module-exports-and-exports-in-the-commonjs-module-system)
+
+#### other strange issues
+
+require item is undefined in devtools and error 'is not a function'
+```
+	// const {getMyInfo} = require('../data/get.js');// fails
+  // const {getMyInfo} = require('../data/get.js');// fails
+  // const {getMyInfo} = import('../data/get.js');// still fails
+  // const getMyInfo = require('../data/get.js').getMyInfo;// fails
+  // const getMyInfo = (require('../data/get.js')).getMyInfo;// fails
+  const getMyInfo = require('../data/get.js');// works
+
+	...
+
+	getMyInfo.getMyInfo(binder_info)
+
+```
+**the work around is import the whole object and use its properties in the function name**
+**i wish i knew the cause of this**
+
+#### GOTCHA:
+i tried using module.exports and the browser gave this msg:
+>Cannot assign to read only property 'exports' of object '#<Object>'

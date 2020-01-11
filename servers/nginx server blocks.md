@@ -168,3 +168,5 @@ https://example.com/alight/index.php ... i need it to rewrite index.php urls to 
 [Rewrite all requests to index.php with nginx](https://stackoverflow.com/questions/12924896/rewrite-all-requests-to-index-php-with-nginx)   
 
 [Understanding and Implementing FastCGI Proxying in Nginx](https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx)   
+
+**GOTCHA: cloudflare has to be updated for new subdomains to work**

@@ -20,6 +20,11 @@ see available groups
   $ nano /etc/group
 ```
 
+[cmd to see available groups](https://stackoverflow.com/questions/14059916/is-there-a-command-to-list-all-unix-group-names)   
+```
+  getent group
+```
+
 [whats the difference between useradd and adduser?](https://askubuntu.com/questions/345974/what-is-the-difference-between-adduser-and-useradd)   
 
 To create a new standard user, use the useradd command. The syntax is as follows:
@@ -62,6 +67,7 @@ $ sudo chown -R www-data:www-data /var/www/html/
   $ sudo usermod -g <user> <user>
 ```
 
+
 [Users and Groups Administration in Linux (2006)](http://www.debianadmin.com/users-and-groups-administration-in-linux.html)   
 >oldie but goodie - deals with creating and deleting groups
 
@@ -71,6 +77,12 @@ If you just want to add a user to a group use the following command:
   $ sudo adduser username grouptoadd
 ```
 **from Linux: Add User to Group...**
+
+[Is it normal to get hundreds of break-in attempts per day?](https://serverfault.com/questions/244614/is-it-normal-to-get-hundreds-of-break-in-attempts-per-day)   
+*add yourself to systemd-journal group to see the entire journalctl -xe log*
+```
+  sudo adduser username systemd-journal
+```
 
 ####  Get User ID and Groups Information: id and groups
 To show all the user information and group memberships, we can use the id command:

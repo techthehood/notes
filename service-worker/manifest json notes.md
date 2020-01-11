@@ -2,9 +2,8 @@
 sites:
 [mozilla manifest docs](https://developer.mozilla.org/en-US/docs/Web/Manifest)
 [google developer The Web App Manifest](https://developers.google.com/web/fundamentals/web-app-manifest/)
-[google developer - confingured for a custom splash screen](https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen
+[google developer - confingured for a custom splash screen](https://developers.google.com/web/tools/lighthouse/audits/custom-splash-screen)
 [google developers - improved add to home screen](https://developers.google.com/web/updates/2017/02/improved-add-to-home-screen)
-[]()
 
 
 my manifest example:

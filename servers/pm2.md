@@ -93,6 +93,7 @@ List the applications currently managed by PM2:
 ```
   $ pm2 list
 ```
+**seems the same as pm2 show <app name>**
 
 Get information about a specific application using its App name:
 ```
@@ -100,6 +101,7 @@ Get information about a specific application using its App name:
 ```
 
 The PM2 process monitor can be pulled up with the monit subcommand. This displays the application status, CPU, and memory usage:
+[pm2 process management](https://pm2.io/doc/en/runtime/guide/process-management/)
 ```
   $ pm2 monit
 ```
@@ -118,6 +120,8 @@ Note that running pm2 without any arguments will also display a help page with e
 [You should never ever run directly against Node.js in production. Maybe.](https://medium.freecodecamp.org/you-should-never-ever-run-directly-against-node-js-in-production-maybe-7fdfaed51ec6)   
 
 [loging more lines](http://pm2.keymetrics.io/docs/usage/log-management/)   
-````
-  pm2 logs uniqueName --lines 1000
 ```
+  pm2 logs uniqueName --lines 1000
+```   
+
+#### [pm2 graceful shutdown](https://pm2.io/doc/en/runtime/best-practices/graceful-shutdown/)

@@ -39,7 +39,7 @@ return  (<Aux>
 ```
 
 **Using React.Fragment (built in hoc)***
-react now has a build in component that does the same same thing
+react now has a built in component that does the same same thing
 
 ```
 return  (<React.Fragment>

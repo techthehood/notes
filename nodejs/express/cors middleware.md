@@ -1,60 +1,5 @@
-# express
-[express docs](http://expressjs.com/en/4x/api.html)   
-**warning bodyParser is now the old way**
-[Handle GET and POST Request in Express 4](https://codeforgeek.com/handle-get-post-request-express-4/)   
+# [express cors middleware](https://expressjs.com/en/resources/middleware/cors.html)   
 
-#### POST Request:
->Express version 4 and above requires extra middle-ware layer to handle POST request. This middle-ware is called as ‘bodyParser’.
-
-```
-  $ sudo npm install --save body-parser
-  $ sudo npm install body-parser
-```
-[as of 5.0.0 --save option no longer needed](https://stackoverflow.com/questions/19578796/what-is-the-save-option-for-npm-install)   
-
-[express.json vs bodyParser.json](https://stackoverflow.com/questions/47232187/express-json-vs-bodyparser-json)   
-> Earlier versions of Express used to have a lot of middleware bundled with it. bodyParser was one of the middlewares that came it. When Express 4.0 was released they decided to remove the bundled middleware from Express and make them separate packages instead. The syntax then changed from app.use(express.json()) to app.use(bodyParser.json()) after installing the bodyParser module.
-
-> bodyParser was added back to Express in release 4.16.0, because people wanted it bundled with Express like before. That means you don't have to use bodyParser.json() anymore if you are on the latest release. You can use express.json() instead.
-
-[Retrieve the POST query parameters using Express](https://flaviocopes.com/express-post-query-variables/)   
-
-server src/app.js
-```
-  // app.use(express.static(publicDirectoryPath));// formerly
-
-  // app.use('/nodereq',nR_Proxy);
-
-  app.post('/nodereq/handle',function(req,res){
-    console.log(req.body);
-    // const query1=request.body.var1;
-    // const query2=request.body.var2;
-    return res.send({message:"handle received"})
-  });
-```
-
-js/app.js
-```
-    let uploadData = {title:"post test"};
-
-    let options = {
-            method:'POST',
-            body:JSON.stringify(uploadData),
-            headers: new Headers({'Content-Type': 'application/json'})
-        }// options
-
-      fetch(`https://example.com/nodereq/handle`,options)
-      .then((response)=>{
-        response.json()
-        .then((data) => {
-          if(data.error){
-            console.log(data.error);
-          }else{
-            console.log(data);
-          }
-        })
-      })//.then
-```
 #### [CORS](https://www.npmjs.com/package/cors)   
 
 [express js cors](https://expressjs.com/en/resources/middleware/cors.html)   
@@ -162,28 +107,3 @@ working example
     ...
 ```
 **set the option b4 each post request**
-
-## setting up a testing environment
-> i want to be able to create quick apps to test features and practice workflows
-
-#### set up another express server on a different port
-> use nginx server block to direct traffic to that block using the url path
-
-sites-enabled/example.com
-```
-  location /req {
-  add_header X-app2-message "nodereq section entered" always;
-  proxy_pass http://localhost:3000;
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection 'upgrade';
-  proxy_set_header Host $host;
-  proxy_cache_bypass $http_upgrade;
-}
-
-```
-
-> replace /req with /desired-path
-> replace localhost:3000 with localhost:desired-port#
-
-copy

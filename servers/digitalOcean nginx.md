@@ -263,6 +263,7 @@ Joomla server block sample
 [How to setup http password authentication with nginx](https://medium.com/@MicroPyramid/how-to-setup-http-password-authentication-with-nginx-38855fe5938)   
 **see Setting up Node, MySQL and Nginx on Digital Ocean above**
 [How To Set Up Password Authentication with Nginx on Ubuntu 14.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-nginx-on-ubuntu-14-04)   
+**i don't think i set up password authentication - seems like a password that is needed b4 public can access a site**
 
 #### create a .bash_profile in the users Directory
 >for custom color coded terminal prompts
@@ -344,3 +345,22 @@ add a [server] tag and color its background
   # blue background w/ black text
   printf "\n$txtblk$bakblu[server] $yellow%s\n" "$PWD"
 ```
+### [Manage DNS records](https://www.digitalocean.com/docs/networking/dns/how-to/manage-records/)   
+[DNS quickstart - (not really helpful)](https://www.digitalocean.com/docs/networking/dns/quickstart/)   
+A records(IPv4), AAAA records(IPv6)
+```
+@
+www
+*
+```
+>enter the 1st symbol choose the ip from the dropdown menu and select create record (i did A & AAAA)
+**3rd pary nameservers also have to be updated for changes to take effect**
+**GOTCHA: cloudflare has to be updated for new subdomains to work**
+
+[Nginx: location regex for multiple paths](https://serverfault.com/questions/564127/nginx-location-regex-for-multiple-paths)    
+```
+location ~ ^/(static|media)/ {
+  root /home/project_root;
+}
+```
+**i think i tried this and it didn't work. so i just created 2 separate locations with the same port**

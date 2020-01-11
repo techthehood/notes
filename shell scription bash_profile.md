@@ -132,3 +132,22 @@
   alias newIns='newexecutable'
 ```
 11. close the bash terminal and reopen it - resourcing the bash_profile only activates the alias but it doesn't update the Path variable
+
+#### .bashrc on linux
+[Why doesn't .bashrc run automatically?](https://apple.stackexchange.com/questions/12993/why-doesnt-bashrc-run-automatically)   
+>Been there, done that. What I came aware of, OS X doesn't read .bashrc file on bash start. Instead, it reads the following files (in the following order):
+>
+>/etc/profile   
+>~/.bash_profile   
+>~/.bash_login   
+>~/.profile   
+>
+> *put its source command in the .bash_profile file (at the top)*
+
+```
+  # test for and load my bashrc file [server only]
+  if [ -f ~/.bashrc ]; then
+      . ~/.bashrc
+  fi
+
+```

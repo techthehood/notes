@@ -1,5 +1,7 @@
 # letsencrypt notes
 
+### adding domains/subdomains to the certificate
+**adding beta.example.com**
 [When to use Let's Encrypt's webroot and standalone authorization](https://advancedweb.hu/2018/06/05/letsencrypt_webroot_vs_standalone/)   
 
 so to fix the wrong root showing issue & the certificate mismatch i expanded the existing certificate to include the subdomain by creating a new request with all included

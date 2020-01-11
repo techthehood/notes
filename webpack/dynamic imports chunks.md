@@ -528,3 +528,66 @@ my test
 		    new BundleAnalyzerPlugin(),
 				new webpack.ProvidePlugin({
 ```
+
+#### dynamic CDN with dynamic-cdn-webpack-plugin
+[How To Reduce Your Bundle Size By Automatically Getting Your Dependencies From A CDN](https://medium.com/comparethemarket/how-to-reduce-your-bundle-size-by-automatically-getting-your-dependencies-from-a-cdn-96b25d1e228)   
+	install
+		html-webpack plugin
+		dynamic-cdn-webpack-plugin
+		module-to-cdn
+
+```
+	npm install --save-dev dynamic-cdn-webpack-plugin module-to-cdn html-webpack-plugin
+```
+
+how it works: it takes all the require/import statements and creates a script tag in webpacks index.html file linked to a unpkg cdn package
+
+it reduces the size of the bundle without having to create a vendor bundle
+
+webpack.config.js
+```
+	plugins:[
+    /*new BundleAnalyzerPlugin(),*/
+    new webpack.ProvidePlugin({
+      /*$ : "jquery",
+      jQuery : "jquery",*/
+      React : "React",
+      ReactDOM : "ReactDOM",
+      axios: "axios",
+      makeUp:path.join(__dirname,'js','lib','upload.js')/* this works */,
+      test:path.join(__dirname,'js','lib','test.js')/* this works */,
+      test2:path.join(__dirname,'js','lib','test2.js')/* this works */
+    }),
+    new webpack.SourceMapDevToolPlugin(prodObj),
+    new MiniCssExtractPlugin({
+        filename: "bundle.css"
+    }),
+    new HtmlWebpackPlugin(),
+    new DynamicCdnWebpackPlugin()
+  ],
+```
+**idk if i need the react and ReactDOM in the webpack.ProvidePlugin section**
+eventually you will have to go to the output folder and copy the script links and add to your html file
+
+**GOTCHA: had to add localhost to cors whitelist**
+```
+	var whitelist = [
+	  'https://sunzao.us',
+	  'https://www.sunzao.us',
+	  'https://beta.sunzao.us',
+	  'http://localhost:3000'
+	];
+```
+**origin will read localhost**
+
+#### read the req.body property
+```
+	router.post('/', cors(corsOptions), passportJWT, (req, res) => {
+
+	...
+	  console.log("[req.body]",req.body);// {task: "validate_token"}
+	...
+
+	}
+```
+## SEE ALSO 'code splitting.md'

@@ -200,6 +200,7 @@ www
 ```
 >enter the 1st symbol choose the ip from the dropdown menu and select create record (i did A & AAAA)
 **3rd pary nameservers also have to be updated for changes to take effect**
+**GOTCHA: cloudflare has to be updated for new subdomains to work**
 
 
 [How To Point to DigitalOcean Nameservers From Common Domain Registrars](https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars)   

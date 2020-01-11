@@ -262,3 +262,10 @@ power selector
 [Using Mocha with Puppeteer](https://checklyhq.com/docs/browser-checks/using-mocha/)   
 [Web Scraping with a Headless Browser: A Puppeteer Tutorial](https://www.toptal.com/puppeteer/headless-browser-puppeteer-tutorial)   
 [npm cheerio](https://www.npmjs.com/package/cheerio)   
+[How To Use node.js, request and cheerio to Set Up Simple Web-Scraping](https://www.digitalocean.com/community/tutorials/how-to-use-node-js-request-and-cheerio-to-set-up-simple-web-scraping)   
+
+[Web scraping with Node.JS and Cheerio](https://buttercms.com/blog/web-scraping-with-nodejs-and-cheerio)   
+[Managing puppeteer for memory and performance](https://stackoverflow.com/questions/51971760/managing-puppeteer-for-memory-and-performance)   
+
+#### browser should be reused - new page.close
+[system memory usage increase surprisingly with headless chrome](https://github.com/GoogleChrome/puppeteer/issues/3314)   

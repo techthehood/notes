@@ -10,6 +10,7 @@
 3. [choose drivers mongoDB drivers](https://docs.mongodb.com/ecosystem/drivers/)   
 4. [choose node.js driver](https://docs.mongodb.com/ecosystem/drivers/node/)   
 5. [choose API Documentation](http://mongodb.github.io/node-mongodb-native/3.2/api/)   
+**mongodb site > Resources > Documentation > MongoDB drivers > Nodejs Driver  > API Reference**
 
 #### [install mongodb on linux](https://youtu.be/WH5GgHaEy7E)   
 ```
@@ -35,10 +36,9 @@
 ### start mongodb server (windows)
  from username dir
 ```
-  cd ~;
-  mongodb/bin/mongod.exe --dbpath=mongodb-data
+  cd ~; mongodb/bin/mongod.exe --dbpath=mongodb-data
 ```
->--dbpath=mongodb-data passes the path the the db-data file   
+>--dbpath=mongodb-data passes the path to the db-data file   
 > i made an alias on window: mongodb - it navigates then runs just like the code sample
 
 **GOTCHA: to keep it running you have to open a different terminal window to write more scripts
@@ -95,7 +95,28 @@ Official remote setup
 ```
   mongo
 ```
----
+
+GOTCHA: if mongo doesn't work
+goto environment variables (search environ....)
+go to user variables and choose path then edit
+choose new
+copy and paste location of directory of installed mongodb bin
+```
+  C:\Users\d3pot\mongodb\bin
+```
+
+then save changes and close and reopen all terminals (restart them)
+then type
+```
+  mongo
+```
+#### alternate start
+> note you can probably use
+```
+  mongod --dbpath=mongodb-data
+```
+> to start the db server instead of the full path to the .exe file
+
 
 ### mongoDB (terms)
 *(compared to mysql)*
@@ -125,7 +146,7 @@ NoSQL (Not Only SQL)
 
 #### switch to the desired db (also creates if not exists)
 ```
-  use mydb;
+  use my_db_name;
 ```
 
 #### print the current db
@@ -133,20 +154,20 @@ NoSQL (Not Only SQL)
   db;
 ```
 
-#### to insert a collection inside the database
-```
-  db.mycol.insert({"name":"Mark"});
-```
->db indicates the current database
-
 #### to show collections inside the databases
 ```
   show collections;
 ```
 
+#### to insert a document inside the collection
+```
+db.my_colection.insert({"name":"Mark"});
+```
+>db indicates the current database
+
 #### to show all the documents inside the collection
 ```
-   db.mycol.find()
+   db.my_collection.find()
 ```
 
 #### to exit
@@ -180,6 +201,9 @@ prints out documents from the users collection
 
 [install site](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/)   
 [mongodb offical driver npm](https://www.npmjs.com/package/mongodb)
+```
+
+```
 
 [mongodb driver docs](https://docs.mongodb.com/ecosystem/drivers/)   
 > choose nodejs   
@@ -188,7 +212,7 @@ prints out documents from the users collection
 
 #### GOTCHA:  to use the nodejs mongodb module you have to first install mongodb database on your machine
 
-prepare to use the db
+#### prepare to use the db
 ```
   const bodyParser = require('body-parser')
   app.use(bodyParser.json());
