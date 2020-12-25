@@ -1,6 +1,5 @@
 # React Dynamic imports on demand
 
-
 #### [Loading React Components Dynamically on Demand](https://sung.codes/blog/2017/12/03/loading-react-components-dynamically-demand/)   
 > i like this articles idea
 
@@ -148,6 +147,7 @@ app.js
 ```
 #### GOTCHA: **This method originally failed without the use of React.Suspense '<Suspense></Suspense>'**
 >When using devtools the hover feature for previewing a variables contents didn't work on any of the imported components like it did for some of the required modules so i was completely in the dark.  Adding Suspense finally did the trick.
+**how did i know to try suspense?**
 
 #### save webpackChunkName to folders
 ```

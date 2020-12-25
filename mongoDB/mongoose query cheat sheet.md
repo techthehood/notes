@@ -179,6 +179,7 @@ uploadOrder.js
   update_item = await Param.findOneAndUpdate({ user_id: user_id}, { $set:{ filter: filter} }, { new: true, upsert: true });
 ```
 
+### Adding to a query
 #### [How to use variable mongoose query?](https://stackoverflow.com/questions/21592595/how-to-use-variable-mongoose-query)
 > you have to build set programatically     
 
@@ -190,7 +191,23 @@ uploadOrder.js
   console.log(chalk.yellow("[update_item]"),update_item);
 
 ```
-#### orderBy (sort)   
+
+a variation for adding to a query
+```
+  let query = { user_id: req.user._id, ancestor: {$exists: true, $eq:item_ancestor}, type: item_type };
+
+  let text = {$text: {}};
+  text.$text[`$search`] = search_value;
+  query = {...query, ...text};//works
+
+  query['$text'] = { "$search": search_value };// works
+
+  // the long non dynamic way - helped for testing
+  query = { user_id: req.user._id, /*ancestor: {$exists: true, $eq:item_ancestor},*/ type: item_type, $text:{ $search: search_value } };//works
+```
+
+#### orderBy ( = sort)   
+[In Mongoose, how sort by date and other field (node.js)](https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110)   
 [Example sort in mongodb with nodejs use mongoose](http://codewr.com/view/NODEJS-Mongoose/example-sort-in-mongodb-with-nodejs-use-mongoose)      
 
 ```
@@ -198,6 +215,35 @@ uploadOrder.js
   let recent_items = await Item.find({type: "media", user_id: uId}).sort({created: -1}).limit(50).lean();// limit works
 ```
 count, limit
+
+#### sort multiple fields
+[Mongoose Sort Multiple Fields](https://kb.objectrocket.com/mongo-db/mongoose-sort-multiple-fields-609)   
+keywords: asc desc ascending descending 1 -1
+
+```
+  const allusers = newUser.find({}, "name age", function(err, docs) {
+    if (err) console.log(err);
+    console.log(docs);
+  }).sort([["name", 1], ["age","desc"]]);
+```
+**notice the use of 1 and "desc"**
+
+sorting consists or an outer array with indexes of an array of arrays
+```
+  // looks like in needs orderBy to look like this in order to work  [ [ [ 'title_data' ], [ -1 ] ] ]
+
+  rows = await Item.find(query).collation({locale: "en" }).sort([[["priority"],[-1]], ...orderBy]).skip(start_ndx).limit(limit).lean();
+
+  // [[["priority"],[-1]],  [['title_data'],[-1]]]
+
+  let priority = [["priority"],[-1]];
+  rows = await Item.find(query).collation({locale: "en" }).sort([ priority, ...orderBy]).skip(start_ndx).limit(limit).lean();//works
+  // i need to spread orderBy because its already in the proper 3 array nested format.
+
+  [ ...priority, ...orderBy] //failed - priority doesn't need the spread operator it will break the nested format of the array
+  orderBy is in the final tripple format
+  orderBy = [ [ [ 'title_data' ], [ -1 ] ] ]
+```
 
 #### [How to get all the values that contains part of a string using mongoose find?](https://stackoverflow.com/questions/26814456/how-to-get-all-the-values-that-contains-part-of-a-string-using-mongoose-find)   
 > similar to mysql like
@@ -216,4 +262,243 @@ this query works directly in robo3t
   Item.findOneAndUpdate({_id:ObjectId('5e06532a920b8127bc4cab55')},{$set:{'tool.template':'basic'}})
 
   Item.findOneAndUpdate({_id:ObjectId('5e06532a920b8127bc4cab55')},{$set:{'tool.template':'DefaultProfile'}});
+```
+#### Searching text
+my initial sample
+```
+  let sR = await Item.find({ _id: req.user._id }, {$text:{ $search: text }});
+```
+
+GOTCHA: Unsupported projection option: $text: { $search:
+> [If you want to apply a filter, use the first positional argument to find():](https://stackoverflow.com/questions/31169416/mongodb-pymongo-badvalue-unsupported-projection-option-when-trying-to-query-all)   
+```
+  let sR = await Item.find({$text:{ $search: text }, user_id: {$in: req.user._id}}).lean();
+  console.log(chalk.green("[searchBkmk] search results = "),sR);
+```
+
+#### update all root items to have an ancestor of user_id
+```
+db.getCollection('items').updateMany({root: true},{$set:{'ancestor':ObjectId('5e16b0ae8ee064177cd3f53b')}})
+```
+
+#### using skip and limit
+```
+  page = parseInt(page);
+  limit = parseInt(limit);
+  let start_at = (page - 1) * limit;
+  rows = await Item.find({ user_id: item_data.user_id, ancestor: {$exists: true, $eq:item_ancestor}, type: item_type }).skip(start_at).limit(limit).lean();
+
+```
+
+#### [not equals](https://docs.mongodb.com/manual/reference/operator/query/ne/)   
+```
+  db.getCollection('items').find({picture:{$ne:""}})
+```
+
+#### finding orphaned files
+```
+  db.getCollection('items').find({ancestor:{$eq:null}})
+```
+
+solution - create an orphaned dir - set it at root, get its id, set its id as ancestor to orphaned files.
+//where ancestor is null
+```
+
+  db.getCollection('items').updateMany({type: "media",ancestor:{$eq:null}},{ $set:{ ancestor: ObjectId("5e638b912f6d4006fb704b32")}});
+```
+
+```
+  db.getCollection('items').updateMany({root: true},{ $set:{ ancestor: ObjectId("put user id here")}})
+```
+
+#### adding attachment ids in an Array
+[mongodb/mongoose findMany - find all documents with IDs listed in array](https://stackoverflow.com/questions/8303900/mongodb-mongoose-findmany-find-all-documents-with-ids-listed-in-array)   
+> here's my idea.  I can add the pair ids to an array for my query orderby order and/or priority and limit to 20, then on return query use the same
+criteria and add the new start position - limit 20 till i get all the items.
+
+one experiment in searching by an array of ids
+getBookmarks.js
+```
+  bookmark_items = await Item.find({'_id': { $in: target_ids }}).skip(start_at).limit(limit).lean();
+```
+
+add priority to all files
+```
+  // set initial priorities to zero
+  db.getCollection('items').updateMany({priority:{$eq:null}},{ $set:{ priority: '0'}});
+  db.getCollection('items').updateMany({rating:{$eq:null}},{ $set:{ rating: '0'}});
+
+  set folder priorities to 2
+  db.getCollection('items').updateMany({data_type: 'folder'},{ $set:{ priority: '2'}});
+
+```
+GOTCHA: i think it needs numbers not number-strings to work properly - the numbers '0' broke the priority stack
+
+**GOTCHA: in boolean fields use false not 0**
+
+update created and modified
+where not-exists (equals null)
+```
+    db.getCollection('pairs').updateMany({created:{$eq:null}},{ $set:{ created: '2020-05-29T01:27:08.627Z'}});
+    // doesn't work, it creates a string not a date
+
+    // fix with this
+    db.getCollection('pairs').updateMany({created:{$eq:'2020-05-29T01:27:08.627Z'}},{ $set:{ created: ISODate('2020-05-29T01:27:08.627Z')}});
+```
+
+set pair defaults
+```
+  // set nulls to zero
+  db.getCollection('pairs').updateMany({pair_priority:{$eq:null}},{$set:{pair_priority:0}})
+
+  // set zero folders to 1
+  db.getCollection('pairs').updateMany({link_type:"folder",pair_priority:{$eq:0}},{$set:{pair_priority:1}})
+```
+set item defaults
+```
+  // set nulls to zero
+  db.getCollection('items').updateMany({priority:{$eq:null}},{$set:{priority:0}})
+
+  // set zero folders to 1
+  db.getCollection('items').updateMany({data_type:"folder",priority:{$eq:0}},{$set:{priority:1}})
+
+  // set 2s to 1
+  db.getCollection('items').updateMany({data_type:"folder",priority:{$eq:2}},{$set:{priority:1}})
+```
+
+#### [Check if a field contains a string](https://stackoverflow.com/questions/10610131/checking-if-a-field-contains-a-string)   
+```
+  // example
+  db.users.findOne({"username" : {$regex : ".*son.*"}});
+
+  // string im looking to capture
+  // &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;/head&gt; &lt;body&gt; &lt;/body&gt; &lt;/html&gt;
+
+  db.getCollection('items').find({note_data:{$regex:/.*DOCTYPE*./}})// works
+
+  // desc_data not empty
+  db.getCollection('items').find({note_data:{$regex:/.*DOCTYPE*./},desc_data:{$ne:""}})// seemed to work - no errors but none were not empty
+
+  // or desc_data is empty
+  db.getCollection('items').find({note_data:{$regex:/.*DOCTYPE*./},desc_data:{$eq:""}})// works
+
+```
+**i wonder can i use an array?**
+
+#### [moving a mongo field within a document if it exists](https://stackoverflow.com/questions/18362907/moving-mongo-field-within-document-if-it-exists)   
+article example
+```
+  db.coll.find({basecampURL : {$exists : true}}).forEach(
+    function(doc) {
+        var bc = {};
+        bc.type = "basecamp";
+        bc.url = doc.basecampURL;
+        doc.trackingSystems.push(bc);
+        // deletes the previous value
+        delete doc.basecampURL;
+        db.coll.save(doc);
+   }
+)
+```
+**trackingSystems is an array field and bc is pushed as an item in the array**
+
+my Example
+```
+  // variation with title_data to test on one record
+  //db.getCollection('items').find({title_data: "create folder feature", note_data:{$regex:/.*DOCTYPE*./},desc_data:{$eq:""}}).forEach(function(doc){
+
+  db.getCollection('items').find({note_data:{$regex:/.*DOCTYPE*./},desc_data:{$eq:""}}).forEach(function(doc){
+    var desc = doc.note_data;
+    doc.desc_data = desc;
+    doc.note_data = "";
+    //delete doc.note_data;
+    db.getCollection('items').save(doc);
+  });
+```
+**delete works but it does what it does in regular js, completely remove the field altogether**
+
+#### adding a field to all records
+```
+  db.getCollection('items').updateMany({},{$set:{caption:""}})
+  db.getCollection('pairs').updateMany({},{$set:{pair_caption:""}})
+```
+
+#### delete field from all records
+```
+    db.getCollection('prefs').find({}).forEach(function(doc){
+      delete doc.user_id;//works
+      //if(doc.user_id) doc.set('user_id', undefined, { strict: false });// doc.set is not a function
+      db.getCollection('prefs').save(doc);
+    });
+
+    // or
+
+    db.getCollection('prefs').update({},{$unset:{user_id:1}});//works
+```
+**GOTCHA: restart mongodb and the [server] for the changes to take effect**
+**GOTCHA: you may also have to drop the index in the indexes folder if they area a unique key**
+
+#### [using findOne then save to replace a document ](https://stackoverflow.com/questions/26871720/using-findone-then-save-to-replace-a-document-mongoose)   
+```
+  let prefs = await Pref.findOne({ user_id: user_id}, (err, results) => {
+    results.bookmarks = new_bkmk;
+    results.save((err) => {
+      if(err) throw "results failed to save";
+      if(display_console || true) console.log(chalk.green("[new_bkmk] saved successfully"));
+    })
+  })
+```
+
+#### creating a new field (adding a new field)
+```
+  db.getCollection('prefs').findOneAndUpdate({user_id:ObjectId("5e16b0ae8ee064177cd3f53b")},{$set:{project_id:ObjectId("5e16b0ae8ee064177cd3f53b")}})
+```
+**i can use the same ObjectId in the same document**
+
+#### adding new fields (non existing fields)
+```
+  db.getCollection('items').find({project_id:{$exists:false}}).forEach(function(doc){
+     doc.project_id = doc.user_id;
+     db.getCollection('items').save(doc);
+  });
+
+  db.getCollection('items').find({project_id:{$eq:null}}).forEach ... // also works
+```
+**its a very slow process on the remote server**
+
+#### [Find document with array that contains a specific value](https://stackoverflow.com/questions/18148166/find-document-with-array-that-contains-a-specific-value)   
+[mongodb Query an Array](https://docs.mongodb.com/manual/tutorial/query-arrays/)   
+
+```
+  // As favouriteFoods is a simple array of strings, you can just query that field directly:
+
+  PersonModel.find({ favouriteFoods: "sushi" }, ...);
+
+  // But I'd also recommend making the string array explicit in your schema:
+
+  person = {
+      name : String,
+      favouriteFoods : [String]
+  }
+```
+
+#### adding an or condition to the query
+[Specify OR Conditions](https://docs.mongodb.com/manual/tutorial/query-documents/#specify-or-conditions)   
+> i wanted to find access where the array was blank or the array contained the user's user_id
+
+my example
+```
+  let query = {item_id: item_ancestor, $or:[{access:{$in:[user_id]}}, {access:{$eq:[]}}] };// works
+```
+**works**
+
+[not empty array field](https://stackoverflow.com/questions/14789684/find-mongodb-records-where-array-field-is-not-empty)   
+```
+  //If you also have documents that don't have the key, you can use:
+
+  ME.find({ pictures: { $exists: true, $not: {$size: 0} } });
+
+  // MongoDB don't use indexes if $size is involved, so here is a better solution:
+
+  ME.find({ pictures: { $exists: true, $ne: [] } })
 ```

@@ -55,6 +55,10 @@ module.exports = {
   output: {
       chunkFilename: '[name].chunk.js',
   },
+  watch: true,
+  watchOptions: {
+    ignored: ['files/**/*.js', 'node_modules/**']
+  },
   devtool: isProd ? false : 'cheap-module-eval-source-map',
   plugins:[
     new webpack.ProvidePlugin({

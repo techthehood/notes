@@ -135,3 +135,28 @@ $arrange_obj = $order_obj->arrangement;
 
 ```
 >curly braces in object props around $varNames are similar to multidirectional arrays with square brackets
+
+#### writing to the file system
+
+```
+    $migrate_data_to_file = function($dTf)
+    {
+      //test file creation
+      $myInfofile = fopen("myInfo.txt", "w");
+      $txt = "John Doe\n";
+      fwrite($myInfofile, $txt);
+      $txt = "Jane Doe\n";
+      fwrite($myInfofile, $txt);
+      fclose($myInfofile);
+
+    };// $migrate_data_to_file
+```
+**GOTCHA: file writes to the site root.**
+
+#### GOTCHA: PHP Error: Function name must be a string
+```
+  $myInfo();// fails
+
+  myInfo();//works
+
+```

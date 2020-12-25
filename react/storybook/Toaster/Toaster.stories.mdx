@@ -1,0 +1,37 @@
+import { Meta, Story, Canvas, Preview, Description, ArgsTable, Source } from '@storybook/addon-docs/blocks';
+import Toaster from './Toaster';
+
+export const Template = args => <Toaster {...args} />
+
+<Meta
+  title="Toaster/mdx"
+  component={Toaster}
+  argTypes={{
+    message:{control:{type:"text"}
+      description:"toast user message",
+      table: {type: {summary: 'text', detail: 'something really really long'}}
+    },
+    auto:{control:{type:"boolean"}},
+    duration:{control:{type:"number"}},
+    data:{
+      control:{type:"object"},
+      table:{category:"data"}
+    }
+  }}
+/>
+
+<Canvas>
+  <Story name="toast">
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<ArgsTable story={"toast"} />
+
+<Canvas>
+  <Story name="toast2">
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<!-- <Description of={Toaster} /> -->

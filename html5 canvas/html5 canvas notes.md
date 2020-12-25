@@ -83,3 +83,6 @@ see notes in webpack.md
 	Patched version: 1.2.1
 	The merge.recursive function in the merge package in versions before 1.2.1 can be tricked into adding or modifying properties of the Object prototype. These properties will be present on all objects allowing for a denial of service attack.
 ```
+
+## Controlling canvas display dimensions
+> re-researching my canvas display data.

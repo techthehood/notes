@@ -4,6 +4,14 @@
 GOTCHA:
 ReactDOM.react() should be ReactDOM.render
 
+
+**adding JSX**
+The quickest way to try JSX in your project is to add this <script> tag to your page:
+```
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+```
+Now you can use JSX in any <script> tag by adding type="text/babel" attribute to it. Here is an example HTML file with JSX that you can download and play with.
+
 GOTCHA:
 next i added this script to the body instead of the js nested in the script tag.
 ```
@@ -416,3 +424,26 @@ multiple apps(components) can't be rendered to the same container.
 ```
 **has to be fixed in jQuery**
 >React uses event delegation with a single event listener on document for events that bubble, like 'click' in this example, which means stopping propagation is not possible; the real event has already propagated by the time you interact with it in React. stopPropagation on React's synthetic event is possible because React handles propagation of synthetic events internally.
+
+#### GOTCHA: issue updating the input field programatically
+[How to programmatically fill input elements built with React?](https://stackoverflow.com/questions/40894637/how-to-programmatically-fill-input-elements-built-with-react)   
+```
+  <div className={[`${name}_${ancestor}_filter_reset_${iUN}`,
+    ` ${name}_${ancestor}_filter_reset filter_reset`,
+    ` d3-ico icon-cross`].join("")}
+    value={`${search_value}`}
+    onClick={() => {
+      /*you need to do both*/
+      setValue("");
+      filter_input.current.value = ""
+    }} >
+  </div>
+```
+
+#### [force react to re-render](https://davidwalsh.name/react-force-render)   
+> force a re-render
+
+```
+  this.forceUpdate();// calls for a re-render
+  // this.setState(state: this.state);// also re-renders
+```

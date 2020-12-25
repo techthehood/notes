@@ -3,7 +3,7 @@
 ### creating a service worker
 
 [how to set up a very basic service worker](https://youtu.be/BfL3pprhnms)
-[chrome service worker monitor](chrome://serviceworker-internals/) 
+[chrome service worker monitor](chrome://serviceworker-internals/)
 
 register the service worker
 
@@ -170,3 +170,27 @@ sw.js
 **GOTCHA: the key to the public path is the './' instead of '/' the ./ is used for the root directory**
 
 [debugging service-workers](https://developers.google.com/web/fundamentals/codelabs/debugging-service-workers/)   
+
+#### using Service-Worker-Allowed
+> S-W-A caused an issue because core and details are the roots of their perspective public directories, therefore i couldn't set scope to '/'
+> in fire.js. ultimately this will take more experimentation because i would like to control the add-to-homescreen process.
+> i don't need details to add to homescreen.  idk if i need sunzao.us to A2H. even if it did have a site landing page, i may still only want
+> core with A2H
+
+you can find Service-Worker-Allowed with its scope in sites-enabled server blocks
+```
+	location /core {
+    add_header X-app2-message "alight section entered" always;
+    add_header 'Service-Worker-Allowed' '/core';
+    proxy_pass http://localhost:1027;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+	}
+
+```
+the scope in S-W-A, manifest.json, and fire.js all have to match for valid A2H functionality
+[what does it take to be installable? (collection)](https://sunzao.us/core/?pages=5f2fe46b68ee4b794c5d07f1)   
+[install criteria](https://web.dev/install-criteria/)   

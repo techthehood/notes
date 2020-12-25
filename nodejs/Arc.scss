@@ -1,0 +1,99 @@
+$mp: !important;
+
+.arc_view_wrapper{
+  // padding: 0 1rem;
+  display: flex;
+  flex-flow: column;
+  height:100%;
+  padding: 0 .15rem;//2px
+  gap: .5rem;
+  .arc_view_header{
+    display: grid;
+    grid-template-areas: "icon title options";
+    grid-template-columns: 1fr 80% 1fr;
+    // height: 5%;
+    // height: 2.5%;
+    // height: 1.7rem;
+    // flex: 1 auto;
+    width: 100%;
+    text-shadow: 2px 2px 2px #ccc;
+    font-size: 1.2rem;
+    gap: .5rem;
+    // padding: 0 .5rem;
+    .arc_view_title{
+      margin-left: .75rem;
+      grid-area: title;
+      height: fit-content;
+      align-self: center;
+    }//arc_view_title
+    .arc_view_icon{
+      grid-area: icon;
+      justify-self: left;
+      text-align: left;
+      margin-left: .75rem;
+      padding: .25rem 0 0;
+      height: fit-content;
+      // width: 2rem !important;
+      font-size: 2.2rem;
+    }// projects_icon
+    .arc_view_options{
+      grid-area: options;
+      justify-self: right;
+      align-self: center;
+      text-align: right;
+      margin-right: .75rem;
+      padding: .25rem 0 0;
+      width: 2rem $mp;
+      height: fit-content $mp;
+    }//arc_view_options
+  }//arc_view_header
+  .arc_view_cont{
+    border: 1px solid #ccc;
+    width: 100%;
+    border-radius: 7px;
+    height: 90%;
+    flex: 1 auto;
+    // height: 32.5rem;
+
+    .arc_view_content{
+      // max-height: 77vh;
+      overflow-y: auto;
+      height: 100%;
+      overscroll-behavior-y: contain;
+
+      .arc_item_wrapper{
+        display: flex;
+        justify-content: center;
+        flex-flow: column;
+        align-items: center;
+        height: 255px;
+        margin: 5px;
+        .arc_item{
+          width:100%;
+        }
+      }
+      .arc_item_observer{
+        width: 100%;
+      }
+    }
+  }//arc_view_cont
+}
+
+.arc_loader_wrapper, .arc_scroll_loader_wrapper{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .arc_item_loader{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+    .loader_refresh{
+      font-size: 1.5rem;
+    }// .loader_refresh
+  }
+  div[class~="item_loader"]{
+    border:1px solid red $mp;
+  }
+}

@@ -175,3 +175,5 @@ router.get("/:val1?/:val2?/:val3?", cors(corsOptions), /*passportJWT,*/ viewItem
 > if i just use the shortest params route the links/scripts don't go through the route but the longer params also don't work.
 
 > idk how having them all filters out the links/scripts but it does ( apart from the console .maps for the shortest one)
+
+[more on express route params](https://stackoverflow.com/questions/34704593/express-routes-parameters)   

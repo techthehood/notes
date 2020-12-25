@@ -22,3 +22,6 @@ use -e or --ext to track extensions
 ```
   nodemon app.js -e hbs,...
 ```
+
+#### migrating/ running npm install on the server
+**see noder version manager.md**

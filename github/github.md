@@ -65,6 +65,11 @@ git rm -r --cached .
 ```
 **don't forget the ending period**
 
+#### [untrack a single file](http://queirozf.com/entries/untrack-files-in-git)    
+```
+ git rm --cached [your_filename]
+```
+
 ##### is this a new way to add all?
 ```
  git add .
@@ -137,3 +142,40 @@ git merge [branchName]
 (-s ours is short for --strategy=ours)
 
 >This resolves any number of heads, but the resulting tree of the merge is always that of the current branch head, effectively ignoring all changes from all other branches. It is meant to be used to supersede old development history of side branches. Note that this is different from the -Xours option to the recursive merge strategy.
+
+#### i want to see diff in modified files
+```
+
+```
+
+#### [Undo a git add - remove files staged for a git commit](http://data.agaric.com/undo-git-add-remove-files-staged-git-commit)   
+
+unstage a single file
+```
+  git reset [filename.txt]
+```
+
+unstage them all
+```
+  git reset
+```
+
+[decent git diff article](https://www.atlassian.com/git/tutorials/saving-changes/git-diff)      
+#### git diff modified files
+```
+  git diff path/to/files.ext
+
+  same as
+
+  git diff HEAD ./path/to/file.ext
+```
+**i wonder if this still works the same if this file is staged? A: nope it appears to do nothing**
+
+#### compare staged Changes (staged diff)
+```
+  git diff --cached ./path/to/file
+```
+**if no staged files it appears to do nothing**
+
+#### a good way for me to write an accurate commit message
+>a good way for me to write an accurate commit message is to use git diff filename to see modifications in the modified files, make note of the changes and use them in the commit message

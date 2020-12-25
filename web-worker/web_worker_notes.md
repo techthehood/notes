@@ -153,6 +153,8 @@ load the plugin
 ```
 npm install worker-loader --save-dev
 ```
+**installing worker-loader is required**
+>if you have the worker-loader at the root package.json and node_modules folder you don't need to add it to the subdirectory package.json files
 
 import the worker
 ```
@@ -200,3 +202,54 @@ web workers can pass any type of data - they can use JSON objects too
 
 **web workers can use indexedDB**
 >But you can use a large number of items available under window, including WebSockets, and data storage mechanisms like IndexedDB and the Firefox OS-only Data Store API. See Functions and classes available to workers for more details.   
+
+#### the key is to make an instance of the inline worker-loader
+```
+  let w = new d3Worker();
+```
+
+
+#### [Object Object] could not be cloned
+>[workHorse] error  DOMException: Failed to execute 'postMessage' on 'Worker': [object Object] could not be cloned.
+    at edit_data
+
+
+```
+  let update_data = stringMe(state.modify_data.target_data[target_id]);// solves the [Object, Object] cannot be cloned issue
+```
+
+stringMe.js
+```
+  export const stringMe = function (ref_obj, objectify) {
+
+    /**** experimental = clears circular structure ****/
+    let cache = [];
+     let ret_var = JSON.stringify(ref_obj, function(key, value) {
+         if (typeof value === 'object' && value !== null) {
+               if (cache.indexOf(value) !== -1) {
+                   // Duplicate reference found
+                   try {
+                       // If this value does not reference a parent it can be deduped
+                       return JSON.parse(JSON.stringify(value));
+                   } catch (error) {
+                       // discard key if value cannot be deduped
+                       return;
+                   }
+                }
+               // Store value in our collection
+               cache.push(value);
+           }// if
+           return value;
+       });
+     cache = null;// Enable garbage collection
+     /**** experimental = clears circular structure ****/
+
+     if(objectify){
+       return JSON.parse(ret_var);
+     }else{
+
+       return ret_var;
+     }
+
+  }// string_me
+```

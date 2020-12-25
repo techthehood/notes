@@ -81,3 +81,29 @@ to redirect the views to any other location you can use \__dirname with the the 
       return JSON.stringify(data_str);
   });
 ```
+
+#### all these fail
+[Handlebars.js parse object instead of [Object object]](https://stackoverflow.com/questions/10232574/handlebars-js-parse-object-instead-of-object-object)   
+```
+      // window['DATA_ONLY'] = {data};//single bracket - not hbs syntax
+      //
+    	// window['SINGLE_BRACKET'] = {data};//single bracket - not hbs syntax
+
+      // window['DOUBLE_BRACKET'] = {{data}};//single bracket [object Object]
+      //
+      // window['TRIPPLE_BRACKET'] = {{{data}}};//single bracket  [object Object]
+```
+
+```
+  server:
+    res.render('alight', {
+      title:'push tester',
+      name: 'your pusher',
+      use_local_files: keys.use_local_files,
+      data:{data}
+    });// render
+
+  client:
+    window['HOST_DATA'] = {{{data.data}}};//[object Object]
+```
+> for data.data to work the .data property type would have to be a string

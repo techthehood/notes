@@ -44,6 +44,7 @@
 **GOTCHA: to keep it running you have to open a different terminal window to write more scripts
 the mongodb terminal must remain running**
 
+>how did mongodb get to cd ~? does it install there with an installer? there are no notes above to move it there.
 
 database admin tool (GUI)
 >i think i really prefer to use mongo shell instead
@@ -356,4 +357,52 @@ increment the age
     }
   })
 
+```
+
+random localhost connection data - keys.js file
+```
+    mongodb:{
+      dbURI: 'mongodb://127.0.0.1:27017/task-manager-api',
+      db:'mongodb://127.0.0.1:27017'
+    },
+```
+
+#### [Mongoose doesn't create new collection](https://stackoverflow.com/questions/31617579/mongoose-doesnt-create-new-collection)    
+Mongoose won't create the jobs collection for the model until the first document of that model is saved.
+```
+Job.create({category: 1, title: 'Minion"}, function(err, doc) {
+    // At this point the jobs collection is created.
+});
+```
+
+#### updating a required schema - (delete key)
+- goto collections
+- click dropdown arrow (in robo 3T)
+- right click on indexes folder
+- choose view indexes
+- delete the correct index
+**GOTCHA: seems to only be available locally**
+```
+  db.getCollection('prefs').getIndexes()
+```
+[dropping indexes](https://docs.mongodb.com/manual/reference/method/db.collection.dropIndex/)   
+- view all the indexes of the collection
+```
+  db.getCollection('prefs').getIndexes()
+```
+
+location the index name
+```
+  {
+    "v" : 2,
+    "key" : {
+       "cat" : -1
+    },
+    "name" : "catIdx"
+  }
+```
+
+drop the index
+```
+  db.getCollection('prefs').dropIndex("catIdx")
 ```

@@ -459,3 +459,37 @@ so i ran audits recommendation
 ```
 
 ### [using loaders](https://youtu.be/DhKKNYGFVi8)
+
+#### [webpack watch](https://webpack.js.org/configuration/watch/)   
+
+```
+	watch: true,
+  watchOptions: {
+    ignored: ['files/**/*.js', 'node_modules/**']
+  },
+```
+#### working offline
+```
+	const isOffline = true;
+	console.log(`[Offline]`,isOffline);
+
+	const dCWP = (isOffline) ? function(){} : new DynamicCdnWebpackPlugin();// it wants a function
+	const external_obj = (isOffline) ? {} : {
+	  /*@ comment out externals for/to create DynamicCdnWebpackPlugin scripts in ./dist/index.html file */
+	  'react': 'React',
+	  'react-dom':'ReactDOM',
+	  'mobx':'mobx',
+	  'axios':'axios'
+	  // jquery: 'jQuery'
+	};
+
+	const providePlugin_obj = (!isOffline) ? {} : {
+	  $ : "jquery",
+	  jQuery : "jquery",
+	  React : "react",
+	  ReactDOM : "react-dom",
+	  axios: "axios",
+	  mongoose: "mongoose",
+	}
+```
+**here's part of my working offline experiment - ultimately all i need to do is make the hbs partials routes more dynamic with local and copy the contents of the cdn files**

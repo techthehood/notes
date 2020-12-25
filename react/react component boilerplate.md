@@ -35,6 +35,7 @@ actions.js
   import blanket from '../elements/blanket'
 
   export default class Actions extends React.Component {
+    
     constructor(props){
       super(props);
       this.state = {}

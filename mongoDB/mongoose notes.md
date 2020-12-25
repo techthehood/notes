@@ -73,6 +73,25 @@ src/db/mongoose.js
 ```
 **notice new Schema isn't used**
 
+#### [GOTCHA: MongoError: database name must be a string](https://github.com/typeorm/typeorm/issues/2180)   
+>gave this error. But then I specified the collection name admin in this way:
+```
+mongoose.connect(
+  "mongodb://localhost/admin",
+  {
+    useNewUrlParser: true
+  }
+);
+and the error vanished.
+```
+
+examples
+```
+  mongodb://localhost:27017/test
+  mongodb://127.0.0.1:27017/test
+```
+**it needs the db name at the end, in this case its test**
+
 ### using validation
 
 #### use validate fn
@@ -382,3 +401,34 @@ modfied post example with upload data
   var mongoose = require('mongoose');
   var id = mongoose.Types.ObjectId();
 ```
+
+#### [is ObjectId valid](https://sunzao.us/details/5e16b0ae8ee064177cd3f53b/can-i-determine-if-a-string-is-a-mongodb-objectid-false-valids-using-isvalid)   
+```
+    const mongoose = require('mongoose');
+
+    const is_objectId_valid = function(id)
+    {
+      // 12 character strings create a false valid using mongoose isValid
+      // let isValid = mongoose.Types.ObjectId.isValid;
+
+      const ObjectId = mongoose.Types.ObjectId;
+      if (ObjectId.isValid(id)) {
+        if (String(new ObjectId(id)) === id)
+        {
+          return true
+        } else {
+           return false
+        }
+      } else {
+        return false
+      }
+    }// is_objectId_valid
+
+    module.exports = {is_objectId_valid};
+```
+
+this method alone fails
+```
+  let isValid = mongoose.Types.ObjectId.isValid;
+```
+**it returns a false positive if the string its checking is exactly 12 characters like 'classic-jazz'**

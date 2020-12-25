@@ -45,3 +45,79 @@
 ```
 **Notice the variables are on the left and the package reference is on the right just like when using import/require**
 > using externals the json is written in the opposite way
+**write just like import statments**
+
+Using DynamicCdnWebpackPlugin - what effect does provide plugin have on using import statements?
+
+ baseline
+ webpack.config.js
+ ```
+    externals: {
+      /*@ comment out externals for/to create DynamicCdnWebpackPlugin scripts in ./dist/index.html file */
+      /*jquery: 'jQuery'*/
+      'react': 'React',
+      'react-dom':'ReactDOM',
+      'mobx':'mobx',
+      'axios':'axios'
+    },//used to maintain access to CDN global variables
+
+    new webpack.ProvidePlugin({
+      /*$ : "jquery",
+      jQuery : "jquery",*/
+      /*React : "react",
+      ReactDOM : "react-dom",
+      axios: "axios",
+      mongoose: "mongoose",*/
+    }),
+ ```
+ **all commented out**
+
+ updraft.js
+```
+  // import React from 'react';
+
+  const Updraft = () => {
+
+    useEffect(() => {
+      console.log("[updraft] useEffect running");
+    })
+
+  ...
+
+}
+```
+**no react import**
+ReferenceError: useEffect is not defined
+
+
+ updraft.js
+```
+  // import React from 'react';
+
+  const Updraft = () => {
+
+    React.useEffect(() => {
+      console.log("[updraft] useEffect running");
+    })
+
+  ...
+
+}
+```
+**no react import**
+**it worked**
+webpack.config.js
+```
+   externals: {
+     /*@ comment out externals for/to create DynamicCdnWebpackPlugin scripts in ./dist/index.html file */
+     /*jquery: 'jQuery'*/
+     // 'react': 'React',
+     'react-dom':'ReactDOM',
+     'mobx':'mobx',
+     'axios':'axios'
+   },//used to maintain access to CDN global variables
+```
+**comment out react and all externals**
+**still worked**
+
+> observation: neither are having any effect. lets see how long it lasts

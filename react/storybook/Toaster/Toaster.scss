@@ -1,0 +1,52 @@
+.storybook-center{
+  height:10rem;
+}
+
+.toaster_wrapper{
+  display: grid;
+  grid-template-areas: "btn msg";
+  grid-template-columns: 3fr 7fr;
+  width: 100%;
+  height:100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  .toaster_home{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-flow: column nowrap;
+    grid-area: msg;
+    gap: .5rem;
+  }
+  .toaster_btn{
+    grid-area: btn;
+    padding: .5rem 1rem;
+    width: fit-content;
+    justify-self: center;
+    background: aquamarine;
+  }
+}
+.toast_cont{
+  display: grid;
+  grid-template-areas: "img txt .";
+  background: #eee;
+  grid-template-columns: 1fr 7fr 1fr;
+  padding: 0px 10px;
+  border-radius: 0 0 7px 7px;
+  border-top: 1px solid #ccc !important;
+  cursor:pointer;
+  /*border: thin solid #ccc;
+  border-top:unset !important;*/
+  img{grid-area:img; width: 2rem;}
+  p{margin:0; grid-area:txt; text-align: center; padding: 5px 10px;}
+}/*toast_cont*/
+
+.contact_info_creator {position: relative;}
+// .toaster_home{
+//   bottom: 2rem;
+//   position: absolute;
+//   width: 100%;
+// }

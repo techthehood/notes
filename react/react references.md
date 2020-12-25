@@ -1,7 +1,9 @@
 # React references
->[access components externally](https://brettdewoody.com/accessing-component-methods-and-state-from-outside-react/)
+>[access components externally](https://brettdewoody.com/accessing-component-methods-and-state-from-outside-react/)    
 
->intro found in Using Refs (lecture 105 & Refs with React Hooks Lecture 106)
+>intro found in Using Refs (lecture 105 & Refs with React Hooks Lecture 106)   
+
+[A guide to React refs: useRef and createRef](https://blog.logrocket.com/a-guide-to-react-refs/)   
 
 **Old method**
 ```
@@ -112,4 +114,26 @@ useEffect
       callout_fn();
     }
   })
+```
+
+## GOTCHA: Function components cannot be given refs.
+> why do they have useRef and cant be referenced?
+
+
+#### Class component refs must be put in the top level
+[react top-level API](https://reactjs.org/docs/react-api.html)    
+i did manage to get the ref inside of componentDidMount
+```
+  componentDidMount = () => {
+    this.observer = createRef();
+  }
+```
+
+the docs say i can also create it in the controller
+```
+   constructor(props) {
+    super(props);
+
+    this.inputRef = React.createRef();
+  }
 ```

@@ -1,5 +1,5 @@
 
-//this is the code i was using to check for internet connections
+//this is the code i was using to check for internet connections (php)
 
 	/****** This code checks for an internet connection  *******/
 	$connected = @fsockopen("www.google.com",80);
@@ -14,7 +14,7 @@
 	/****************** end connection checker  ****************/
 
 	//i need to simplify this code to check for the availability of
-	//the cdn - if it isn't available - use something else? 
+	//the cdn - if it isn't available - use something else?
 
 	$fileLink = JFactory::getDocument();
 	// Note: "JUri::" works well online and offline without confusing "\" and "/"

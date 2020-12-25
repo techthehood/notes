@@ -68,11 +68,11 @@ check out my code
 		return (
 		<div>
 			<h1>{owl.title}</h1>
-			<img 
+			<img
 			  src={owl.src}
-			  alt={owl.title} 
+			  alt={owl.title}
 			  />
-			
+
 		 </div>
 		);
 	  }
@@ -86,3 +86,16 @@ check out my code
 <h1>{owl.title}</h1>
 ```
  i omitted the brackets and it rendered the string 'owl.title' instead of 'Excellent Owl'
+
+
+#### preserving 'this'  
+```
+	// to preserve 'this' use:
+  onScroll={(e) => { this.active_section(e); }}
+  // not
+  onScroll={ this.active_section }
+
+  // otherwise i have to bind this
+  onScroll={ this.active_section.bind(this) }
+  // which still preserves the event
+```

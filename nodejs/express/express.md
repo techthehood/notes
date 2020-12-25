@@ -17,6 +17,31 @@
 
 > bodyParser was added back to Express in release 4.16.0, because people wanted it bundled with Express like before. That means you don't have to use bodyParser.json() anymore if you are on the latest release. You can use express.json() instead.
 
+#### [setup a simple express server](https://expressjs.com/en/starter/hello-world.html)
+```
+  const express = require('express')
+  const app = express()
+  const port = 3000
+
+  app.get('/', (req, res) => res.send('Hello World!'))
+
+  app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+```
+
+#### [send html files](https://scotch.io/tutorials/use-expressjs-to-deliver-html-files)   
+```
+  var express = require('express');
+  var app = express();
+  var path = require('path');
+
+  // viewed at http://localhost:8080
+  app.get('/', function(req, res) {
+      res.sendFile(path.join(__dirname + '/index.html'));
+  });
+
+  app.listen(8080);
+  ```
+
 [Retrieve the POST query parameters using Express](https://flaviocopes.com/express-post-query-variables/)   
 
 server src/app.js
@@ -114,7 +139,6 @@ working example
       }//else
     }//anon fn
   }//corsOptions
-
 ```
 >this line was needed to catch undefined origins
 
@@ -182,6 +206,7 @@ sites-enabled/example.com
 }
 
 ```
+virtual host server block
 
 > replace /req with /desired-path
 > replace localhost:3000 with localhost:desired-port#
@@ -197,3 +222,29 @@ copy
   FORCE_COLOR=true
 ```
 **adding this to .bash_profile works**
+
+get url from req
+[](https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express)   
+```
+  console.log(chalk.cyan("[vID req] protocol"),req.protocol);// http
+  console.log(chalk.cyan("[vID req] originalUrl"),req.originalUrl);// /appName/path/path
+  console.log(chalk.cyan("[vID req] url"),req.url);// path without the appName
+
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;// the whole thing
+  console.log(chalk.cyan("[vID req] fullUrl"),fullUrl);
+```
+
+sharing render functions (dynamically render view)
+```
+  console.log(chalk.cyan("[vID req] protocol"),req.protocol);
+  console.log(chalk.cyan("[vID req] originalUrl"),req.originalUrl);//pathname
+  console.log(chalk.cyan("[vID req] url"),req.url);
+
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  console.log(chalk.cyan("[vID req] fullUrl"),fullUrl);
+
+  let toolname = await get_tool_name(req.originalUrl);
+  console.log(chalk.cyan("[vID req] toolname"),toolname);
+```
+#### **GOTCHA: view hbs filename now must match router path**
+>my app.use("detail") didn't match my render(toolName) where toolName = 'detail' and the filename was details.hbs

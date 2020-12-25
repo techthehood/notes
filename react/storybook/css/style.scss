@@ -1,0 +1,14 @@
+  $mp:!important;
+  *{box-sizing:border-box;}
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scroll::-webkit-scrollbar, .hide_scroll::-webkit-scrollbar {
+    display: none; }
+
+  /* Hide scrollbar for IE and Edge */
+  .hide-scroll, .hide_scroll {
+    -ms-overflow-style: none; }
+
+
+@import "fade";
+@import "slide";

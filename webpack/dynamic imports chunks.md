@@ -479,6 +479,7 @@ Yes, either separated with , or in separate comments:
 **failed**
 
 > try public path
+
 [Added publicPath to output ](https://github.com/webpack/webpack.js.org/pull/2420)
 ```
 	publicPath: 'dist/'
@@ -544,6 +545,12 @@ how it works: it takes all the require/import statements and creates a script ta
 
 it reduces the size of the bundle without having to create a vendor bundle
 
+#### GOTCHA: **for DynamicCdnWebpackPlugin to work:
+- package.json/node_modules must have the dependencies
+- externals must be commented out
+otherwise the ./dist/index.html files wont have the dynamic cdn scripts**
+> externals can be turned back on after the scripts are created
+
 webpack.config.js
 ```
 	plugins:[
@@ -568,6 +575,7 @@ webpack.config.js
 ```
 **idk if i need the react and ReactDOM in the webpack.ProvidePlugin section**
 eventually you will have to go to the output folder and copy the script links and add to your html file
+> webpack.ProvidePlugin section eliminates the need to write import statements
 
 **GOTCHA: had to add localhost to cors whitelist**
 ```
@@ -591,3 +599,35 @@ eventually you will have to go to the output folder and copy the script links an
 	}
 ```
 ## SEE ALSO 'code splitting.md'
+
+#### GOTCHA: i believe there was a problem with babel and require so i put it in the vendor chunk
+
+#### GOTCHA reactivate externals
+once DynamicCdnWebpackPlugin has helped add cdn files to the dist/index.html file re-activate the externals otherwise
+
+>ERROR in ./js/lib/mainStore.js
+Module not found: Error: Can't resolve 'mobx' in ...
+
+```
+	externals: {
+    /*@ comment out externals for/to create DynamicCdnWebpackPlugin scripts in ./dist/index.html file */
+    'react': 'React',
+    'react-dom':'ReactDOM',
+    'mobx':'mobx',
+    'axios':'axios'
+    // jquery: 'jQuery'
+  },
+```
+
+
+#### a quick lazy load template
+set_form_controls.js > arc_add_info.onclick
+```
+  arc_add_info.onclick = async function(){
+
+    const form = await import(/* webpackChunkName: "form" */ '../form/form.js');
+    await form.get_info_form({"mod":"add","view":this.dataset.view},{state});
+
+  }
+```
+**put the import load behind a user interaction**

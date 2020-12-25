@@ -1,3 +1,5 @@
+
+## GOTCHA: (HUGE) if pm2 or nodemon isn't started in the same directory as the .env (root) then dotenv won't be able to read the .env file
 [How To Read and Set Environmental and Shell Variables on a Linux VPS - digitalOcean](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps)       
 
 
@@ -88,3 +90,61 @@ Use Cases:
 ~/.bashrc : This file behaves the same way /etc/bash.bashrc file works just that it is executed only for a specific user. If you want to create an environment for yourself go ahead modify or create this file in your home directory.
 
 ~/.profile : This file is same as /etc/profile difference comes the way it is executed, This file is executed only when a user in whose home directory this file exists, logs in.
+
+
+sample .env secrets
+```
+  JWT_SECRET='codeworkrauthentication'
+  SESSION_COOKIE_KEY='thenetninjaisawesomeiguess'
+
+```
+[GRC's Ultra High Security Password Generator]{https://www.grc.com/passwords.htm}
+
+
+systemd environmental variables
+[Using environment variables in systemd units (docs)](https://coreos.com/os/docs/latest/using-environment-variables-in-systemd-units.html)   
+[How to set environment variable in systemd service?](https://serverfault.com/questions/413397/how-to-set-environment-variable-in-systemd-service)
+
+ run
+ ```
+ systemctl edit myservice
+ ```
+ which will create an override file for you or let you edit an existing one
+
+navigate to the directory and create a .conf file
+```
+  cd /etc/systemd/system/myservice.service.d/
+
+  mkdir myenv.conf
+```
+**Also note that if the directory exists and is empty, your service will be disabled! If you don't intend to put something in the directory, ensure that it does not exist.**
+
+#### a possibly simpler way to add environmental variables
+[how to use Environment Variables keep your secret keys safe & secure!](https://hackernoon.com/how-to-use-environment-variables-keep-your-secret-keys-safe-secure-8b1a7877d69c)   
+create a file
+```
+  echo > app-env
+```
+
+add your .env environmental variables to the file
+```
+  export ENV_VAR_NAME='something'
+```
+
+add the file to .gitignore
+```
+  app-env
+```
+
+source the file
+```
+  source app-env
+```
+
+how do i unsource a file
+
+[print process.env](https://stackoverflow.com/questions/48552682/how-do-i-see-the-contents-of-process-env-using-bash)   
+```
+  node --print 'process.env'
+  node --print 'process.env.ENV_VAR_NAME'
+```

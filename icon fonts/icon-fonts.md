@@ -134,3 +134,29 @@ add icomoon folder to public dir
 ```
   /*text-indent: -9999px;*/
 ```
+
+
+#### adding new icon to the font (process)
+1. use inkscape to create the icons
+  - keep them limited to black and white (single color)
+  - use an already created icon as a template (open then delete the contents and save as for safety)
+  - page width: 316 page height: 298 (export png page tab)
+2. [navigate to iconmoon site](https://icomoon.io/app/#/select)
+3. drag and drop icons into browser
+4. select icons for the font (use select arrow icon)
+5. generate font
+6. edit names as needed
+7. download font (click download btn)
+8. move to desktop from download folder
+9. extract (unzip the file)
+10. move the font files from the font folder to your sites iconmoon/font folder (overwrites the old font files)
+11. open your sites iconmoon/style.scss file (in your favorite editor) and the desktops iconmoon/style.css file (in a different editor)
+12. find the names of the new font icons in the style.css file and copy them into the old style.scss file
+
+
+#### GOTCHA multicolor glyphs
+>it seems i have to find a way to get rid of the cutouts parent container - i grouped everything, set the fill color to black and then ungrouped everthing. i could then see the transparent cutout container, select and delete it.
+then select everything and set the fill color to black and remove stroke
+
+>i found it by making a wide selection too - in both cases you need to give it a fill color to select and move/delete it
+it must have no-line no-fill

@@ -1,8 +1,11 @@
 # pm2
 
+## GOTCHA: (HUGE) if pm2 or nodemon isn't started in the same directory as the .env (root) then dotenv won't be able to read the .env file
+
 [Running PM2 & Node.js in Production Environments](https://hackernoon.com/running-pm2-node-js-in-production-environments-13e703fc108a)   
 [Load Balancing](https://pm2.io/doc/en/runtime/guide/load-balancing/)   
 [The twelve factor app](https://12factor.net/)   
+[pm2 cheatsheet](https://devhints.io/pm2)   
 
 
 
@@ -21,7 +24,7 @@
   $ pm2 start hello.js
 ```
 
-give the app a unique name
+#### give the app a unique name
 ```
   pm2 start app.js --name "my-api"
 ```

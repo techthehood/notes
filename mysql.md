@@ -386,3 +386,5 @@ SELECT table_schema `nfojm_arc_my_data`, sum( data_length + index_length ) / 102
 
 ```
 **ON UPDATE CURRENT_TIMESTAMP**
+
+#### [duplicate table](https://stackoverflow.com/questions/13210429/phpmyadmin-duplicate-table)   

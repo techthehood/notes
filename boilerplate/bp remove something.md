@@ -1,8 +1,8 @@
-angular ShowData service boilerplate for removing extra spaces or dashed or 
+angular ShowData service boilerplate for removing extra spaces or dashed or
 targeting words or characters to be removed or replaced with something
 
 it removes all occurances of whatever - (later: i can make it remove only a given number of occurances as an option or remove every occurance)
-
+```
 	this.removeSomething = function(targ,char,repl)
     {
       /*
@@ -30,3 +30,4 @@ it removes all occurances of whatever - (later: i can make it remove only a give
       }
       return curVal;
     };//end removeSomething
+```

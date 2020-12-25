@@ -1,0 +1,110 @@
+.d3-fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOutOpacity {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.d3-fade-in-quick {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: .5s;
+}
+
+.d3-fade-out-quick {
+  opacity:0;
+	animation-name: fadeOutOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: .5s;
+}
+
+.d3-fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+}
+
+.d3-fade-delay-1 {
+	/*opacity: 1;*/
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+	animation-delay: 1s;
+	/*both makes opacity obsolete - uses both start and end keyframe*/
+	animation-fill-mode: both;
+}
+
+.d3-fade-delay-2 {
+	/*opacity: 1;*/
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+	animation-delay: 2s;
+	/*both makes opacity obsolete - uses both start and end keyframe*/
+	animation-fill-mode: both;
+}
+.d3-fade-delay-2-5 {
+	/*opacity: 1;*/
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2.5s;
+	animation-delay: 2.5s;
+	/*both makes opacity obsolete - uses both start and end keyframe*/
+	animation-fill-mode: both;
+}
+
+.d3-fade-delay-3 {
+	/*opacity: 1;*//*this does matter - its represents the starting opacity*/
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+	animation-delay: 3s;
+	animation-fill-mode: both;/*represents the ending opacity*/
+}
+
+.d3-fade-delay-4 {
+	/*opacity: 1;*/
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+	animation-delay: 4s;
+	animation-fill-mode: both;
+}
+.d3-fade-delay-5 {
+	/*opacity: 1;*/
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+	animation-delay: 5s;
+	animation-fill-mode: both;
+}
