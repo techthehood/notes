@@ -1,29 +1,48 @@
 # Storybook
 
-### Tutorial
+### Notes
+
+<hr/>
 
 ### Articles
 [learn Storybook - online books/tutorial articles](https://www.learnstorybook.com/)   
 [Documentation for stakeholders](https://www.learnstorybook.com/design-systems-for-developers/react/en/document/)   
 
 #### Getting started
-navigate to directory and run
+- navigate to directory and run
+
 ```
   npx create-react-app react-storybook-v6
 ```
 
-navigate into storybook directory
+- navigate into storybook directory
+
 ```
   cd react-storybook-v6
 ```
 
-install and initialize storybook
+- install and initialize storybook
+
 ```
   npx sb init
 ```
 
+#### all init installs
+- install dependencies:
+
+```
+  npm i react react-dom sass
+```
+
+- install devDependencies
+
+```
+  npm i -D @storybook/addon-a11y @storybook/addon-console css-loader sass-loader style-loader
+```
+
 #### creating stories
-Button.stories.js
+_Button.stories.js_
+
 ```
   import React from 'react';
   import Button from './Button';
@@ -55,6 +74,7 @@ Button.stories.js
 > without at least one of these exports the story is completely empty - there isn't even a button section in the docs   
 
 Button.stories.js
+
 ```
   export const Primary = () => <Button variant="primary">Primary</Button>
   export const Secondary = () => <Button variant="secondary">Secondary</Button>
@@ -66,6 +86,7 @@ Button.stories.js
 > can be 'Form/componentName' or 'form/componentName'. can also be 'group/subGroup/componentName'   
 
 Button.stories.js
+
 ```
   // i can group stories
 
@@ -78,6 +99,7 @@ Button.stories.js
 
 #### Renaming stories (4.2)
 Button.stories.js
+
 ```
   ...
   export const Primary = () => <Button variant="primary">Primary</Button>
@@ -86,6 +108,7 @@ Button.stories.js
 ```
 
 the renaming convention:
+
 ```
   Primary.storyName = "Primary Button";// renaming stories
 
@@ -100,6 +123,7 @@ got to the docs and find section:
 >By default, stories are sorted in the order in which they were imported. This can be overridden by adding storySort to the options parameters in your preview.js file.
 
 >The most powerful method of sorting is to provide a function to storySort. Any custom sorting can be achieved with this method.
+
 ```
 // .storybook/preview.js
 
@@ -112,6 +136,7 @@ export const parameters = {
 ```
 
 copy options portion:
+
 ```
   options: {
     storySort: (a, b) =>
@@ -121,6 +146,7 @@ copy options portion:
 
 paste after the actions property in
 .storybook/preview.js
+
 ```
   export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
@@ -133,6 +159,7 @@ paste after the actions property in
 
 #### story within a story (4.3)
 /Subscription/Subscription.stories.js
+
 ```
   // a story of stories
   import React from 'react';
@@ -159,6 +186,7 @@ paste after the actions property in
 #### Args mechanism (4.4)
 
 Button.stories.js
+
 ```
   // args mechanism
   const Template = args => <Button {...args} />
@@ -188,6 +216,7 @@ Button.stories.js
 
 you can also specify args at the component level (default export level)
 Button.stories.js
+
 ```
     const Story = {
       title: 'form/Button',/*mandatory and should be unique throughout entire project*/
@@ -218,19 +247,23 @@ Button.stories.js
       children: "Secondary Args"
     }
 ```
-**all Templates will have the same children arg unless there is a local declaration of that arg (has 'specificity')**
+**all Templates will have the same children arg unless there is a local declaration of that arg (has 'specificity')**   
+
 > the args at the story lvl will overwrite args at the component level
 
 #### adding decorators (5.0)
 > you want to add components that help decorate the display. but you want to keep the code DRY
+
 ```
-  // export const Primary = () => <Center><Button variant="primary">Primary</Button></Center>
-  // export const Secondary = () => <Center><Button variant="secondary">Secondary</Button></Center>
-  // export const Success = (  ) => <Center><Button variant="success">Success</Button></Center>
-  // export const Danger = () => <Center><Button variant="danger">Danger</Button></Center>
+  export const Primary = () => <Center><Button variant="primary">Primary</Button></Center>
+  export const Secondary = () => <Center><Button variant="secondary">Secondary</Button></Center>
+  export const Success = (  ) => <Center><Button variant="success">Success</Button></Center>
+  export const Danger = () => <Center><Button variant="danger">Danger</Button></Center>
 ```
+*_not like this_*
 
 use a decorator
+
 ```
   export default {
     title: 'form/Button',/*mandatory and should be unique throughout entire project*/
@@ -245,6 +278,7 @@ use a decorator
 #### adding global decorators
 
 .storybook/preview.js
+
 ```
   import React from 'react';
   import {addDecorator} from '@storybook/react';
@@ -258,6 +292,7 @@ use a decorator
 ```
 
 alternative decorator (v6)
+
 ```
   // addDecorator(story => <Center>{story()}</Center>);// pre-themed
 
@@ -273,6 +308,7 @@ alternative decorator (v6)
 
 [install chakra](https://chakra-ui.com/docs/getting-started)   
 copy paste code snippet
+
 ```
   npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
 ```
@@ -282,6 +318,7 @@ copy paste code snippet
 [Supercharge Storybook](https://storybook.js.org/addons)   
  - controls add on lets you dynamically change props for components (args)
   **works with template and args**
+
 ```
   SecondaryA.args = {
     variant: "secondary",
@@ -291,6 +328,7 @@ copy paste code snippet
 
 when this was still being bugfixed you may have needed to add argTypes to the Story default component
 > the work around
+
 ```
   export default {
     title: 'form/Button',/*mandatory and should be unique throughout entire project*/
@@ -313,6 +351,7 @@ when this was still being bugfixed you may have needed to add argTypes to the St
 
 #### actions
 adding an onclick action
+
 ```
     const Comp = {
       title: 'form/Button',/*mandatory and should be unique throughout entire project*/
@@ -329,11 +368,13 @@ adding an onclick action
 **seems to only work in the default export component ()
 
 adding actions without argTypes
+
 ```
   export const Primary = () => <Button onClick={action("Click handler")} variant="primary">Primary</Button>
 ```
 
 adding to args templates without argTypes
+
 ```
     export const SecondaryA = Template.bind({});
     SecondaryA.args = {
@@ -347,6 +388,7 @@ adding to args templates without argTypes
 ```
 
 capture multiple events - use actions export on the addon
+
 ```
   export const Success = () => <Button {...actions("onClick","onMouseOver")} variant="success">Success</Button>
 ```
@@ -354,6 +396,7 @@ capture multiple events - use actions export on the addon
 
 #### Logs
 > adds console logs to actions tab
+
 ```
   export const Danger = () => <Button onClick={() => {console.log("danger clicked");}} variant="danger">Danger</Button>
 ```
@@ -362,12 +405,14 @@ capture multiple events - use actions export on the addon
 log in storybook w/o using the devtools log
 
 install the plugin
+
 ```
   npm i -d @storybook/addon-console
 
 ```
 
 then add it to the story
+
 ```
   // with no objects extracted
   import "@storybook/addon-console";
@@ -378,6 +423,7 @@ to add an enhancement printing the story information where the log statement is 
 (done in/with decorators)
 
 .storybook/preview.js
+
 ```
   // this time with object extraction
   import {withConsole} "@storybook/addon-console";
@@ -403,6 +449,7 @@ to add an enhancement printing the story information where the log statement is 
 [storybook docs recipes](https://github.com/storybookjs/storybook/blob/master/addons/docs/docs/recipes.md#csf-stories-with-mdx-docs)   
 **see li: 686 mdx format**
 install it
+
 ```
   npm i -d @storybook/addon-docs
 ```
@@ -414,6 +461,7 @@ then add it to the .storybook/main.js addons - deprecated
 google search: storybook knobs vs controls
 [Storybook Controls - Live edit UI components with no code](https://medium.com/storybookjs/storybook-controls-ce82af93e430)   
 article sample
+
 ```
   import { Button } from '@storybook/react/demo';
 
@@ -427,6 +475,7 @@ article sample
 ```
 
 my sample
+
 ```
   export const knobsTest = args => <Button {...args} />// looks the same as the rest of the story setups only with a parameter
   knobsTest.args = {
@@ -441,11 +490,13 @@ my sample
 
 #### A11y accessibility addon
 installation
+
 ```
   npm i -d @storybook/addon-a11y
 ```
 
 then add to addons in main.js
+
 ```
   module.exports = {
     "stories": [
@@ -467,6 +518,7 @@ then add to addons in main.js
 **for once this was necessary (required)**
 
 add to decorators
+
 ```
   import {withA11y} from '@storybook/addon-a11y'
 
@@ -560,6 +612,7 @@ Essentials is "zero config”, it comes with a recommended configuration out of 
 **but not as jsDoc comments - it only creates a regular comment**
 
 #### default ArgsTable
+
 ```
   const Button = ({variant = "primary", children, ...rest}) => {
     // const {variant = "primary", children, ...rest} = props;
@@ -576,6 +629,7 @@ storybook will display the various props ("arguments") in a table on the docs pa
 - to get more detailed tables use prop-types in the stories
 
 #### PropTypes also work right out the box (no npm install)
+
 ```
   import PropTypes from 'prop-types';
 
@@ -604,6 +658,7 @@ storybook will display the various props ("arguments") in a table on the docs pa
 
 #### [ArgsTable](https://storybook.js.org/docs/react/writing-docs/doc-blocks#argstable)   
 [Customizing the ArgsTable](https://storybook.js.org/docs/react/writing-docs/doc-blocks#customizing)   
+
 ```
   const Comp = {
     title: 'form/Button',/*mandatory and should be unique throughout entire project*/
@@ -629,6 +684,7 @@ storybook will display the various props ("arguments") in a table on the docs pa
 **failed on docs - maybe it needs a working .mdx file - shows in Canvas > Controls**
 
 #### ArgsTable of= vs story=
+
 ```
 // variant with additional details - used only in story= (not of=)
   argTypes:{
@@ -650,6 +706,7 @@ storybook will display the various props ("arguments") in a table on the docs pa
 of is more generic - it doesn't give you control nor does it show additional any details
 
 #### ArgsTable using categories
+
 ```
   <Canvas>
   <Story name="Template"
@@ -669,6 +726,7 @@ of is more generic - it doesn't give you control nor does it show additional any
 **now i need to find out how to make them start collapsed**
 
 use argTypes to set defaultValue
+
 ```
   <Meta
     title="form/Button"
@@ -691,6 +749,7 @@ use argTypes to set defaultValue
 
 #### [Adding an .mdx file (mdx format)](https://storybook.js.org/docs/react/api/mdx)   
 **basic example works**
+
 ```
   <!--- MyComponent.stories.mdx -->
   import { Meta, Story, Canvas, Description, ArgsTable } from '@storybook/addon-docs/blocks';
@@ -724,6 +783,7 @@ use argTypes to set defaultValue
 all variations of using markdown in Description failed
 
 #### [Adding controls to mdx](https://storybook.js.org/docs/react/essentials/controls)   
+
 ```
   import { Meta, Story, Canvas, Description, ArgsTable } from '@storybook/addon-docs/blocks';
   import Button from './Button'
@@ -753,6 +813,7 @@ all variations of using markdown in Description failed
 **i can add control:"none" to get rid of controls i don't want to update
 
 can also be added directly to the story to avoid adding to stories that aren't editable
+
 ```
   <Story name="Template"
     args={{children:"DivTag"}}
@@ -770,6 +831,7 @@ can also be added directly to the story to avoid adding to stories that aren't e
 ```
 
 #### [Controlling the show code section using parameters](https://storybook.js.org/docs/react/writing-docs/doc-blocks#docspage-1)   
+
 ```
   ## Adding controls to mdx
   // variant with code string
@@ -806,6 +868,7 @@ still haven't come across how to make the actual component code visible
 #### [adding script tags, links and custom html](https://storybook.js.org/docs/react/configure/story-rendering#adding-to-head)   
 - .storybook/preview-head.html
 **adding to the head element**
+
 ```
   <!-- .storybook/preview-head.html -->
 
@@ -818,6 +881,7 @@ still haven't come across how to make the actual component code visible
 
 **adding to the body element**
 .storybook/preview-body.html
+
 ```
   <!--  .storybook/preview-body.html -->
 
@@ -834,12 +898,14 @@ still haven't come across how to make the actual component code visible
 
 
 to get the prop descriptions to show
+
 ```
   npm install -D babel-plugin-react-docgen
 ```
 **failed - also needs to use a .babelrc file?**
 
 main.js
+
 ```
   argTypes={{
     message:{
@@ -851,6 +917,7 @@ main.js
 ```
 
 to add better src code - use parameters prop in Story
+
 ```
   <Canvas>
     <Story name="toast"
@@ -879,6 +946,7 @@ to add better src code - use parameters prop in Story
 #### [Controlling a story's view mode](https://github.com/storybookjs/storybook/blob/master/addons/docs/docs/recipes.md#controlling-a-storys-view-mode)   
 - previewTabs property - can put docs tab before canvas tab
 - viewMode property - can determine which tab is always displayed when navigating back to a story
+
 ```
   <Canvas>
     <Story name="Toast"
@@ -899,6 +967,11 @@ to add better src code - use parameters prop in Story
 
 #### [Publish Storybook](https://storybook.js.org/docs/react/workflows/publish-storybook)   
 [storybook deployer](https://github.com/storybookjs/storybook-deployer)   
+[Review with your team](https://storybook.js.org/docs/react/workflows/publish-storybook#review-with-your-team)
+> If you publish your Storybook to Chromatic, you can use the UI Review feature to automatically scan your PRs for new and updated stories. That makes it easy to identify what changed and give feedback.
+
 [what is chromatic](https://www.chromatic.com/features/publish)   
 
 publish storybook to github pages so it can exists in your repo
+
+[storybook codemods](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md)   

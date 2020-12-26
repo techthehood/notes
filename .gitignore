@@ -1,0 +1,6 @@
+.git
+node_modules
+tinymce
+.env
+alight-docs
+*.map

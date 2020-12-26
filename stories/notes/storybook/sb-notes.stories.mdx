@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import sb_notes from '../../../react/storybook/storybook notes.md';
+
+<Meta title="Storybook/Docs/Notes"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    }
+  }}
+ />
+
+<Description>{sb_notes}</Description>

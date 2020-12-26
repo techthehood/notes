@@ -18,19 +18,29 @@
 
 
 #### Canvas only mode
-**press tab**
+```
+  press tab
+```
 
 #### flip (mirror) the Canvas
-**press m key**
+```
+  press m key
+```
 
 #### view popup pallet
-**right click anywhere on canvas**
+```
+  right click anywhere on canvas
+```
 
 how do i add ??? to the brush edge
 
 #### go back and forth between last used brushes
 > could or could not be eraser
-**press the / key**
+```
+  press the / key
+```
 
 #### select the color picker
-**hold the ctrl btn and click the color you want**
+```
+  hold the ctrl btn and click the color you want
+```

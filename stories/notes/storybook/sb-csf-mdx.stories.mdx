@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import sb_csf_mdx from '../../../react/storybook/storybook csf mdx.md';
+
+<Meta title="Storybook/Docs/CSF & MDX"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{sb_csf_mdx}</Description>
