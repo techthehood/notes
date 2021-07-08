@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+  import build_workflows from '../../../../boilerplate/build-workflows/build workflows.md';
+
+  <Meta title="boilerplate/build_workflows/build workflows"
+    parameters={{
+      docs: {
+        container: ({ children, context }) => (
+          <DocsContainer context={context}>
+              <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+          </DocsContainer>
+        ),
+      },
+    }}
+   />
+
+  <Description>{build_workflows}</Description>

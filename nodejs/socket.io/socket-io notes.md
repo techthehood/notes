@@ -284,3 +284,74 @@ blacklist array and disable all emissions for them.
       }
     },[]);
 ```
+
+#### GOTCHA: .env file failed detection   
+
+```
+  cd src
+  nodemon index.js
+```
+
+> the issue occurs when i cd into the servers src folder and then run the server.js file
+.env is detected from the root. when i cd into the src folder the src folder becomes the root not its parent folder where i placed the .env file
+
+#### Dynamic namespaces   
+
+_App.js_
+
+```
+  socket = io('https://sunzao.us/webrtcPeer', {
+    path: '/socket.io',
+    query: { ns: 'webrtcPeer' },
+  });// works, but namespace isn't showing properly
+```
+> GOTCHA: namespace isn't showing properly in react-native - i have to use query
+
+_server.js_
+```
+  const sock = io.sockets.use((socket, next) => {
+    // const myURL = new URLSearchParams(socket.handshake.url);
+    const my_qRY = socket.handshake.query
+    console.log('[io.sockets] use ns = ', my_qRY.ns);
+
+    socket.disconnect(true);
+
+    next();
+
+  }).on("connection",(socket) => {
+    // NOTE: "connect" && "connection" appear to do the same thing
+    // this should process any and all connections
+    console.log('running io.sockets');
+    console.log('[io.sockets] socket namespace', socket.nsp.name);
+    console.log('[io.sockets] socket handshake', socket.handshake.query);
+    
+  });
+```
+
+#### special error message
+
+```
+  const sock = io.sockets.use((socket, next) => {
+    // const myURL = new URLSearchParams(socket.handshake.url);
+    const my_qRY = socket.handshake.query
+    console.log('[io.sockets] use ns = ', my_qRY.ns);
+
+    const hasNamespace = typeof myQry === 'undefined' || typeof myQry.ns === 'undefined' ? false : true;
+
+    if (!hasNamespace) {
+      // send an error
+      const err = new Error('not authorized');
+      err.data = { content: 'Please retry later' }; // additional details
+      next(err);
+    } else {
+      next();
+    }// else
+
+  })
+```
+> Errors passed to middleware callbacks are sent as special connect_error packets to clients.   
+
+
+> i can use io.sockets.use( to detect the query namespace and filter any connections that don't meet
+> a specific requirement. 
+> I can also redirect connections to specific event handlers by passing socket to a function

@@ -1,0 +1,30 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import create_project_notes from '../../../../nodejs/packages/create-project notes.md';
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="nodejs/npm packages/create-project notes"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{create_project_notes}</Description>
+
+<br/>
+<br/>
+<LinkTo kind="nodejs/npm packages/code samples/basic main.js sample"
+style={{color: '#1474f3', textDecoration: 'none'}} >sample code: main.js (basic version)</LinkTo>
+<br/>
+<br/>
+<LinkTo kind="nodejs/npm packages/code samples/full main.js sample"
+style={{color: '#1474f3', textDecoration: 'none'}} >sample code: main.js (full version)</LinkTo>
+<br/>
+<br/>
+<LinkTo kind="nodejs/npm packages/code samples/cli.js sample"
+style={{color: '#1474f3', textDecoration: 'none'}} >sample code: cli.js</LinkTo>

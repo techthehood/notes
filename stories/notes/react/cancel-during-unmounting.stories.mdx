@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import can_req_notes from '../../../react/cancel-unmount-notes.md';
+
+<Meta title="react/hooks/cancelling requests"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{can_req_notes}</Description>

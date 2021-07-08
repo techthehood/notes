@@ -19,6 +19,6 @@ const Toaster = ({
       <button className="toaster_btn w3-btn" onClick={show_toast}>{label}</button>
     </div>
   )
-}
+}// Toaster
 
 export default Toaster;

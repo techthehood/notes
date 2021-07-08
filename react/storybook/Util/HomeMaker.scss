@@ -1,0 +1,34 @@
+$mp: !important;
+
+.storybook-center{
+  // height:10rem;
+}
+
+.hm_wrapper{
+  display: grid;
+  grid-template-areas: "btn msg";
+  grid-template-columns: 3fr 7fr;
+  width: 100%;
+  height:100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  .home_maker{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-flow: column nowrap;
+    grid-area: msg;
+    gap: .5rem;
+    border: thin solid #ccc;
+  }
+  .hm_btn{
+    grid-area: btn;
+    padding: .5rem 1rem;
+    width: fit-content;
+    justify-self: center;
+    background: aquamarine;
+  }
+}

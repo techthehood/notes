@@ -502,3 +502,248 @@ my example
 
   ME.find({ pictures: { $exists: true, $ne: [] } })
 ```
+#### [log all queries that mongoose fire in the application](https://stackoverflow.com/questions/18762264/log-all-queries-that-mongoose-fire-in-the-application)   
+
+```
+  const chalk = require('chalk');
+  const mongoose = require('mongoose');
+
+  mongoose.set('debug',true);// use to show all mongoose queries
+
+  // mongoose.set('debug',function (coll, method, query, doc, options) {
+  //  //do your thing
+  //  console.log(chalk.red("[mongoose] test query"),options);
+  // })
+```
+
+#### updating fields
+
+```
+  db.getCollection('items').find({data_type:"question"}).forEach(function(entry){
+   entry.data_type = "discovery";
+   db.getCollection('items').save(entry);
+  })
+```
+**works**
+
+```
+  db.getCollection('items').find({tag_data:{$ne:""}}).forEach(function(entry){
+   let tag_data = entry.tag_data;
+
+   // convert to an array
+   if(typeof tag_data == "string"){
+     entry.tag_data = (tag_data == "" || tag_data == [""]) ? [] : tag_data.split(",");
+   }
+
+
+   db.getCollection('items').save(entry);
+  })
+```
+
+update the defaults ""
+
+```
+  db.getCollection('items').find({tag_data:{$eq:""}}).forEach(function(entry){
+
+    entry.tag_data = [];
+
+   db.getCollection('items').save(entry);
+  })
+```
+
+
+tasks
+```
+  db.getCollection('items').find({task_data:{$ne:""}}).forEach(function(entry){
+   let task_data = entry.task_data;
+
+   // convert to an array
+   if(typeof task_data == "string"){
+     task_data = task_data.replace(/&quot;/g,'"');
+     entry.task_data = (task_data == "" || task_data == [""]) ? [] : [JSON.parse(task_data)];
+   }
+
+   db.getCollection('items').save(entry);
+  })
+
+  db.getCollection('items').find({task_data:{$ne:[]}})
+```
+#### test queries for transferring non draftjs formatted note values to desc_data
+```
+db.getCollection('items').find({note_data:{$ne:""}})
+db.getCollection('items').find({note_data:{$regex:/{/}})
+
+has both characteristics
+db.getCollection('items').find({note_data:{$ne:""},desc_data:{$ne:""}})// localhost returned 3 records
+```
+
+#### transfer non formatted draftjs note_data to desc_data
+
+```
+  db.getCollection('items').find({note_data:{$ne:""}}).forEach(function(entry){
+
+    let is_object = typeof entry.note_data == "object" ? true : false;
+    let has_desc = entry.desc_data == "" || entry.desc_data == undefined ? false : true;
+
+    if(!is_object && !has_desc){
+      let note_data = entry.note_data;
+      entry.desc_data = note_data;
+      entry.note_data = "";
+      db.getCollection('items').save(entry);
+    }
+
+  });
+```
+> It transferred everything - there was an issue in detecting objects
+
+#### reverse the process
+
+```
+  db.getCollection('items').find({desc_data:{$ne:""}}).forEach(function(entry){
+
+  let is_object = typeof entry.desc_data == "object" ? true : false;
+  let has_note = entry.note_data == "" || entry.note_data == undefined ? false : true;
+
+  if(!is_object && !has_note){
+    let desc_data = entry.desc_data;
+    entry.note_data = desc_data;
+    entry.descc_data = "";
+    db.getCollection('items').save(entry);
+  }
+
+  });
+```
+
+#### testing a single item for object   
+
+```
+  db.getCollection('items').find({_id:ObjectId("5e2d883a6be8ab12f02ed94b")}).forEach(function(entry){
+
+
+    let is_object = typeof entry.note_data == "object" ? true : false;
+
+    if(typeof entry.note_data == "string"){
+
+      try {
+        let test_obj = JSON.parse(entry.note_data);
+        is_object = typeof test_obj == "object" ? true : false;
+      } catch (e) {
+        // no need its already false
+      }
+    }// if
+
+    let indicator = (is_object) ? 1 : 0;
+
+    //entry.code_data = typeof entry.note_data;
+    entry.code_data = indicator;
+
+    db.getCollection('items').save(entry);
+
+  });
+
+  // check the results
+  db.getCollection('items').find({_id:ObjectId("5e2d883a6be8ab12f02ed94b")})
+```
+
+#### fancy test
+
+```
+    db.getCollection('items').find({note_data:{$ne:""}}).forEach(function(entry){
+
+      let _from,_to;
+      let _forward = true;// this switches the whole thing
+
+      if(_forward){
+        _from = "note_data";
+        _to = "desc_data";
+      }else{
+        _from = "desc_data";
+        _to = "note_data";
+      }//else
+
+      let is_object = typeof entry[`${_from}`] == "object" ? true : false;
+
+      if(typeof entry[`${_from}`] == "string"){
+
+        try {
+          let test_obj = JSON.parse(entry[`${_from}`]);
+          is_object = typeof test_obj == "object" ? true : false;
+        } catch (e) {
+          // no need its already false
+        }
+      }// if
+
+      let has_desc = entry[`${_to}`] == "" || entry[`${_to}`] == undefined ? false : true;
+
+      if(!is_object && /*same_thing*/ has_desc){
+        let note_data = entry[`${_from}`];
+        entry[`${_to}`] = note_data;
+        entry[`${_from}`] = "";
+        db.getCollection('items').save(entry);
+      }
+
+    });
+```
+
+```
+  db.getCollection('items').find({note_data:{$ne:""}}).forEach(function(entry){
+
+    let is_object = typeof entry.note_data == "object" ? true : false;
+
+    if(typeof entry.note_data == "string"){
+
+      try {
+        let test_obj = JSON.parse(entry.note_data);
+        is_object = typeof test_obj == "object" ? true : false;
+      } catch (e) {
+        // no need its already false
+      }
+    }// if
+
+    let has_desc = entry.desc_data == "" || entry.desc_data == undefined ? false : true;
+
+    if(!is_object && !has_desc){
+      let note_data = entry.note_data;
+      entry.desc_data = note_data;
+      entry.note_data = "";
+      db.getCollection('items').save(entry);
+    }
+
+  });
+```
+
+```
+  db.getCollection('items').find({code_data:{$ne:""},code_data:{$ne:null}}).forEach(function(entry){
+    print(typeof entry.code_data);
+    try{
+      let code_data = typeof entry.code_data == "string" ? JSON.parse(entry.code_data) : entry.code_data;
+      print('sweetness')
+      if(code_data.hasOwnProperty("is_object")){
+        entry.code_data = "";
+        db.getCollection('items').save(entry);
+      }
+    } catch (e) {
+        // no need its already false
+      }
+
+  });
+```
+
+#### [using the $and operator](https://docs.mongodb.com/manual/reference/operator/query/and/)    
+
+```
+  db.getCollection('items').find({$and:[{code_data:{$ne:null}},{code_data:{$ne:""}}]}).forEach(function(entry){
+    //print(typeof entry.code_data);
+    try{
+      let code_data = typeof entry.code_data == "string" ? JSON.parse(entry.code_data) : entry.code_data;
+      //print('sweetness')
+      if(code_data.hasOwnProperty("is_object")){
+        entry.code_data = "";
+        db.getCollection('items').save(entry);
+      }
+    } catch (e) {
+        // no need its already false
+      }
+
+  });
+```

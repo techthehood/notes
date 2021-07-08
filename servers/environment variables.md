@@ -1,4 +1,9 @@
+# environment variables
 
+## [adding client side environment variables](https://youtu.be/Q9QxS0NJjJg)   
+> see react/react environment variables.md
+
+[react-scripts environment variables | create react app docs](https://create-react-app.dev/docs/adding-custom-environment-variables/)   
 ## GOTCHA: (HUGE) if pm2 or nodemon isn't started in the same directory as the .env (root) then dotenv won't be able to read the .env file
 [How To Read and Set Environmental and Shell Variables on a Linux VPS - digitalOcean](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-a-linux-vps)       
 

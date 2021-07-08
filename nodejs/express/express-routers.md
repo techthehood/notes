@@ -4,7 +4,7 @@
   const express = require('express');
  ```
 
-create paths to the routers you want to use in the variouse applications
+create paths to the routers you want to use in the various applications
 ```
   //routers
   // const landingpagesRouter = require("./routers/lead-pages");
@@ -47,6 +47,26 @@ create paths to the routers you want to use in the variouse applications
   app.use('/api/profile', ppAPIRouter)// server side auth
 ```
 **more on this can be found in express/params notes.md**
+
+#### GOTCHA: to be clear
+
+- set up public directory
+```
+  app.use('/updraft',express.static(publicDirectoryPath));//
+  app.use('/updraft/:val1?',express.static(publicDirectoryPath));// needed for the links and scripts to work
+  app.use('/updraft/:val1?/:val2?',express.static(publicDirectoryPath));// needed for the links and scripts to work
+```
+
+- setup router
+```
+  app.use('/updraft',updraftRouter);
+```
+
+- **not using**
+```
+  app.use('/updraft/:val1?/:val2?',updraftRouter);
+```
+> not using this format to set up the router. -  **not needed** - contaminates the params with links and scripts
 
 #### routes can be nested/chained where routes can call other routes which can be called using other paths
 alight/routers/api.js
@@ -188,4 +208,28 @@ alight/routers/api.js
   hbs.registerPartials(oauthClientPartialsPath);// client side auth
   hbs.registerPartials(bizPartialsPath);
   hbs.registerPartials(alightPartialPath);
+```
+
+#### [using a redirect](http://expressjs.com/en/api.html#res.redirect)
+
+res.redirect([status,] path)
+
+Redirects to the URL derived from the specified path, with specified status, a positive integer that corresponds to an HTTP status code . If not specified, status defaults to “302 “Found”.
+
+```
+  res.redirect('/foo/bar')
+  res.redirect('http://example.com')
+  res.redirect(301, 'http://example.com')
+  res.redirect('../login')
+```
+
+#### redirect sample
+
+_server.js_
+
+```
+  app.get('/',(req, res) => {
+    res.redirect('/req/weather');
+    // this works to redirectthe origin to anywhere
+  })
 ```

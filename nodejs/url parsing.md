@@ -1,5 +1,62 @@
 # Node url parsing
 
+[linkify.js recommendation](https://stackoverflow.com/questions/1500260/detect-urls-in-text-with-javascript)   
+[linkify.js on npm](https://www.npmjs.com/package/linkifyjs)   
+
+_vendor.hbs && vendor\_local.hbs_   
+
+```
+  <script type="text/javascript" crossorigin src="./locals/linkify/linkify.min.js"></script>
+```
+
+_webpack.config.js_
+```
+  externals: {
+    /* @ comment out externals for/to create DynamicCdnWebpackPlugin scripts in ./dist/index.html file */
+    'react': 'React',
+    'react-dom':'ReactDOM',
+
+    ...
+
+    'linkify':'linkify',
+  },
+```
+
+Sample Usage   
+
+_LinkPreview.js_
+
+```
+  let {url_data} = getValues();
+
+  let targetValue = url_data;
+  let new_value;
+
+  refresh_url.current = (typeof rf != "undefined") ? rf : false;
+
+
+  let find_url = linkify.find(targetValue);
+  // http://youtu.be/9cdUxZuarL0
+  // what about a string with initial text and a url http://youtu.be/9cdUxZuarL0
+  // what about a string with initial text and a url http://youtu.be/9cdUxZuarL0 what about trailing space?
+
+  let url_value = Array.isArray(find_url) && obj_exists(find_url[0], "href") ? find_url[0].href : "";
+
+  if(url_value.includes("http") && !url_value.includes("https"))
+  {
+    new_value = url_value.replace("http","https");
+  }else {
+    new_value = url_value;
+  }
+
+  if (new_value != ""){
+    FormStore.setData("url_data",new_value);
+    link_input_ref.current.value = new_value;
+  }else{
+    // do nothing
+  }// else
+```
+
 #### [regular js solution](https://davidwalsh.name/query-string-javascript)   
 
 ```

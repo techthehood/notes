@@ -1,0 +1,22 @@
+  $mp:!important;
+  *{box-sizing:border-box;}
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scroll::-webkit-scrollbar, .hide_scroll::-webkit-scrollbar {
+    display: none; }
+
+  /* Hide scrollbar for IE and Edge */
+  .hide-scroll, .hide_scroll {
+    -ms-overflow-style: none;
+  }
+
+  code{
+    color: wheat $mp;
+    background-color: #34495e $mp;
+    padding: .8rem $mp;
+    width:100%;
+    word-break: break-all;
+    white-space: break-spaces $mp;
+    line-height: 1.5 $mp;
+    font-size: .7rem $mp;
+  }

@@ -61,3 +61,21 @@
   git tag -d v1.4-lw
 ```
 **works if you haven't pushed the tag to remote, otherwise you will need to do the one above**
+
+#### tag worksheets   
+
+```
+  git tag -a v1.12.0 -m "major changes - pins and site features sections"
+  git push origin v1.12.0
+```
+
+
+tag archive
+
+```
+  git tag -a v1.13.0 -m "Events, Clip zoom, title match nav"
+  git push origin v1.13.0
+
+  // use to delete the tag misnaming
+  git tag -d v1.14.0
+```

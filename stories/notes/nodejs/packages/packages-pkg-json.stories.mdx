@@ -1,0 +1,21 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import pkg_json from '../../../../nodejs/packages/pkg-json.md';
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="nodejs/npm packages/code samples/package.json sample"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{pkg_json}</Description>
+
+<br/>
+<LinkTo kind="nodejs/npm packages/create-project notes"
+style={{color: '#1474f3', textDecoration: 'none'}} >packages create-project notes</LinkTo>

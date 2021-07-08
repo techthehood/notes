@@ -1,4 +1,6 @@
 {
+  "homepage":"http://techthehood.github.io/notes",
+  "oldhomepage": "https://github.com/techthehood/notes#readme",
   "name": "notes",
   "version": "1.0.0",
   "description": "",
@@ -9,23 +11,27 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "predeploy": "npm run build-storybook",
+    "deploy": "gh-pages -d storybook-static",
+    "build-storybook": "build-storybook --docs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inspectaTech/notes.git"
+    "url": "git+https://github.com/techthehood/notes.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/inspectaTech/notes/issues"
+    "url": "https://github.com/techthehood/notes/issues"
   },
-  "homepage": "https://github.com/inspectaTech/notes#readme",
   "dependencies": {
+    "css-loader": "^5.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "sass": "^1.30.0"
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

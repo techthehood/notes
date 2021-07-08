@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import passport_notes from '../../../../nodejs/express/passport/passport-notes.md';
+
+<Meta title="nodejs/passport/passport notes"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{passport_notes}</Description>

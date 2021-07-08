@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import rhf_notes from '../../../react/react-hook-form notes.md';
+
+<Meta title="react/hooks/react-hook-form notes"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{rhf_notes}</Description>

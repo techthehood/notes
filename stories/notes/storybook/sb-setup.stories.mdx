@@ -6,7 +6,7 @@ import sb_setup from '../../../react/storybook/storybook setup.md';
     docs: {
       container: ({ children, context }) => (
         <DocsContainer context={context}>
-            <div style={{padding: '0 3rem'}}>{children}</div>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
         </DocsContainer>
       ),
     },
@@ -14,3 +14,8 @@ import sb_setup from '../../../react/storybook/storybook setup.md';
  />
 
 <Description>{sb_setup}</Description>
+
+
+```
+  it displays the copy button if the code block is added directly to the .mdx file
+```

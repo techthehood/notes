@@ -1,0 +1,17 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import packages_notes from '../../../../nodejs/packages/packages notes.md';
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="nodejs/npm packages/packages notes"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{packages_notes}</Description>

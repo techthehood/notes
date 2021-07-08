@@ -12,6 +12,12 @@ dependencies:
   npm i react react-dom sass
 ```
 
+#### to read scss files
+
+```
+  npm i css-loader sass-loader style-loader
+```
+
 #### install and initialize storybook
 ```
 npx sb init
@@ -60,7 +66,7 @@ _main.js_
 **_webpackFinal makes it possible to use sass files in your stories_**
 
 #### prep preview.js   
-*_required for component based storie - otherwise optionals_*
+*_required for component based stories - otherwise optional_*
 
 _preview.js_   
 
@@ -122,6 +128,7 @@ _preview.js_
 #### clone css directory
 
 #### [Overwriting docs container](https://github.com/storybookjs/storybook/blob/master/addons/docs/docs/recipes.md#overwriting-docs-container)   
+
 > add this parameters prop to the meta tag
 
 ```
@@ -155,3 +162,39 @@ _meta tag example_
     }}
    />
 ```
+
+> I can also use a decorator to do the same thing without having to add it to every file
+
+_.storybook/preview.js_
+
+```
+  import Center from '../stories/components/Center';
+
+  ...
+
+  export const decorators = [story => <Center>{story()}</Center>]
+```
+
+#### Center component example   
+
+_stories/Center/Center.js_
+
+```
+//import React from 'react';// probably not needed
+import './Center.css';
+require('../../css/style.scss');
+
+const Center = (props) => {
+  return (
+    <div className="center storybook-center">
+      {props.children}
+    </div>
+  )
+}
+
+export default Center;
+
+```
+
+**GOTCHA:** center is also used to load the css/style.scss file
+> center may not have any other use when using the .md method other than loading globally

@@ -1,0 +1,16 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+  import react_cdn_scratch from '../../../../boilerplate/build-workflows/react-cdn-from-scratch.md';
+
+  <Meta title="boilerplate/build_workflows/react cdn from scratch"
+    parameters={{
+      docs: {
+        container: ({ children, context }) => (
+          <DocsContainer context={context}>
+              <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+          </DocsContainer>
+        ),
+      },
+    }}
+   />
+
+  <Description>{react_cdn_scratch}</Description>

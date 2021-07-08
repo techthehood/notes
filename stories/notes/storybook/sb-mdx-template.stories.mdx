@@ -1,0 +1,21 @@
+import { Meta, Description, DocsContainer } from '@storybook/addon-docs/blocks';
+import sb_mdx_template from '../../../react/storybook/storybook mdx template.md';
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="Storybook/Docs/mdx template"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+ />
+
+<Description>{sb_mdx_template}</Description>
+
+<br/>
+<LinkTo kind="Storybook/Docs/publish"
+style={{color: '#1474f3', textDecoration: 'none'}} >to publish using LinkTo</LinkTo>

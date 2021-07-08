@@ -1,9 +1,11 @@
 # Passport notes
 
-[A Step-by-Step Guide to Setting Up a Node.js API With Passport-JWT (a newer article)](https://medium.com/better-programming/perfect-structure-to-authenticate-authorize-api-with-node-js-and-passport-jwt-d529b1a618ba)   
+[A Step-by-Step Guide to Setting Up a Node.js API With Passport-JWT](https://medium.com/better-programming/perfect-structure-to-authenticate-authorize-api-with-node-js-and-passport-jwt-d529b1a618ba)   
 
 passing data to passport from urls
-Alight/routers/api
+
+_Alight/routers/api_
+
 ```
   router.all('/*', cors(corsOptions), passportJWT,  async (req, res, next) => {
     console.log('[cors/passport] passed');
@@ -14,26 +16,71 @@ Alight/routers/api
   router.use("/users",users);
   router.use("/arc",arc);
 ```
+<br/>
 
-#### JWT_TOKEN
-  - where are jwtTokens first created and saved | [**OAClient-actions**]{@link module:OAClient-actions-oauthGoogle}
-  - where is passport first connected with a config file? | [**express-server**]{@link module:express-server}
-  - where is the basic token first added to a header | [app.js]{@link module:App}
+#### JWT_TOKEN   
 
-**express-server** src/index.js
+  - where are jwtTokens first created and saved | **OAClient-actions**
+
+_public/oauth-client/src/js/actions/index.js_
+
+  <!-- [**OAClient-actions**]{@link module:OAClient-actions-oauthGoogle} -->
+
 ```
+export const signIn = (data) => {
+  return async (dispatch) => {
+
+  ...
+
+  const res = await axios.post(`${location.origin}/api/auth/signin`, data);
+
+      console.log("[axios res]",res);
+
+      console.log('[ActionCreator] signIn dispatched an action!');
+      dispatch({
+        type: AUTH_SIGN_IN,
+        payload: res.data.token
+      });
+
+      localStorage.setItem('JWT_TOKEN', res.data.token);
+      axios.defaults.headers.common['Authorization'] = res.data.token;
+
+    ...
+```
+
+  - where is passport first connected with a config file? | **express-server**   
+  <!-- [**express-server**]{@link module:express-server} -->
+
+  _src/index.js_   
+
+  ```
   const passport = require('passport');
   const passportConfig = require('./oauth_server/passport');
-```
+  ```
 
-  - where is the passportJWT being set for all routes? | [**alight-api**]{@link module:alight-api}
+  - where is the basic token first added to a header | [app.js]{@link module:App}
+
+
+  - where is the passportJWT being set for all routes? | **alight-api**
+  <!-- [**alight-api**]{@link module:alight-api}    -->
+
+  _public/alight/routers/api.js_
+
 ```
   const passport = require('passport');
   const passportJWT = passport.authenticate('jwt', {session: false, failureRedirect: '/auth'});
+
+  ...
+
+  router.all('/*', cors(corsOptions), passportJWT,  async (req, res, next) => {
+    if(display_console || false) console.log('[cors/passport] passed');
+    next();
+  })
 ```
-    > in src/index.js server there are 2 routes to target:
-    > const arcPagesRouter = require("../public/alight/routers/alight"); - has no knowledge of jwtToken
-    > const arcAPIRouter = require("../public/alight/routers/api"); - processes jwtTokens
+
+> in src/index.js server there are 2 routes to target:   
+> const arcPagesRouter = require("../public/alight/routers/alight"); - has no knowledge of jwtToken   
+> const arcAPIRouter = require("../public/alight/routers/api"); - processes jwtTokens
 
   - where are jwtTokens verified on each request? | [**JwtStrategy**]{@link module:passport~JwtStrategy}
   - where is it determined whose project im looking at?
@@ -44,8 +91,10 @@ Alight/routers/api
   - where is the viewer data determined? | [api/alight/users **getUserPrefs**]{@link module:api-alight-users~getUserPrefs}
   - how does the core know i have editor access? | []{@link module:}
 
-#### to verify tokens manually
-signToken.js >
+#### to verify tokens manually   
+
+_signToken.js_ >   
+
 ```
   const verifyToken = (token, raw = false) => {
     let verifier;
@@ -63,7 +112,9 @@ signToken.js >
 ```
 
 #### where is the project token first called?
-App.js
+
+_App.js_
+
 ```
 	if(!project_token_response.data.error && project_token_response.data.token != undefined){
 		let project_token = project_token_response.data.token;
@@ -73,11 +124,14 @@ App.js
 	}//if
 ```
 
-#### where is the project token created?
-alight/controllers/lib/getProjectToken.js
+#### where is the project token created?   
 
-#### how is the project token verified? A: same as the jwtToken
-passport.js > JwtStrategy
+_alight/controllers/lib/getProjectToken.js_
+
+#### how is the project token verified? A: same as the jwtToken   
+
+passport.js > JwtStrategy   
+
 ```
   passport.use( new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),

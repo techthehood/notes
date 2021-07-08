@@ -6,7 +6,11 @@
 
 ### Articles
 [learn Storybook - online books/tutorial articles](https://www.learnstorybook.com/)   
+
 [Documentation for stakeholders](https://www.learnstorybook.com/design-systems-for-developers/react/en/document/)   
+
+[CLI options](https://storybook.js.org/docs/react/api/cli-options)   
+
 
 #### Getting started
 - navigate to directory and run
@@ -313,6 +317,39 @@ copy paste code snippet
   npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
 ```
 
+#### [adding prop documentation controls (knob controls)](https://storybook.js.org/docs/react/essentials/controls)   
+
+_used for .mdx variants_
+
+> note: argTypes can be added to the Meta element or the Story Element - if added to the Meta element it is used globally
+for all instances of the component unless otherwise defined in Story (overrides Meta definitions)   
+
+```
+  <Meta title="Access/Join in"
+    component={JoinIn}
+    argTypes={{
+      host_data:{
+        control:{type:"object"},
+        defaultValue:{user_id:"what"}
+      }
+    }}
+  />
+
+  // and/or
+
+  <Story name="JoinIn"
+  argTypes={{
+    host_data:{
+      control:{type:"object"},
+      defaultValue:{user_id:"what"}
+    }
+  }}
+    parameters={{
+      viewMode: 'docs'
+    }}
+  >
+```
+
 #### addons (7.1)
 [storybook addons](https://github.com/storybookjs/storybook/tree/master/addons)   
 [Supercharge Storybook](https://storybook.js.org/addons)   
@@ -486,6 +523,48 @@ my sample
 
 // how do i use other forms of inputs in controls?
 [storybook docs - controls: choosing control types](https://storybook.js.org/docs/react/essentials/controls)   
+[storybook removing controls](https://storybook.js.org/docs/react/essentials/controls)   
+
+```
+  <Meta title="Access/Join in"
+    component={JoinIn}
+    argTypes={{
+      ...
+      dev:{
+        table:{disable:true},
+        defaultValue: true
+      }
+    }}
+    ...
+```
+**works**
+
+other variations   
+
+```
+  argTypes={{
+    host_data:{
+      control:{type:"object"},
+      table:{category:"data"},
+      defaultValue:{user_id:"what"}
+    },
+    dev:{
+      // table:{disable:true},
+      control:{type:"boolean"},
+      //control: false,
+      //defaultValue: true
+    }
+  }}
+  args={{dev:true}}
+
+
+  // works to remove entire prop documentation from the table
+  table:{disable:true},
+
+  works to remove only the knob control from the prop documentation table
+  //table:{disable:true},
+  control: false,
+```
 
 
 #### A11y accessibility addon
@@ -734,6 +813,7 @@ use argTypes to set defaultValue
     argTypes={{
       variant: {defaultValut:"primary"}
     }}
+    args={{dev:true}}
   />
 
   <Story name="Template"
@@ -742,13 +822,25 @@ use argTypes to set defaultValue
       data:{control:{type:"object"}},
       content:{defaultValue:"some value"}
     }}
+    args={{dev:true}}
   >
     {Template.bind({})}
   </Story>
+
+
+  //you can use either:
+
+  defaultValue: true
+
+  //or
+
+  args={{dev:true}}
+
+  // both work
 ```
 
 #### [Adding an .mdx file (mdx format)](https://storybook.js.org/docs/react/api/mdx)   
-**basic example works**
+**basic example works**   
 
 ```
   <!--- MyComponent.stories.mdx -->
@@ -781,6 +873,17 @@ use argTypes to set defaultValue
   "}/>
 ```
 all variations of using markdown in Description failed
+
+
+GOTCHA: when setting up the mdx file be sure to write the first imports without a leading space/tab
+
+```
+import ... // correct
+
+...
+
+ import ... // may error
+```
 
 #### [Adding controls to mdx](https://storybook.js.org/docs/react/essentials/controls)   
 
@@ -975,3 +1078,68 @@ to add better src code - use parameters prop in Story
 publish storybook to github pages so it can exists in your repo
 
 [storybook codemods](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md)   
+
+#### [theming](https://storybook.js.org/docs/react/configure/theming)   
+
+#### [linking to other stories](https://www.npmjs.com/package/@storybook/addon-links)   
+[the "kind=" hint | has console error](https://github.com/storybookjs/storybook/issues/10846)   
+
+```
+[workflows](./?path=/story/boilerplate-build-workflows-build-workflows--page)
+```
+> this works but you have copy the link from already compiled storybook pages or guess what the link
+would be based on the stories title
+
+
+```
+  import LinkTo from '@storybook/addon-links/react'
+
+  ...
+
+  <LinkTo kind="boilerplate/build_workflows/build workflows">link to build</LinkTo>// works
+
+  <LinkTo story="boilerplate/build_workflows/build workflows">link to build</LinkTo>// fails
+```
+> this works - notice that using **story=** fails but using **kind=** succeeds. if you use story the url
+will be something with an iframe.html and an amalgamation of both the page you are on and the page you want
+> i.e. http://localhost:6006/?path=/story/boilerplate-build-workflows-react-cdn-storybook--boilerplate-build-workflows-build-workflows
+> you may or may not get the iframe issue, which isn't the point. the point is use **"kind="**
+
+#### more on LinkTo   
+
+>It accepts all the props the a element does, plus story and kind. It the kind prop is omitted, the current kind will be preserved.
+
+```
+  <LinkTo
+    kind="Toggle"
+    story="off"
+    target="_blank"
+    title="link to second story"
+    style={{textDecoration: 'none'}}
+  >Go to Second</LinkTo>
+```
+#### updating icomoon   
+**GOTCHA:** it can't parse style.scss in icomoon because of the @font-face declaration
+
+- to update replace "/core/" with "../" in icomoon/style2.css
+
+> icomoon reference is added to Center.js which is a decorator added to all component displays
+
+_Center.js_
+
+```
+  import React from 'react'
+  import './Center.css';
+  require('../../css/style.scss');
+  require('../../../../icomoon/style2.css');// special storybook style
+
+  const Center = (props) => {
+    return (
+      <div className="center storybook-center">
+        {props.children}
+      </div>
+    )
+  }
+
+  export default Center;
+```

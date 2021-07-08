@@ -1,51 +1,97 @@
 # React Native install and device testing notes
-[udemy course: the complete react native and redux course](https://www.udemy.com/the-complete-react-native-and-redux-course/learn/v4/content)
 
-[getting started docs](https://facebook.github.io/react-native/docs/getting-started.html)
+
+[udemy course: the complete react native and redux course](https://www.udemy.com/the-complete-react-native-and-redux-course/learn/v4/content)   
+
+[getting started docs](https://facebook.github.io/react-native/docs/getting-started.html)   
 **see building projects with native code**
+[react native environment setup docs](https://reactnative.dev/docs/environment-setup)   
 
-## installations:
+[The Metro bundler runs on port 8081](https://reactnative.dev/docs/troubleshooting)   
 
-	-were going to install dependencies. ESLint optional.
+>GOTCHA: don't use 1st IPv4 Address - fails
+```
+Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::bd78:8a82:566:8271%8
+   IPv4 Address. . . . . . . . . . . : 192.168.56.1
+```
+> use the 2nd IPv4 Address
+```
+   Link-local IPv6 Address . . . . . : fe80::ed2d:4415:ec43:75b2%15
+   IPv4 Address. . . . . . . . . . . : 10.0.0.218
+```
+
+NOTE: final solution
+```
+  10.0.0.218:8081
+```
+
+#### [react-native windows?](https://microsoft.github.io/react-native-windows/docs/getting-started)   
+
+```
+  npx react-native init <projectName>
+  cd projectName
+  npx react-native-windows-init --overwrite
+
+```
+> im not sure what react-native windows does, but it looks like it runs a browser version - maybe even
+> creates a webapp (i hope) like expo does
+
+```
+  npx react-native-windows-init --overwrite
+
+
+  npx react-native run-windows
+
+  
+```
+
+### installations:
+
+- were going to install dependencies. ESLint optional.
 	
-//react native has a lot of setup
+> react native has a lot of setup
 
-	google search 'java sdk'
+- google search 'java sdk'
 	-java sdk (java jdk)
 	>java SE Download (already got it)
 	
-	g-search node
+- g-search node
 	-node js (got it)
 	
-	g-search python 2
+- g-search python 2
 	- Python 2
 	>windows x86 - 64 MSI installer
 	
-	g-search android studio download
+- g-search android studio download
 	-android studio (got it)
 	
-	run cmd (node version)
+
+#### run cmd (node version)   
+
 ```
 	node -v4
 	//v6.10.10
 ```
 
-	install react native command line tools
-	(generates new project and test project inside android simulator)
+#### install react native command line tools   
+> generates new project and test project inside android simulator
+
 ```
 	npm install -g react-native-cli
 
 ```
 
-	i also downloaded yarn and installed to speed react-native compiles
-	[yarn downloads](https://yarnpkg.com/en/)
+> i also downloaded yarn and installed to speed react-native compiles
+[yarn downloads](https://yarnpkg.com/en/)   
 			
-Create system variables/paths
+#### Create system variables/paths
 
-	navigate the the Program Files Java folder and copy address
+- navigate the the Program Files Java folder and copy address
 
-	then to the systems environment variables
-	```
+- then to the systems environment variables
+
+```
 	Control Panel > System > Advanced System Settings >
 	environment variables > New
 	
@@ -57,30 +103,31 @@ Create system variables/paths
 	then make another New environment variable
 	variable name: ANDROID_HOME
 	variable value: C:\Users\LocAdmin\AppData\Local\Android\sdk\
-	```
+```
 	
-	for this to work fully i had to install and accept the terms for android SDK build-tools rev 23.0.1 ( be careful of similar revision numbers)
-	to do this i had to navigate to the android sdk (link is same as ANDROID_HOME)
+> for this to work fully i had to install and accept the terms for android SDK build-tools rev 23.0.1 ( be careful of similar revision numbers)
+> to do this i had to navigate to the android sdk (link is same as ANDROID_HOME)
 	
-	it will tell you which revision its looking for so you can go and get it.
+> it will tell you which revision its looking for so you can go and get it.
 	
-	then open AVD Manager.exe
+- then open AVD Manager.exe
 
 	
-	create workspace folder 
-	```
+#### create workspace folder 
+```
 	mkdir react_native
-	```
-	navigate to workspace folder and initialize project
+```
 
-	```
+- navigate to workspace folder and initialize project
+
+```
 	react_native $: react-native init albums
-	```
+```
 	
 	
 
-install gotchas:
-kept failing
+**install gotchas:**
+> kept failing
 [npm install --save --save-exact react-native` failed](https://github.com/npm/npm/issues/13345)
 i updated npm](https://docs.npmjs.com/cli/update)
 ```
@@ -106,8 +153,7 @@ To run your app on iOS:
    Hit the Run button
 To run your app on Android:
    cd C:\Users\LocAdmin\version-control\react_native\albums
-   Have an Android emulator running (quickest way to get started), or a device c
-onnected
+   Have an Android emulator running (quickest way to get started), or a device connected
    react-native run-android
    
    Start > control panel > system > advanced system settings > 
@@ -117,7 +163,7 @@ onnected
    
    path > edit: add to path: C:\Users\LocAdmin\AppData\Local\Android\sdk\platform-tools
    
-gotcha red screen
+**gotcha red screen**
 adb reverse tcp:8081 tcp:8081
 
 the the laptops ip address
@@ -193,8 +239,7 @@ var fizzy = function(){
 fizzy();
 
 ```
-Gotcha:
-another red screen issue
+**Gotcha: another red screen issue**
 Unable to load script from assets index.android.bundle on windows
 
 [bundle fix](https://stackoverflow.com/questions/44446523/unable-to-load-script-from-assets-index-android-bundle-on-windows)
@@ -217,9 +262,10 @@ i did it, but i wanted more to happen.  it doesn't give be the same neat node wi
 and any updates to app.js are updated on the device.
 
 this opens the dev menu on the device from the cli (without shaking)
-	```
+```
 	adb shell input keyevent 82 
-	```
+```
+
 i did a test to see if i could omit the adb reverse codeing
 ``` 
 
@@ -243,3 +289,32 @@ gotcha:
  my device kept shutting down if i used parenthesis around numeric values like padding:'5' or padding:'5px' and possibley because of the reload not set for hot reloading, the app was irreparable
  
  i put padding:'5' and got an error i put padding:'5px' and it crashed
+
+ [Running On Device](https://reactnative.dev/docs/running-on-device)   
+ > this seems waayy less complicated than the experiment above.
+ 
+ > i did need to type in the laptops ip address
+ ```
+  ipconfig 
+ ```
+ > use :8081 for the port
+
+#### i could also specify a custom port
+
+```
+  react-native run-android --port 9088 
+```
+
+#### possibly helpful when making changes to the workspace structure
+```
+  npx react-native start
+
+  npx react-native start --reset-cache
+```
+
+in a different terminal
+
+```
+  npx react-native run-android --verbose
+```
+

@@ -177,3 +177,6 @@ router.get("/:val1?/:val2?/:val3?", cors(corsOptions), /*passportJWT,*/ viewItem
 > idk how having them all filters out the links/scripts but it does ( apart from the console .maps for the shortest one)
 
 [more on express route params](https://stackoverflow.com/questions/34704593/express-routes-parameters)   
+
+#### GOTCHA: i guess just wait? (reboot the browser?)
+this last time activating the :val2? router param the .hbs links failed but then my computer shut down and once it rebooted they just worked.
