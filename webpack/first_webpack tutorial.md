@@ -151,10 +151,35 @@ output:{
   chunkFilename:'[name].bundle.js'
 },
 ```
->name without chunkFilename = vendor.app.bundle.js
+> name without chunkFilename = vendor.app.bundle.js
 with chunkFilename = vendor.bundle.js
 
 *_i finally removed the '.app.'_*
+
+package.json
+
+```
+  "scripts": {
+    ...
+    "dev": "webpack --mode development ./js/index.js --output ./js/dist/bundle.js",
+
+    // remove -- output
+    "dev": "webpack --mode development ./js/index.js",
+```
+> if i remove the --output, webpack.config.js will take over and use the filename in the output property
+
+_webpack.config.js_
+
+```
+  output: {
+      filename: 'bundle.[contenthash].js',
+      chunkFilename: '[name].chunk.js',
+      path: path.resolve(__dirname,'js','dist'),
+      publicPath: 'jng/js/dist/'
+  },
+```
+> // returns bundle.c98ecd127109bebdf824.js
+> package.json --output seems to override the webpack.config property
 
 #### [css chunkFilename failed in production](https://webpack.js.org/plugins/mini-css-extract-plugin/#chunkfilename)   
 ```

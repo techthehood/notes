@@ -406,3 +406,32 @@ drop the index
 ```
   db.getCollection('prefs').dropIndex("catIdx")
 ```
+
+#### ISSUE: reserach: mongodb.service: Main process exited, code=killed, status=9/KILL   
+> it has to do with my mongodb service crashing and not restarting.
+> i would also like to find out how to notify my phone when parts of my site are down like when 
+> mongodb crashes
+
+#### updating mongodb objects   
+
+[Saving object with mongoose findOne / save doesn't work](https://stackoverflow.com/questions/37864553/saving-object-with-mongoose-findone-save-doesnt-work/37865135)   
+[https://sarav.co/understanding-markModified-in-mongoose](https://sarav.co/understanding-markModified-in-mongoose)   
+
+```
+  let sponsor = await User.findOne({ _id: sponsor_id }, (err, results) => {
+      // let links = results.links;// findOneAndUpdate
+
+      results.links.ids = [...results.links.ids,`${entry.id}`];
+      results.links.data[`${entry.id}`] = {...entry};
+
+      if (display_console || true) console.log(chalk.red("[setLinkData] links"), results.links);
+
+      results.markModified("links");
+
+      results.save((err) => {
+        if (err) throw "[setLinkData] results failed to save";
+        if (display_console || true) console.log(chalk.green("[setLinkData] link saved successfully"));
+      });
+    });// can lean it at the end?
+```
+> use markModified

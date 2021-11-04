@@ -4,6 +4,8 @@
 
 [nginx joomla server block config](https://docs.joomla.org/Nginx)   
 
+[10 Most Used Nginx Commands Every Linux User Must Know](https://www.tecmint.com/useful-nginx-command-examples/)   
+
 > nginx doesn't use .htaccess files so i have to add rewrites to server Blocks
 
 preliminary joomla server block
@@ -155,6 +157,13 @@ https://example.com/alight/index.php ... i need it to rewrite index.php urls to 
   }
 ```
 
+[Debugging nginx server block configuration](https://www.digitalocean.com/community/questions/debugging-nginx-server-block-configuration)   
+[Check Nginx Configuration Syntax](https://www.tecmint.com/useful-nginx-command-examples/)   
+
+```
+  sudo nginx -t
+```
+
 [How to view HTTP headers in Google Chrome?](https://www.mkyong.com/computer-tips/how-to-view-http-headers-in-google-chrome/)   
 
 [Creating NGINX Rewrite Rules](https://www.nginx.com/blog/creating-nginx-rewrite-rules/)   
@@ -183,10 +192,10 @@ https://example.com/alight/index.php ... i need it to rewrite index.php urls to 
 
 >For instance, in a file /etc/systemd/system/myservice.service.d/myenv.conf:
 ```
-[Service]
-Environment="SECRET=pGNqduRFkB4K9C2vijOmUDa2kPtUhArN"
-Environment="ANOTHER_SECRET=JP8YLOc2bsNlrGuD6LVTq7L36obpjzxd"
-Also note that if the directory exists and is empty, your service will be disabled! If you don't intend to put something in the directory, ensure that it does not exist.
+  [Service]
+  Environment="SECRET=pGNqduRFkB4K9C2vijOmUDa2kPtUhArN"
+  Environment="ANOTHER_SECRET=JP8YLOc2bsNlrGuD6LVTq7L36obpjzxd"
+  Also note that if the directory exists and is empty, your service will be disabled! If you don't intend to put something in the directory, ensure that it does not exist.
 ```
 
 >The answer depends on whether the variable is supposed to be constant (that is, not supposed to be modified by user getting the unit) or variable (supposed to be set by the user).
@@ -196,16 +205,16 @@ Also note that if the directory exists and is empty, your service will be disabl
 #### Constant value
 >If the value doesn't need to change per instance, the preferred way would be to place it as Environment=, directly in the unit file:
 ```
-[Unit]
-Description=My Daemon
+  [Unit]
+  Description=My Daemon
 
-[Service]
-Environment="FOO=bar baz"
-ExecStart=/bin/myforegroundcmd
+  [Service]
+  Environment="FOO=bar baz"
+  ExecStart=/bin/myforegroundcmd
 
-[Install]
-WantedBy=multi-user.target
-The advantage of that is that the variable is kept in a single file with the unit. Therefore, the unit file is easier to move between systems.
+  [Install]
+  WantedBy=multi-user.target
+  The advantage of that is that the variable is kept in a single file with the unit. Therefore, the unit file is easier to move between systems.
 ```
 
 #### Variable value
@@ -217,8 +226,8 @@ The advantage of that is that the variable is kept in a single file with the uni
 
 >In this case, you place a file like /etc/systemd/system/myservice.service.d/local.conf that adds the missing parts of unit file:
 ```
-[Service]
-Environment="FOO=bar baz"
+  [Service]
+  Environment="FOO=bar baz"
 ```
 
 **Afterwards, systemd merges the two files when starting the service (remember to systemctl daemon-reload after changing either of them). And since this path is used directly by systemd, you don't use EnvironmentFile= for this.**
@@ -231,11 +240,11 @@ Environment="FOO=bar baz"
 
  you have two options (one already pointed by Michael):
 ```
-Environment=
+  Environment=
 ```
 and
 ```
-EnvironmentFile=
+  EnvironmentFile=
 ```
 
 >The answers by Michael and Michał are helpful and answer the original question of how to set an environment variable for a systemd service. However, one common use for environment variables is to configure sensitive data like passwords in a place that won't accidentally get committed to source control with your application's code.
@@ -244,27 +253,40 @@ EnvironmentFile=
 
 >The details of the unit configuration file are visible to any user with this command:
 ```
-systemctl show my_service
+  systemctl show my_service
 ```
 
 **I put a configuration file at /etc/my_service/my_service.conf and put my secrets in there:**
 ```
-MY_SECRET=correcthorsebatterystaple
+  MY_SECRET=correcthorsebatterystaple
 ```
 **Then in my service unit file, I used EnvironmentFile=:**
 ```
-[Unit]
-Description=my_service
+  [Unit]
+  Description=my_service
 
-[Service]
-ExecStart=/usr/bin/python /path/to/my_service.py
-EnvironmentFile=/etc/my_service/my_service.conf
-User=myservice
+  [Service]
+  ExecStart=/usr/bin/python /path/to/my_service.py
+  EnvironmentFile=/etc/my_service/my_service.conf
+  User=myservice
 
-[Install]
-WantedBy=multi-user.target
+  [Install]
+  WantedBy=multi-user.target
 ```
 I checked that ps auxe can't see those environment variables, and other users don't have access to /proc/*/environ. Check on your own system, of course.
 
 ### [systemd docs](https://systemd.io/)   
 [systemd info article](https://wiki.archlinux.org/index.php/systemd)   
+
+creating symbolic links from these files to the sites-enabled directory   
+
+```
+  sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+```
+
+[](https://futurestud.io/tutorials/nginx-remove-an-app-domain-from-sites-enabled)   
+
+```
+  cd /etc/nginx/sites-enabled  
+  sudo rm your-site-config  
+```

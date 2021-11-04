@@ -78,12 +78,30 @@ but that would prevent me from having unlimited stores and it would force every 
   const cores = {
   };
 
-  // store factory
-  export const createCoreStore = (iUN) => {
-    cores[iUN] = new coreStore();
-    cores[iUN].name = `coreStore${iUN}`;
-    return cores[iUN];
+  // optional
+  export const createCoreStore = ({ iUN = Math.round(Math.random() * 10000), name = "coreStore"} = {}, existing = false) => {
+
+
+    if (cores[iUN] && existing) {
+      // do nothing if both are true
+      // in this case if cores exists don't make any changes, skip to the return statement
+    } else {
+
+      // if store exists and its not asking to return the existing one - send back a new store
+      // otherwise send back the existing store
+      let counter = 0;
+      while (cores[iUN]) {
+        iUN = Math.round(Math.random() * 10000);
+        counter++;
+        console.log(`creating coreStore iUN`, counter);
+      }
+      cores[iUN] = new coreStore();
+      cores[iUN].name = `${name}${iUN}`;
+    }// !existing
+
+    return [cores[iUN], iUN];
   };
+
 
   // removes stores on unmounting
   export const removeCoreStore = (iUN) => {
@@ -98,54 +116,101 @@ but that would prevent me from having unlimited stores and it would force every 
   }
 ```
 
-#### functional component use
-custom_check.js
+> old version
 ```
-  const custom_check = observer((props) => {
-    ...
-    let coreStore = useContext(CoreContext);// not dynamic
+  // store factory
+  export const createCoreStore = (iUN) => {
+    cores[iUN] = new coreStore();
+    cores[iUN].name = `coreStore${iUN}`;
+    return cores[iUN];
+  };
+```
 
-    if(tVar.check_mode == "false"){
-      return (
-        <>
-        </>
-      );
+### multiple store usage 1
+
+```
+  let core_el = <Core data={core_data} />;
+
+  const [newMainStore, iUN] = await createMainStore({host_data: state.host_data, display_data: state.display_data});
+  // the new iUN is already added with prep_vars
+
+  let core = (
+    <MainProvider store={newMainStore}>
+      {core_el}
+    </MainProvider>
+  )
+```
+
+### multiple store usage 2
+
+> also had the ability to inject initial store data (props/values) see advanced store creator below
+
+```
+  let store_data = { iUN, name: "ref_store_" };// host_data: { root_id: VIEWER_DATA.project_id,host_id: VIEWER_DATA.project_id}, display_data: "media" 
+
+  let [temp_store] = await createMainStore(store_data, true);
+
+  temp_store.move_type = "attach";// important values for selection mode
+  temp_store.move_style = "pull";// important values for selection mode
+  temp_store.move_task = "custom";
+  temp_store.folder_data = folder_data;
+  temp_store.display_data = "media";
+  temp_store.root_id = VIEWER_DATA.project_id;
+  temp_store.host_id = VIEWER_DATA.project_id;
+  temp_store.viewer_id = VIEWER_DATA.project_id;
+
+  let core = (
+    <MainProvider store={temp_store}>
+      {core_el}
+    </MainProvider>
+  )
+```
+
+### Advanced store creator
+
+_mainStore.js_
+
+```
+  export const createMainStore = async (
+    { 
+      iUN = Math.round(Math.random() * 10000), 
+      name = "mainStore", 
+      host_data, 
+      display_data = "media"
+    }={}, existing = false) => {
+
+
+    if (stores[iUN] && existing){
+      // do nothing if both are true
+      // in this case if stores exists don't make any changes, skip to the return statement
     }else{
-      return null;
-    }//else
-
-  });//custom_check
-
-  export default custom_check;
+      
+      // if store exists and its not asking to return the existing one - send back a new store
+      // otherwise send back the existing store
+      let counter = 0;
+      while(stores[iUN]){
+          iUN = Math.round(Math.random() * 10000);
+          counter++;
+        console.log(`creating mainStore iUN`,counter);
+      }
+      stores[iUN] = new mainStore();
+      stores[iUN].name = `${name}${iUN}`;
+  
+      if(host_data){
+        // this is when im trying to create a mainStore to be used in core
+        await prep_vars({
+          display_data,
+          root_id: host_data.project_id,
+          host_id: host_data.project_id,
+          viewer_id: VIEWER_DATA.project_id,
+          /*portable:true,*/
+          host_data,
+          store: stores[iUN],
+          iUN
+        });
+      }// if
+    }// !existing
+    
+    return [stores[iUN], iUN];
+  };// createMainStore
 ```
-
-#### class based component use
-check_option.js
-```
-  class check_option extends React.Component {
-
-    constructor(props){
-      super(props);
-    }// constructor
-
-    render(){
-
-      this.context;//works
-
-      ...
-
-    }//render
-
-  }// check_option
-
-  check_option.contextType = CoreContext;
-
-  export default check_option;
-```
-**GOTCHA:**
-> i don't think this version updates dynamically with changes to the store.  for that i would need to use mobx observer or
-CoreContext.Consumer.  I think the Consumer is limited to the
-
-#### [React hooks useContext](https://daveceddia.com/usecontext-hook/)   
-**this article suggests useContext as an alternative to CoreContext.Consumer - maybe useContext is dynamic afterall?**
-#### [official React Context docs](https://reactjs.org/docs/context.html)   

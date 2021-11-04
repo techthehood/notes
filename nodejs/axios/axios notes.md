@@ -78,3 +78,9 @@ to access it in a useEffect i had to pass down an empty object that i referenced
 ```
 **axios will later populate my empty object reference with the cancelToken data and
 i can later call cancel with it in the hook it originated in**
+
+#### GOTCHA: default is required to access the default export varname   
+
+```
+const viewerStore = require('./viewerStore').default;
+```

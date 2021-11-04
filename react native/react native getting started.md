@@ -302,7 +302,7 @@ gotcha:
 #### i could also specify a custom port
 
 ```
-  react-native run-android --port 9088 
+  npx react-native run-android --port 9088 
 ```
 
 #### possibly helpful when making changes to the workspace structure

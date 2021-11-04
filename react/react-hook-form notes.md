@@ -1,6 +1,7 @@
 # react-hook-form notes   
 
-## Articles
+## Articles   
+
 [The complete guide to React Hook Form](https://blog.logrocket.com/the-complete-guide-to-react-hook-form/)   
 > helpful in using handleSubmit with form to process submit on form completion   
 
@@ -12,7 +13,7 @@
 [**GOTCHA:**](#onchange1) mode "onchange" is needed to trigger error on change   
 [**GOTCHA:**](#e-msg) i tried using a name different from the input and the ErrorMessage failed   
 
-### validation
+### validation   
 
 include errors method   
 
@@ -26,7 +27,8 @@ include errors method
 > Notice the mode: "onchange" property added to the useForm options - this is needed to trigger error checking as you type (idk what the default is)
 
 <br/>
-####i can write the validator properties inside the register method
+
+#### i can write the validator properties inside the register method   
 
 ```
   <input id={`${prefix}srchInp_TInput`}
@@ -34,6 +36,7 @@ include errors method
 ```   
 
 <br/>
+
 ##### <a name="onchange1">**GOTCHA:**</a> mode "onchange" is needed to trigger error on change
 
 and ErrorMessage   
@@ -50,11 +53,12 @@ and ErrorMessage
   <ErrorMessage errors={errors} name="search_text" message="This is required" />
 ```
 
-> I put the ErrorMessage component under the container for the input and used the same name as the input to reference the input
+> I put the ErrorMessage component under the container for the input and used the same name as the input to reference the input   
 
 ##### <a name="e-msg">**GOTCHA:**</a> i tried using a name different from the input and the ErrorMessage failed   
 
 <br/>
+
 #### i can disable the go btn by also using the errors name reference   
 
 ```
@@ -72,6 +76,7 @@ and ErrorMessage
 ```
 
 #### [i can use a form state with this too](https://react-hook-form.com/api/#formState)    
+
 ```
   const { register, getValues, setValue, handleSubmit, watch, errors, formState } = useForm({mode:"onchange"});
   const { dirty, isSubmitting, touched, submitCount, isValid } = formState;
@@ -98,7 +103,7 @@ I can also add the error message to the input and reference it in the ErrorMessa
 
 > this version will display whatever message is added as a string to the false outcome of any validation test
 
-#### can i use validator.js with this?
+#### can i use validator.js with this?   
 
 ```
   const validateSearchText = (value) => {
@@ -119,11 +124,19 @@ I can also add the error message to the input and reference it in the ErrorMessa
   }};
 ```
 
-#### form submission issue
-[a nice example of a properly working form](https://codesandbox.io/s/7o2wrp86k6?file=/src/index.js:1400-1434)   
-> the form in the example invalidates properly while pristine
+#### GOTCHA: isValid is always false
 
-_inform.js_
+[downgrade to v6.4.1](https://fantashit.com/react-hook-formstate-formstateproxy-isvalid-value-always-false/)   
+
+```
+  npm i react-hook-form@6.4.1 --save --save-exact
+```
+
+#### form submission issue   
+[a nice example of a properly working form](https://codesandbox.io/s/7o2wrp86k6?file=/src/index.js:1400-1434)   
+> the form in the example invalidates properly while pristine   
+
+_inform.js_   
 
 ```
   const modal_ref = useRef();
@@ -164,7 +177,7 @@ _inform.js_
 ```  
 > modal_data doesn't need a cancel or a go btn property it can still use a close property (optional)   
 
-#### GOTCHA: form doesn't invalidate pristine forms. **TL:DR; my usual way causes issues - do it the r-h-f way**
+#### GOTCHA: form doesn't invalidate pristine forms. **TL:DR; my usual way causes issues - do it the r-h-f way**   
 > the issue was the form wasn't invalidating a submitted form that i didn't touch (all fields empty and untouched).
 The remedy was to let the form element handle submission instead of subverting that submission the way i usually do.
 In order for this to fully work i had to omit using the modals built in go btn because the modal would have to be nested inside the Form for the modals modified go btn (input type="submit") to trigger the form submission.  Nesting caused umounting errors because the modal is used to removing itself from a DOM container but in this case from the form element causing an error. (idk i think it still mounted to the container but the form's elements it is watching would instantly
@@ -191,7 +204,7 @@ disappear without removing the form with it.)
 
 >React Hook Form is built based on uncontrolled input, which means you don't need to change input value via state by onChange. Hence you don't need value at all, in fact, you only need defaultValue for initial input value.
 
-**USE defaultValue with react-hook-form** - you can still update a state it just won't inform the input
+**USE defaultValue with react-hook-form** - you can still update a state it just won't inform the input   
 
 #### passing message from validation function   
 
@@ -206,7 +219,7 @@ disappear without removing the form with it.)
   }
 ```
 
-**GOTCHA:**  function won't trigger unless you add options to useForm  
+**GOTCHA:**  function won't trigger unless you add options to useForm   
 
 ```
   const { register, getValues, setValue, handleSubmit, watch, errors, formState } = useForm({mode:"onchange"});
@@ -325,7 +338,7 @@ value={unescape(FormStore.item_data.desc_data)}
   }//update_description
 ```
 
-**refer to the unique (iUN inclusive) string name when using mulitple inputs with same data reference (not same name)**
+**refer to the unique (iUN inclusive) string name when using mulitple inputs with same data reference (not same name)**   
 
 ```
   const update_title = (e) => {
@@ -335,7 +348,7 @@ value={unescape(FormStore.item_data.desc_data)}
   }//update_title
 ```
 
-#### [setting custom errors (setError docs)](https://react-hook-form.com/api/#setError)
+#### [setting custom errors (setError docs)](https://react-hook-form.com/api/#setError)   
 
 using setError and clearErrors
 
@@ -408,9 +421,9 @@ When set to firstError (default), only the first error from each field will be g
   // setError(`title_data_${iUN}`,{ type:"some type", message:"some message"});// failed again with criteriaMode
 ```
 
-#### targeting errors
+#### targeting errors   
 
-_Title.js_
+_Title.js_   
 
 ```
   let title_error = errors[`title_data_${iUN}`] ? "error" : "";
@@ -447,9 +460,9 @@ form_data.triggerValidation();// run this trigger once - hidden behind a conditi
 ```
 [migration guide v5 to v6](https://react-hook-form.com/migrate-v5-to-v6)   
 
-####
-[react-hook-form docs](https://react-hook-form.com/api#register)   
-_register: (Ref, RegisterOptions?) => void_
+#### [react-hook-form docs](https://react-hook-form.com/api#register)   
+
+_register: (Ref, RegisterOptions?) => void_   
 
 [Intercepting ref](https://github.com/react-hook-form/react-hook-form/issues/25)   
 
@@ -459,7 +472,7 @@ _register: (Ref, RegisterOptions?) => void_
     register(ref);
   }} />
 ```
-**works**
+**works**   
 
 my example   
 

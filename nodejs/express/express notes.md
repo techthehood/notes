@@ -269,7 +269,7 @@ copy
 
 #### [getting chalk colors to show up in bash](https://stackoverflow.com/questions/32742865/no-console-colors-if-using-npm-script-inside-a-git-bash-mintty)   
 
-_.bash_profile_
+**.bash_profile**
 
 ```
   FORCE_COLOR=true

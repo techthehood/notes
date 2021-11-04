@@ -61,6 +61,10 @@ add fields
   let updated = await UserItem.update({"order":0}, {$set:{desc_data: ""}}, {multi:true});// worked
   let updated = await UserItem.updateMany({}, {$set:{desc_data: ""}});// worked
   let updated = await UserItem.updateMany({}, {desc_data: ""});// worked
+
+  db.getCollection('items').updateMany({ancestor:ObjectId("609ea3487ff22f213cc81690"),
+    data_type:"link"},
+{$set:{data_type:"politics"}})
 ```
 **I think the key was using await and setting it to a variable (maybe try await w/o the variable)**
 
@@ -445,7 +449,7 @@ my Example
     results.save((err) => {
       if(err) throw "results failed to save";
       if(display_console || true) console.log(chalk.green("[new_bkmk] saved successfully"));
-    })
+    });
   })
 ```
 
@@ -747,3 +751,43 @@ db.getCollection('items').find({note_data:{$ne:""},desc_data:{$ne:""}})// localh
 
   });
 ```
+
+[Text Score Metadata Sort](https://docs.mongodb.com/manual/reference/method/cursor.sort/#text-score-metadata-sort)   
+
+```
+  let containerized = { "container": "desc", score: { $meta: "textScore" }};
+  sR = await Item.find(query, { score: { $meta: "textScore" } }).collation({ locale: "en", strength: 2 }).sort(containerized).skip(start_ndx).limit(limit).lean();
+```
+> works
+
+[$regex vs. /pattern/ Syntax](https://docs.mongodb.com/manual/reference/operator/query/regex/)   
+
+```
+  db.getCollection('items').find({title_data:{$in:[/mongo nodejs/i]}});// works
+```
+> NOTE: You cannot use $regex operator expressions inside an $in.
+
+
+#### updating mongodb objects   
+
+[Saving object with mongoose findOne / save doesn't work](https://stackoverflow.com/questions/37864553/saving-object-with-mongoose-findone-save-doesnt-work/37865135)   
+[https://sarav.co/understanding-markModified-in-mongoose](https://sarav.co/understanding-markModified-in-mongoose)   
+
+```
+  let sponsor = await User.findOne({ _id: sponsor_id }, (err, results) => {
+      // let links = results.links;// findOneAndUpdate
+
+      results.links.ids = [...results.links.ids,`${entry.id}`];
+      results.links.data[`${entry.id}`] = {...entry};
+
+      if (display_console || true) console.log(chalk.red("[setLinkData] links"), results.links);
+
+      results.markModified("links");
+
+      results.save((err) => {
+        if (err) throw "[setLinkData] results failed to save";
+        if (display_console || true) console.log(chalk.green("[setLinkData] link saved successfully"));
+      });
+    });// can lean it at the end?
+```
+> use markModified

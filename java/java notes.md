@@ -198,3 +198,16 @@ _Second.java_
 ```
 > returns 20 10 10 if int a = 20 isn't commented out
 > otherwise returns 10 10 10
+
+## Udemy tutorial (Become an Android Developer from scratch)
+
+#### dark theme   
+> file > settings > appearance and behavior > appearance > theme > darkula
+
+#### show line numbers   
+> line numbers are already set but if not 
+> file > settings > editor > general > appearance > line numbers   
+
+Research Genymotion (seems only for ios)
+
+paused session @ video 41 pangrams (resouces)

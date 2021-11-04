@@ -77,6 +77,7 @@ export const signIn = (data) => {
     next();
   })
 ```
+[passport.authenticate DOCS:](http://www.passportjs.org/docs/authenticate/)
 
 > in src/index.js server there are 2 routes to target:   
 > const arcPagesRouter = require("../public/alight/routers/alight"); - has no knowledge of jwtToken   
@@ -151,3 +152,8 @@ passport.js > JwtStrategy
 
     ...
 ```
+#### GOTCHA: 3rd party cookies error
+[idpiframe_initialization_failed: Cookies are not enabled in current environment.](https://github.com/googleworkspace/browser-samples/issues/68)   
+> 3rd party cookies have to be enabled (turned on) for google login to work
+
+[random password generator](https://www.grc.com/passwords.htm)   

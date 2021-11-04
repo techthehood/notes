@@ -107,3 +107,42 @@ working example
     ...
 ```
 **set the option b4 each post request**
+
+#### [reporting errors using 'next'](https://expressjs.com/en/guide/error-handling.html)
+
+> if next() fn is give any value it reports as an error
+
+```
+  next("anything is error text");
+```
+
+#### [Joi middleware config](https://stackoverflow.com/questions/57956609/joi-1-default-validate-is-not-a-function)   
+> GOTCHA: joi.validate is not a function
+
+```
+  const validateBody = (req, res, next) => {
+    //updated joi
+
+    // This is a shorter version
+    console.log(chalk.yellow(`[routeHelper] req.body`),req.body);
+
+    const { error } = schema.validate(req.body);
+
+    // Error in response
+
+    // res.send(error.details[0].message);
+    let error_msg = "[routeHelpers] Joi an error has occured";
+    if (error) next(error);// error_msg, false
+
+    // next(error_msg);// use this to disable manual signups and signins
+    next();
+  }
+
+  const schema = Joi.object({
+    // name: Joi.string().min(3).required(),
+    email: Joi.string().min(4).required().email(),
+    password: Joi.string().min(6).required()
+  });
+
+  module.exports = { schema, validateBody };
+```

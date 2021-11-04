@@ -858,3 +858,22 @@ but it still functions like any other json data - i just cant view it easily wit
       // </MainProvider>
     );
 ```
+
+#### GOTCHA: [React not rerendering after mobx observer change](https://stackoverflow.com/questions/46513024/react-not-rerendering-after-mobx-observer-change)   
+[Enabling decorators](https://mobx.js.org/enabling-decorators.html)   
+
+```
+  class sampleStore {
+    @observable todos = []
+
+    constructor() {
+        makeObservable(this)
+    }
+
+    @computed
+    get unfinishedTodoCount() {
+        return this.todos.filter(todo => !todo.finished).length
+    }
+}
+
+```

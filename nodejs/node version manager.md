@@ -1,7 +1,8 @@
 #### migrating/ running npm install on the server
 
 GOTCHA:  Error: EACCES: permission denied, mkdir '/home/d3po/landing-pages/node_modules/node-sass/build'
-> i changed node_modules permissions
+> i changed node_modules permissions   
+> 
 ```
   sudo chmod -R me:www-data node_modules/
 ```
@@ -13,13 +14,16 @@ GOTCHA:  Error: EACCES: permission denied, mkdir '/home/d3po/landing-pages/node_
 
 
 [Resolving EACCES permissions errors when installing packages globally](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally)   
-[Downloading and installing Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)   
-#### [installing a node version manager](https://github.com/nvm-sh/nvm)   
+
+[Downloading and installing Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)     
+
+#### [installing a node version manager](https://github.com/nvm-sh/nvm)    
+
 ```
   wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-```
-output
-```
+
+  // output
+
   wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
   => Downloading nvm from git to '/home/d3po/.nvm'
   => Cloning into '/home/d3po/.nvm'...

@@ -11,25 +11,25 @@
 #### [installing nginx on ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04)   
 
 ```
-  $ sudo apt update
-  $ sudo apt install nginx
+  sudo apt update
+  sudo apt install nginx
 ```
 
 #### adjust the Firewall
 ```
-  $ sudo ufw app list
+  sudo ufw app list
 ```
 
 if apache is running
 ```
-  $ sudo systemctl stop apache2
+  sudo systemctl stop apache2
 ```
 
 disallow apache (?)
 ```
-  $ sudo ufw deny 'Apache'
-  $ sudo ufw deny 'Apache Full'
-  $ sudo ufw deny 'Apache Secure'
+  sudo ufw deny 'Apache'
+  sudo ufw deny 'Apache Full'
+  sudo ufw deny 'Apache Secure'
 ```
 #### other reading
 [How To Migrate from an Apache Web Server to Nginx on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-migrate-from-an-apache-web-server-to-nginx-on-an-ubuntu-vps)  
@@ -37,7 +37,7 @@ disallow apache (?)
 
 print the last 100 lines of the log file
 ```
-  $ sudo tail -n 100 /var/log/nginx/error.log
+  sudo tail -n 100 /var/log/nginx/error.log
 ```
 
 final server block example
@@ -364,3 +364,9 @@ location ~ ^/(static|media)/ {
 }
 ```
 **i think i tried this and it didn't work. so i just created 2 separate locations with the same port**
+
+#### creating symbolic links from these files to the sites-enabled directory   
+
+```
+  sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+```

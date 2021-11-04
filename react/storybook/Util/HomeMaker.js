@@ -1,4 +1,4 @@
-// const {toaster} = require('../../../lib/elements/toaster/toaster');
+// const {toaster} = require('../../../lib/elements/Toast/toaster');
 import {useRef} from 'react';
 require('../../css/style.scss');
 require('./HomeMaker.scss');

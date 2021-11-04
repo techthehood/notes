@@ -1,4 +1,4 @@
-const {toaster} = require('../../../lib/elements/toaster/toaster');
+const {toaster} = require('../../../lib/elements/Toast/toaster');
 require('../../css/style.scss');
 require('./Toaster.scss');
 

@@ -5,6 +5,25 @@
 - [x] what are a given users groups
 - [ ] how to create new groups
 
+[chmod calculator](https://chmodcommand.com/chmod-775/)
+
+[file permissions chart (HOW TO USE UNIX AND LINUX FILE PERMISSIONS)](https://its.unc.edu/research-computing/techdocs/how-to-use-unix-and-linux-file-permissions/)   
+
+---
+
+|type|owner| group| other|
+|--|--|--|--|
+|read (r)| 4 | 4 | 4 |
+|write (w)| 2 | 2 | 2 |
+|execute (x) | 1 | 1 | 1 | 
+|total| 7 | 7 | 7 |
+
+```
+  chmod 774 filename
+```
+> rwxrwxr--
+---
+
 ### [Modify File Permissions with chmod](https://www.linode.com/docs/tools-reference/tools/modify-file-permissions-with-chmod/)   
 >great starting guide
 **Number system - guide teaches octal notation 755 also (-rwxr-xr-x) or (111 101 101) in base-8 binary**
@@ -96,8 +115,22 @@ We could also get all the users’ groups with the groups command:
 ```
   $ groups foobar
 ```
->// foobar : foobar
+>// foobar : 
 
+#### to show users
+
+```
+  id
+  // or
+  id user
+```
+> i could see my user without adding anything after id 
+
+#### to show groups
+```
+  groups
+```
+> also doesn't need anything after groups to show you all groups
 
 #### [adduser vs gpasswd](https://unix.stackexchange.com/questions/198536/difference-between-adding-sudo-user-with-adduser-or-gpasswd)   
 **adduser wins**
@@ -158,3 +191,7 @@ sudo chmod -R g+rw /var/www/html/
 **it looks like ill have to have this error continue to pop up**
 
 [Quick share links](https://www.digitalocean.com/docs/spaces/how-to/file-permissions/)   
+
+[what is sudo chown -R www-data:www-data?](https://serverfault.com/questions/200650/what-is-sudo-chown-r-www-datawww-data/443322)   
+
+> So the last thing is about www-data written repeated.www-data:www-data the first one is user, the second is group. Your username can be added as a member of www-data group, by this command sudo adduser user www-data, user can be replaced with your username. That command will result in user www-data.

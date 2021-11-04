@@ -176,3 +176,7 @@ passport JWT Strategy
 	const valid_token = await axios.get(`${location.origin}/api/alight/users/validate_token`);
 ```
 **the custom header is also added to the axios header here (not case sensitive)**
+
+[postman API Key](https://learning.postman.com/docs/sending-requests/authorization/#api-key)   
+
+
