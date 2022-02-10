@@ -28,7 +28,7 @@
 
 1. download mongodb from the sites
 2. extract from the zip folder
-3. archive away from downloads folder (C:\Users\d3pot\version-control\nodejs\mongodb)  
+3. archive away from downloads folder (C:\Users\username\version-control\nodejs\mongodb)  
 4. rename the folder from initial-zip-name to mongodb    
 5. move to user/myName folder
 6. create a data folder mongodb-data
@@ -103,7 +103,7 @@ go to user variables and choose path then edit
 choose new
 copy and paste location of directory of installed mongodb bin
 ```
-  C:\Users\d3pot\mongodb\bin
+  C:\Users\username\mongodb\bin
 ```
 
 then save changes and close and reopen all terminals (restart them)
@@ -435,3 +435,4 @@ drop the index
     });// can lean it at the end?
 ```
 > use markModified
+

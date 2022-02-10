@@ -30,3 +30,11 @@ _sample output_
 npm update
 ```
 
+[updating browserlist - why you should do it regularly](https://github.com/browserslist/browserslist#browsers-data-updating)   
+> this is a dependency to something. idk what its attached to
+
+*Browserslist: caniuse-lite is outdated. Please run:*
+
+```
+  npx browserslist@latest --update-db
+```

@@ -355,3 +355,41 @@ _server.js_
 > i can use io.sockets.use( to detect the query namespace and filter any connections that don't meet
 > a specific requirement. 
 > I can also redirect connections to specific event handlers by passing socket to a function
+
+
+[according to this i may be able to add options as a second argument](https://socket.io/docs/v4/server-initialization/)
+
+*example with http server*
+
+```
+    const { createServer } = require("http");
+    const { Server } = require("socket.io");
+
+    const httpServer = createServer();
+    const io = new Server(httpServer, { /* options */ });
+
+    io.on("connection", (socket) => {
+      // ...
+    });
+
+    httpServer.listen(3000);
+  
+```
+### my test samples with and without path
+
+#### sample with http server
+```
+  const io = require('socket.io')(http);
+```
+
+#### sample with path   
+
+```
+  const io = require('socket.io')({path: '/webrtc'});// changes the path from /socket.io to /webrtc
+```
+
+#### sample with path and http server   
+
+```
+  const io = require('socket.io')(http,{path: '/webrtc'});// works
+```

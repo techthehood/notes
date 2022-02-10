@@ -12,6 +12,8 @@
 
 [**GOTCHA:**](#onchange1) mode "onchange" is needed to trigger error on change   
 [**GOTCHA:**](#e-msg) i tried using a name different from the input and the ErrorMessage failed   
+[**GOTCHA:**](#sameName) use multiple inputs witht the same name
+
 
 ### validation   
 
@@ -298,7 +300,8 @@ then i can get the data whenever using the input name and getValue from the form
   let {search_text} = getValues();
 ```
 
-#### [use multiple inputs witht the same name](https://github.com/react-hook-form/react-hook-form/issues/1212)   
+#### <a name="sameName">**GOTCHA:**</a> [use multiple inputs witht the same name](https://github.com/react-hook-form/react-hook-form/issues/1212)   
+
 
 ```
   const iUN_ref = useRef(Math.round(Math.random() * 10000));//props.iUN || Math.round(Math.random() * 10000)
@@ -336,6 +339,24 @@ value={unescape(FormStore.item_data.desc_data)}
     let desc_data = value_obj[`desc_data_${iUN}`];
     FormStore.setData("desc_data",desc_data);
   }//update_description
+```
+
+DOCS: or to keep the entire process anonymous
+> NOTE: remember there is no need for 2 same name inputs to reside in the same component 
+> (even though they may live in the same react-hooks-form form_data)
+> so setting one iUN for the component will be enough to call it again in the update functions
+
+```
+  const update_title = (e) => {
+    let value_obj = getValues();
+
+    let field_names = Object.keys(value_obj);
+    field_names.forEach((entry) => {
+
+      let tru_name = entry.remove(`_${iUN}`);
+      FormStore.setData(tru_name,value_obj[`${entry}`]);
+    });
+  }//update_title
 ```
 
 **refer to the unique (iUN inclusive) string name when using mulitple inputs with same data reference (not same name)**   

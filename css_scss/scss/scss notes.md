@@ -19,7 +19,51 @@
   }
 }
 ```
-> doesn't render %speak class like @extend .speak does
+> doesn't render %speak class like @extend .speak does   
+
+#### Using a placeholder selector in a media query   
+
+**GOTCHA: failed - can not @extend selector across media queries**
+
+```
+  %sv-mobile { 
+  // [sass mixin](https://sass-lang.com/documentation/at-rules/mixin)
+  background-size: 72% 10%, 30% 30%, 88% 60%;
+  background-position: 70px 210px, 20px 200px, 20px 20px;
+}
+
+
+
+.d3-skeleton-video {
+  ...
+  @include media.mobile{
+    min-height: 250px; 
+    @extend %sv-mobile;// fails
+  }
+  ...
+```
+> i tried to use the placeholder selector in a media query   
+> instead i had to convert it to a mixin and it worked   
+[sass mixin](https://sass-lang.com/documentation/at-rules/mixin)
+
+**works**
+
+```
+  @mixin sv-mobile { 
+    background-size: 72% 10%, 30% 30%, 88% 60%;
+    background-position: 70px 210px, 20px 200px, 20px 20px;
+  }
+
+  .d3-skeleton-video {
+    ...
+    @include media.mobile{
+      min-height: 250px; 
+      @include sv-mobile;// works
+      // @extend %sv-mobile;// fails
+    }
+    ...
+```
+> works
 
 #### [sass mixin with media query](https://youtu.be/roywYSEPSvc?t=2087)   
 

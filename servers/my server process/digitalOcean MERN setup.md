@@ -19,7 +19,45 @@
 - PM2
 - reverse proxy app server
 
+## GOTCHA: KNOWN GOTCHAS
+
+- hostname should be the same as the domain name without the TLD (extension)  
+DOCS: if you don't use the recommended hostname change it: 
+[Ubuntu Linux Change Hostname (computer name)](https://www.cyberciti.biz/faq/ubuntu-change-hostname-command/)   
+
+- cloudflare will assume an ip address that may not target your server. make sure to change it to your servers ip address
+
+- [Cloudflare flexible ssl HTTP to HTTPS Nginx too many redirects](https://stackoverflow.com/questions/41583088/http-to-https-nginx-too-many-redirects)   
+
+- the example.com server block automatically redirects your http to https and then runs the top server block which if setup with an index.html file in the root file path's folder will display a default html page unless you haven't commented out the entire "location /" server block
+
+```
+  #location / {
+  #  # new node.js server root
+  #  add_header X-app2-message "alight section entered" always;
+  #  add_header 'Service-Worker-Allowed' '/';
+  #  proxy_pass http://localhost:1027;
+  #  proxy_http_version 1.1;
+  #  proxy_set_header Upgrade $http_upgrade;
+  #  proxy_set_header Connection 'upgrade';
+  #  proxy_set_header Host $host;
+  #  proxy_cache_bypass $http_upgrade;
+  #}
+
+```
+> this location block connects to your pm2 express server. 
+> there are 2 options available to you:
+1. comment out the entire section (example above) if you want to load a default static html page
+2. create a express server running on port 1027 or the domain name will show an error page
+
+### Articles
+[How To Install Nginx on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04)   
+> i used Step 5 – Setting Up Server Blocks (Recommended)
+
 ### start with a Node droplet
+> there is a mongoDB droplet i selected to be on the safe side but i believe it just sends you to the same node droplet - it also has pm2 preinstalled (nginx also)   
+
+[Getting started after deploying NodeJS](https://marketplace.digitalocean.com/apps/nodejs?ipAddress=143.198.5.134#getting-started)   
 
 #### see ubuntu version   
 
@@ -107,11 +145,13 @@ $ ssh-copy-id demo@SERVER_IP_ADDRESS
 [is it safe to use same ssh key on multiple servers?](https://unix.stackexchange.com/questions/27661/good-practice-to-use-same-ssh-keypair-on-multiple-machines)
 **seems like its ok**
 
-### create SSH key
+### create SSH key (skip if your local computer has an ssh key already made)
 **i navigated into the target dir (local .ssh dir)**
 ```
 $   ssh-keygen.exe
 ```
+
+
 output
 **still asked to specify rout or use default**
 ```
@@ -201,6 +241,75 @@ save and exit using ctrl-x, y (for yes) and enter to confirm the default file na
   $ cd etc/nginx/sites-available
 ```
 
+simple server block sample
+
+```
+  server {
+          listen 80;
+          listen [::]:80;
+
+          root /var/www/your_domain/html;
+          index index.html index.htm index.nginx-debian.html;
+
+          server_name your_domain www.your_domain;
+
+          location / {
+                  try_files $uri $uri/ =404;
+          }
+  }
+```
+
+[nginx — How to Serve a Static HTML Page](https://futurestud.io/tutorials/nginx-how-to-serve-a-static-html-page)   
+
+goto/create the html folder specified on the server block and create the index.html file
+
+```
+  // make the new site html directory
+  cd /var/www/
+  sudo mkdir yourdomain.com
+  sdo mkdir yourdomain.com/html
+
+  // change the owner from root to your user
+  chown -R youruser:youruser yourdomain.com
+
+  // change permissions
+  sudo chmod -R 755 /var/www/your_domain
+
+  // go into new html folder
+  cd yourdomain.com/html/
+
+  // create an index.html file
+  echo "hello world!" > index.html 
+  // or use example below (recommended)
+
+
+
+```
+
+> That’s it! Ensure the root and index properties and nginx serves static HTML and JavaScript files.
+
+[How To Install Nginx on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04)   
+> i used Step 5 – Setting Up Server Blocks (Recommended)
+
+- html sample
+
+```
+  <html>
+      <head>
+          <title>Welcome to your_domain!</title>
+      </head>
+      <body>
+          <h1>Success!  The your_domain server block is working!</h1>
+      </body>
+  </html>
+```
+
+#### change the owner on the sites-available directory and contents
+
+```
+
+```
+
 #### creating symbolic links from these files to the sites-enabled directory   
   
 ```
@@ -244,6 +353,8 @@ save and exit using ctrl-x, y (for yes) and enter to confirm the default file na
   }
 ```
 
+#### test site with ip address
+
 GOTCHA: conflicting server name example com on 0.0 0.0 80 ignored
 > solved by commenting out server_names in all but one server {} block
 
@@ -265,12 +376,17 @@ GOTCHA: letsencrypt error [recognizing] subdomain, cloudflare not connecting to 
 
 ```
   sudo nginx -t
+
+  // If there aren’t any problems, restart Nginx to enable your changes:
+
+  sudo systemctl restart nginx
 ```
+
 [digital ocean nginx, ubuntu 18.04.2 ssl instructions](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04)   
 > also covers certbot auto-renewal
 
 
-
+NOTE: see 2021 method in letsencrypt.md (install snap)
 
 ### SSL certificate setup   
 
@@ -282,8 +398,7 @@ GOTCHA: letsencrypt error [recognizing] subdomain, cloudflare not connecting to 
 
 
 
-
-### **SKIP SECTION**
+### **SKIP SECTION (deprecated)**
 
 ```
   $ sudo apt install certbot python3-certbot-nginx
@@ -336,14 +451,45 @@ sudo certbot --nginx -d example.com -d www.example.com
 ```
   wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 ```
-> then restart / exit and log back in (**recommended**) for changes to take place
+> then restart / exit and log back in to terminal (**recommended**) for changes to take place
+> i sourced .bashrc then .bash_profile to force it but its probably easire to ssh back in
 
-#### install pm2   
+### this is a good time to create an alias for logging in
+
+- log out of the ssh terminal
+```
+  exit
+```
+- goto the local terminal root
+```
+cd ~
+```
+
+- edit the bash_profile file
+
+```
+nano .bash_profile
+```
+> if there isn't a .bash_profile file or its empty you can use the one in this binder and add aliases to it.
+
+- write your new alias
+
+```
+  ssh newroot@server-ip-address
+```
+
+#### install pm2 (may already be installed)   
+
+- check for installation
+
+```
+  pm2 --version
+```
 
 [pm2 docs](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/)   
 [nodejs pm2](https://www.npmjs.com/package/pm2)   
 [pm2 process management](http://pm2.keymetrics.io/docs/usage/process-management/)   
-> Use npm to install the latest version of PM2 on your server:
+> Use npm to install the latest version of PM2 on your server
 
 ```
   $ sudo npm install pm2@latest -g
@@ -353,3 +499,5 @@ sudo certbot --nginx -d example.com -d www.example.com
 ```
   pm2 start app.js --name "my-api"
 ```
+
+

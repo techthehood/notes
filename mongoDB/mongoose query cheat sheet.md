@@ -61,6 +61,7 @@ add fields
   let updated = await UserItem.update({"order":0}, {$set:{desc_data: ""}}, {multi:true});// worked
   let updated = await UserItem.updateMany({}, {$set:{desc_data: ""}});// worked
   let updated = await UserItem.updateMany({}, {desc_data: ""});// worked
+  db.getCollection('items').updateMany({}, {$set:{code_enabled: true}});// worked
 
   db.getCollection('items').updateMany({ancestor:ObjectId("609ea3487ff22f213cc81690"),
     data_type:"link"},
@@ -493,6 +494,8 @@ my Example
 my example
 ```
   let query = {item_id: item_ancestor, $or:[{access:{$in:[user_id]}}, {access:{$eq:[]}}] };// works
+
+  let iDta = await Item.findOne({ $or: [{ancestor: item._id} , {_id:{ $in: info_ids }}], img_url: { $ne: "" }, img_url: { $ne: null } }).sort([[["created"], [-1]]]).lean();// add_auto_img works
 ```
 **works**
 
@@ -764,8 +767,57 @@ db.getCollection('items').find({note_data:{$ne:""},desc_data:{$ne:""}})// localh
 
 ```
   db.getCollection('items').find({title_data:{$in:[/mongo nodejs/i]}});// works
+  db.getCollection('items').find({title_data:{$in:[/The%20Institution/i]}});// works
+```
+#### update multiple items after search
+GOTCHA: fails
+``` 
+  db.getCollection('items').find({title_data: {$in:[/%20/i]}}, (err, results) => {
+      // let links = results.links;// findOneAndUpdate
+
+		
+		results.category = unescape(results.category);
+		results.title_data = unescape(results.title_data);
+		results.note_data = unescape(results.note_data);
+		results.other_data = unescape(results.other_data);
+
+      results.save((err) => {
+        if (err) throw "[setLinkData] results failed to save";
+        if (display_console || true) console.log(chalk.green("[setLinkData] link saved successfully"));
+      });
+    })
+	// GOTCHA: "errmsg" : "Failed to parse: projection: 
 ```
 > NOTE: You cannot use $regex operator expressions inside an $in.
+> tags: includes, wildcard, search
+
+works
+```
+
+// count entries
+db.getCollection('items').find({title_data: {$in:[/%20/i]}}).count()
+
+//check results with
+db.getCollection('items').find({title_data: {$in:[/%20/i]}})
+
+
+// working query
+
+db.getCollection('items').find({title_data: {$in:[/%20/i]}}).forEach((entry) => {
+	
+	entry.category = unescape(entry.category);
+	entry.title_data = unescape(entry.title_data);
+	entry.note_data = unescape(entry.note_data);
+	entry.other_data = unescape(entry.other_data);
+
+	db.getCollection('items').save(entry);
+});
+
+
+// test specific entry
+db.getCollection('items').find({title_data: {$in:[/reasons your/i]}})
+```
+> use forEach loop
 
 
 #### updating mongodb objects   
