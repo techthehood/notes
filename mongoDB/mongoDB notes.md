@@ -33,7 +33,7 @@
 5. move to user/myName folder
 6. create a data folder mongodb-data
 
-### start mongodb server (windows)
+### start mongodb server (windows)   
  from username dir
 ```
   cd ~; mongodb/bin/mongod.exe --dbpath=mongodb-data
@@ -45,6 +45,7 @@
 the mongodb terminal must remain running**
 
 >how did mongodb get to cd ~? does it install there with an installer? there are no notes above to move it there.
+> A: (see step 5)
 
 database admin tool (GUI)
 >i think i really prefer to use mongo shell instead
@@ -213,7 +214,19 @@ prints out documents from the users collection
 
 #### GOTCHA:  to use the nodejs mongodb module you have to first install mongodb database on your machine
 
-#### prepare to use the db
+#### in-server setup 
+
+```
+  let dbConnect = (os.hostname().includes(HOSTNAME)) ? Keys.liveDB : Keys.db;// what is this in production?
+  mongoose.connect(dbConnect,{ useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.set('useFindAndModify', false);
+  mongoose.set('useCreateIndex', true);
+```
+
+### Extra-server setup DEPRECATED
+> this setup uses only mongodb and not its dependent mongooose
+
+#### prepare to use the db (in server)
 ```
   const bodyParser = require('body-parser')
   app.use(bodyParser.json());

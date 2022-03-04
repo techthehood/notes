@@ -6,6 +6,7 @@
 [Mongodb database methods](https://docs.mongodb.com/v4.4/reference/method/js-database/)   
 [Mongodb database tools](https://docs.mongodb.com/database-tools/)   
 [Getting Started Guide for the mongo Shell](https://docs.mongodb.com/v4.4/tutorial/getting-started/)   
+> SEE ALSO _mongodb course.md_
 
 
 ### working in the shell

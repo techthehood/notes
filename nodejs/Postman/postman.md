@@ -1,5 +1,7 @@
 # Postman
 
+[Google Authentication with Postman](https://medium.com/kinandcartacreated/google-authentication-with-postman-12943b63e76a)   
+
 ### Installing postman
 
 [download from postman site](https://www.getpostman.com/downloads/)   
@@ -119,6 +121,7 @@ copy the jwt if available
 
 
 #### Environmental variable token
+> NOTE: see video 110 advanced postman
 type {{ authToken }} in the token input field
 click "update" button
 enter the following script in the "test" panel/ test script section of the login and create requests
@@ -179,4 +182,64 @@ passport JWT Strategy
 
 [postman API Key](https://learning.postman.com/docs/sending-requests/authorization/#api-key)   
 
+GOTCHA: [Postman OAuth 2.0 "request url is empty" error even though successful authentication](https://stackoverflow.com/questions/68037910/postman-oauth-2-0-request-url-is-empty-error-even-though-successful-authentica)   
+> this occured because i didn't have a token_URL (token_uri)
 
+## WHY DO I HAVE TO HUNT FOR THESE?
+
+GOTCHA: [AUTH_URL && AUTH_ACCESS_TOKEN_URL](https://stackoverflow.com/questions/32076503/using-postman-to-access-oauth-2-0-google-apis)   
+> why is something so simple so cryptic?  Why do i have to scour the web for hours to find official documentation?
+> why should i need to use stackoverflow hearsay trial and error to get to the solution?
+
+DOCS: the official docs can be found in:
+[google developer console](console.developers.google.com)   
+select project
+choose APIs & Services > Credentials
+OAuth 2.0 Client IDs 
+select edit for target Client ID
+choose DOWNLOAD JSON from the top menu to see the auth URLs
+
+```
+  {
+    "web":{
+      "client_id":"xxx-xxxxx-xxxxxx-xxxx",
+      "project_id":"project-name",
+      "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+      "token_uri":"https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+      "client_secret":"xxx-xxxxx",
+      "redirect_uris":[`${location.origin}/redirect"],
+      "javascript_origins":["http://localhost:5000","https://example.com","https://www.example.com"]
+    }
+  }
+```
+
+GOTCHA: [AUTH_SCOPE](https://stackoverflow.com/questions/7130648/get-user-info-via-google-api)   
+> where is the offical docs for the proper scope?
+
+[OAuth 2.0 Scopes for Google APIs](https://developers.google.com/identity/protocols/oauth2/scopes)    
+> there is documentation for a long list of scopes but no real way of knowing which one you need
+
+[Scopes for Google OAUTH2 API, v2](https://developers.google.com/identity/protocols/oauth2/scopes#oauth2)   
+> almost impossible to find without scrolling through an extensive list but here is where its found
+
+```
+  https://www.googleapis.com/auth/userinfo.profile
+```
+
+All the URIs/URLs
+
+```
+  AUTH_URI: https://accounts.google.com/o/oauth2/auth
+  AUTH_ACCESS_TOKEN_URI: https://accounts.google.com/o/oauth2/token
+  AUTH_SCOPE: https://www.googleapis.com/auth/userinfo.profile
+
+  // also try
+  AUTH_SCOPE: profile
+```
+
+[OAuth 2.0 Playground](https://developers.google.com/oauthplayground/)   
+
+[How to set up Oauth2 in PostMan. (video)](https://www.youtube.com/watch?v=jjCauMywU2Q)   
+> in this video the person just used "profile" as the scope
+> i tried it and it seemed to work (it still referred to the userinfo.profile url so im not sure it was not used)

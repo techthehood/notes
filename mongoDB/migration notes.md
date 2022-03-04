@@ -103,7 +103,7 @@ rename fields
 [How can I generate an ObjectId with mongoose?](https://stackoverflow.com/questions/17899750/how-can-i-generate-an-objectid-with-mongoose)   
 ```
   var mongoose = require('mongoose');
-  var id = mongoose.Types.ObjectId();
+  var id = mongoose.Types.ObjectId();// NOTE: creates your own object id (mongoose not mongodb)
 ```
 
 #### create your own id using ObjectID **(mongodb not mongoose)**

@@ -140,8 +140,8 @@ dummy data
     "aircraft" : "Airbus A320",
     "distance" : 950,
     "intercontinental" : false
-    }]
-    ```
+  }]
+```
 #### insert many Documents
 ```
   db.flightData.insertMany([{
@@ -195,9 +195,7 @@ now try this and remove the {$set} operator
   db.flightData.update({_id: ObjectId("5d8d2425c1af1452e19f9ba0")} , {delayed:false})
   //but works with update
 ```
-**GOTCHA:
-update actually replaces all other key/values in the document except the once specified in the update target data and the id (search criteria? or id?)**   
-thats why its recommended to use updateOne and updateMany
+**GOTCHA: update actually replaces all other key/values in the document except the once specified in the update target data and the id (search criteria? or id?) thats why its recommended to use updateOne and updateMany**
 
 if you want to replace something
 ```

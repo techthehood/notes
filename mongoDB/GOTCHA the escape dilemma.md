@@ -89,3 +89,29 @@ Double console outputs
 - hbs adds html formatting to strings unless we use {{{}}} triple brackets
 - passing a string with problematic double quotes through JSON.stringify twice escapes the problem quotes
 - double stringify on the server along with triple brackets seems to prep the string nicely, double stringify the og data will probably work too
+
+#### My new js escape process (since unescape is now deprecated)
+
+_unescapeURI_
+
+```
+  const unicodeUnEscape = function(string) {
+  return string.replace(/%u([\dA-Z]{4})|%([\dA-Z]{2})/g, function(_, m1, m2) {
+    return String.fromCharCode(parseInt("0x" + (m1 || m2)));
+  })
+}
+
+export const unescapeURI = (txt) => {
+  let new_txt;
+  try {
+    new_txt = decodeURI(unicodeUnEscape(txt));
+  } catch (error) {
+    new_txt = unescape(txt);
+  }
+
+  return new_txt;
+}
+
+// LATER:
+// https://stackoverflow.com/questions/34754914/why-does-unescape-work-but-decodeuri-doesnt
+```

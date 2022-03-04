@@ -53,10 +53,10 @@ export const signIn = (data) => {
 
   _src/index.js_   
 
-  ```
+```
   const passport = require('passport');
   const passportConfig = require('./oauth_server/passport');
-  ```
+```
 
   - where is the basic token first added to a header | [app.js]{@link module:App}
 

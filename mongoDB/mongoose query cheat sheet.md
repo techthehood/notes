@@ -69,6 +69,13 @@ add fields
 ```
 **I think the key was using await and setting it to a variable (maybe try await w/o the variable)**
 
+```
+  db.pairs.updateMany({},{attachment: true})// failed - 
+  db.pairs.updateMany({},{$set:{attachment: true}})// worked
+```
+[MongoInvalidArgumentError: Update document requires atomic operators](https://stackoverflow.com/questions/38883285/error-the-update-operation-document-must-contain-atomic-operators-when-running)   
+> i fixed this using $set
+
 ### 'Query Operators'
 [mongoose update operators](https://docs.mongodb.com/manual/reference/operator/update/)   
 
@@ -525,6 +532,8 @@ my example
 
 #### updating fields
 
+> see also "update multiple items after search"   
+
 ```
   db.getCollection('items').find({data_type:"question"}).forEach(function(entry){
    entry.data_type = "discovery";
@@ -770,6 +779,9 @@ db.getCollection('items').find({note_data:{$ne:""},desc_data:{$ne:""}})// localh
   db.getCollection('items').find({title_data:{$in:[/The%20Institution/i]}});// works
 ```
 #### update multiple items after search
+
+> see also "updating fields"
+
 GOTCHA: fails
 ``` 
   db.getCollection('items').find({title_data: {$in:[/%20/i]}}, (err, results) => {
@@ -843,3 +855,163 @@ db.getCollection('items').find({title_data: {$in:[/reasons your/i]}})
     });// can lean it at the end?
 ```
 > use markModified
+
+> According to [Mongoose documentation](https://mongoosejs.com/docs/schematypes.html#mixed), Mixed is a schema-less type, you can change the value to anything else you like, but Mongoose loses the ability to auto detect and save those changes. To tell Mongoose that the value of a Mixed type has changed, you need to call doc.markModified(path), passing the path to the Mixed type you just changed
+
+- tag: modify
+
+#### Create inside find test
+
+```
+  db.mariochars.find({}).forEach(function(err, results){
+    db.fight.insertOne({hero:results.name, enemy:"mushroom"});
+  })// failed
+
+  db.mariochars.find({}).forEach(function(results){
+    db.fight.insertOne({hero:results.name, enemy:"mushroom"});
+  })// worked
+```
+> GOTCHA: [forEach doesn't need err](https://docs.mongodb.com/manual/reference/method/cursor.forEach/)   
+
+test by id
+
+```
+  
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")}).forEach(function(results){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5"),hero:results.name, enemy:"Goomba"});
+  })// fails - Missing required argument at position 1
+
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")}).forEach(function(results){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{hero:results.name, enemy:"Goomba"});
+  })// fails - Update document requires atomic operators
+
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")}).forEach(function(results){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{$set:{enemy:"Boo"}},{upsert,true});
+  })// works
+
+```
+Shy Guy, Goomba, Chain Chomp, Piranha Plant, Boo, Koopa Troopa, 
+
+#### using a callback instead
+
+```
+  
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")},function(results){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{$set:{enemy:"Chain Chomp"}});
+  })// fails - 'projection' field must be of BSON type object.
+
+
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")},{},function(results){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{$set:{enemy:"Chain Chomp"}});
+  })// fails - no error message
+  // returns { _id : ObjectId("6206622a36576c8c40dfec7b"), name: 'Mario' }
+
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")},{},function(results){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{$set:{enemy:"Chain Chomp"}});
+  })// still fails
+
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b"), {$function:{body:function(){
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{$set:{enemy:"Chain Chomp"}});
+  }}}})// still failed
+```
+NOTE: i had to add an empty object '{}' in the projection? section - the example also had an empty obj {}
+GOTCHA: although no errors this didn't work at all
+
+[mongodb function expression](https://docs.mongodb.com/manual/reference/operator/aggregation/function/#mongodb-expression-exp.-function)   
+> GOTCHA: this also didn't help
+
+#### forEach vs callback   
+
+[mongodb callbacks](https://docs.mongodb.com/drivers/node/current/fundamentals/promises/#callbacks)   
+[mongodb forEach](https://docs.mongodb.com/manual/reference/method/cursor.forEach/)   
+
+#### can i use async/await?   
+
+> A: yes with await findOne() not find()   
+
+```
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")}).forEach(async function(results){
+    let fight = await db.fight.findOne({_id: ObjectId("62114ece7c98bb6d8dad18b5")});
+
+    console.log(`[fight] hero`, fight.hero);
+
+    let use_hero = fight.hero == "Mario" ? "Luigi" : "Mario";
+
+    db.fight.update({_id: ObjectId("62114ece7c98bb6d8dad18b5")},{$set:{hero: use_hero, enemy:"Shy Guy"}});
+
+  })
+```
+
+> this works. i needed to use findOne instead of find for the async/await to work - using find() doesn't return a value == null
+
+can i use upsert?
+
+> A: yes
+
+```
+  db.mariochars.find({_id:ObjectId("6206622a36576c8c40dfec7b")}).forEach(async function(results, ndx){
+
+    let fight = await db.fight.findOne({_id: ObjectId("62114ece7c98bb6d8dad18b8")});
+
+    console.log(`[fight] hero`, fight?.hero, fight == null);
+
+    console.log(`[fight] updating ${ndx} ...`);
+
+    let use_hero = fight?.hero == "Mario" ? "Luigi" : "Mario";
+
+    db.fight.findOneAndUpdate({_id: ObjectId("62114ece7c98bb6d8dad18b8")}, {$set:{hero: use_hero, enemy:"Shy Guy"}},{upsert: true});
+
+  })// works
+```
+> works without errors even if the await item isn't found (doesn't exist)
+
+
+#### [Mongoose (Mongodb) sorting by populated field](https://stackoverflow.com/questions/56437015/mongoose-mongodb-sorting-by-populated-field)   
+
+```
+  const docs = await models.products.aggregate([
+    { "$match": { find }},
+    { "$lookup": {
+      "from": Retailer.collection.name,
+      "localField": "retailer",
+      "foreignField": "_id",
+      "as": "retailer"
+    }},
+    { "$lookup": {
+      "from": Category.collection.name,
+      "localField": "category",
+      "foreignField": "_id",
+      "as": "category"
+    }},
+    { "$unwind": "$category" },
+    { "$sort": { "category.popularity": 1 }}
+  ]);
+```
+
+Aggregate view "orphaned pairs"
+
+```
+  db.pairs.aggregate([
+    {
+      '$lookup': {
+        'from': 'items', 
+        'localField': 'host_id', 
+        'foreignField': '_id', 
+        'as': 'string'
+      }
+    }, {
+      '$match': {
+        'items': {
+          '$size': 0
+        }
+      }
+    }
+  ])
+
+  /*
+    ,
+    {'$count':'_ids'}
+  */
+```
+> works - $count added later to total returned items
+

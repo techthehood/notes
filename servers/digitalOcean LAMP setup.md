@@ -107,6 +107,25 @@ $ ssh-copy-id demo@SERVER_IP_ADDRESS
 ```
 **i skipped down to upload public key to root then came back to this**
 
+**GOTCHA:** [ssh-copy-id Permission denied (publickey).](https://phoenixnap.com/kb/ssh-permission-denied-publickey)   
+> i decided not to add a password and instead added an ssh key when i created the droplet and now it only want this
+> on login
+
+```
+  sudo nano /etc/ssh/sshd_config
+
+  // in nano - sshd_config
+  PasswordAuthentication yes
+  ChallengeResponseAuthentication no
+```
+
+then restart the SSH service
+```
+  sudo systemctl restart sshd
+```
+> then try ssh-copy-id ... above
+
+
 ### Configure SSH Daemon (to disallow remote ssh root access)
 open the following file
 ```
@@ -118,6 +137,7 @@ change this line to no
 ```
 PermitRootLogin yes
 ```
+> also turn off PasswordAuthentication
 
 save and exit using ctrl-x, y (for yes) and enter to confirm the default file name
 

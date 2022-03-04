@@ -2,6 +2,7 @@
 #### [API Authentication with Node Part #1 - Introduction](https://youtu.be/zx6jnaLuB9Q)   
 > from passport-jwt-course
 created a helpers/routeHelpers.js file
+
 #### [install joi](https://www.npmjs.com/package/joi)   
 routeHelpers used a joi schema for validation
 
@@ -128,13 +129,15 @@ to run server side simulated express server and clientside hot reloading (create
 
 [passport google plus | passport docs](http://www.passportjs.org/packages/passport-google-plus/)   
 [sunsetting google plus](https://blog.google/technology/safety-security/project-strobe/)   
+[Integrating Google Sign-In into your web app (DEPRECATED)](https://developers.google.com/identity/sign-in/web/sign-in)   
 
-[Add Google Sign-In to Your Web App](https://developers.google.com/identity/sign-in/web/)   
-[Integrating Google Sign-In into your web app](https://developers.google.com/identity/sign-in/web/sign-in)   
-[Getting profile information](https://developers.google.com/identity/sign-in/web/people)   
-[Authenticate with a backend server](https://developers.google.com/identity/sign-in/web/backend-auth)   
+[Add Google Sign-In to Your Web App (DEPRECATED)](https://developers.google.com/identity/sign-in/web/)   
+[Google Identity Services](https://developers.google.com/identity/gsi/web)
 
-[migrate from google + sign-in](https://developers.google.com/identity/sign-in/web/quick-migration-guide)   
+[Getting profile information (DEPRECATED)](https://developers.google.com/identity/sign-in/web/people)   
+[Authenticate with a backend server (DEPRECATED)](https://developers.google.com/identity/sign-in/web/backend-auth)   
+
+[migrate from google + sign-in (DEPRECATED)](https://developers.google.com/identity/sign-in/web/quick-migration-guide)   
 
 #### GOTCHA: TypeError: GoogleTokenStrategy is not a constructor
 ```
@@ -142,5 +145,5 @@ to run server side simulated express server and clientside hot reloading (create
   const GoogleTokenStrategy = require('passport-google-token').Strategy;// works
 ```
 
-[Make sure you have added the domain to the google api whitelist](https://console.developers.google.com/apis/credentials/)
+[Make sure you have added the domain to google api whitelist](https://console.developers.google.com/apis/credentials/)
 **use the example(.com) project**

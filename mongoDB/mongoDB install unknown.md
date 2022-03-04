@@ -1,5 +1,9 @@
-# mongoDB install
-** setup mongoDB **
+
+
+> Im not sure what this installation is for.
+> maybe this was an old installation process before i knew how to find the one i use now (the real one)
+
+**setup mongoDB**
 
 ## [finding server version (ssh)](https://stackoverflow.com/questions/2311586/what-is-a-quick-ssh-command-to-know-the-system-info-configuration)
 
@@ -42,7 +46,7 @@ Copy the extracted folder to the location from which MongoDB will run.
 ## 4. Ensure the location of the binaries is in the PATH variable.
 The MongoDB binaries are in the bin/ directory of the archive. To ensure that the binaries are in your PATH, you can modify your PATH.
 
-For example, you can add the following line to your shell’s rc file (e.g. ~/.bashrc):
+For example, you can add the following line to your shellï¿½s rc file (e.g. ~/.bashrc):
 ```
 
 	export PATH=<mongodb-install-directory>/bin:$PATH

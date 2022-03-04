@@ -58,3 +58,21 @@ GOTCHA:  Error: EACCES: permission denied, mkdir '/home/d3po/landing-pages/node_
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 ```
+
+
+[GOTCHA jsdom issue is really a nvm issue](https://github.com/jsdom/jsdom/issues/2963)      
+the huge jsdom issue was because pm2 wasn't updated to the latest node version using 
+
+nvm use 14
+
+i deleted the old pm2 and created a new one (maybe overkill) my goal was to basically stop the old pm2 task and not remember its last node version by restarting what was already saved.
+
+this worked. now its using the new node version 
+
+console.log(process.versions);
+
+
+ok so my fix was to stop and delete whatever pm2 im running that is throwing the issue.
+
+then create a fresh new one
+pm2 start file/path --name "alias"

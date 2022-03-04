@@ -1,22 +1,30 @@
 # MERN setup
-[Initial Server Setup with Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04)
+[Initial Server Setup with Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04)    
+
+**GOTCHA: NOTE:** digital ocean doesn't have a MERN stack (if it ever did it doesn't anymore) 
+> digital ocean is now trying to upsell "managed" databases starting at $15 a month.  And now in order 
+> not to cut into their profits they have rolled back features where databases are no longer part of some 
+> tech stacks.
 
 ## MERN Assets
 
 - Node.js
 - Managing ports 
-- disable root user
 - create non root user
 - SSH
+- disable root user (disallow remote ssh root access)
 - firewall setup
+- winSCP ssh
 - Server Block
 - sites-enabled symlink
+- Configure Domain Name
 - SSL (requires server blocks, sites-enabled, A record with www & @ )
 - manage script styling and display
 - static server (?)
 - MongoDB
 - NVM
 - PM2
+- .bash_profile
 - reverse proxy app server
 
 ## GOTCHA: KNOWN GOTCHAS
@@ -47,7 +55,7 @@ DOCS: if you don't use the recommended hostname change it:
 ```
 > this location block connects to your pm2 express server. 
 > there are 2 options available to you:
-1. comment out the entire section (example above) if you want to load a default static html page
+1. NOTE: comment out the entire section (example above) if you want to load a default static html page
 2. create a express server running on port 1027 or the domain name will show an error page
 
 ### Articles
@@ -55,7 +63,30 @@ DOCS: if you don't use the recommended hostname change it:
 > i used Step 5 – Setting Up Server Blocks (Recommended)
 
 ### start with a Node droplet
-> there is a mongoDB droplet i selected to be on the safe side but i believe it just sends you to the same node droplet - it also has pm2 preinstalled (nginx also)   
+> ~~there is a mongoDB droplet~~ i selected to be on the safe side but i believe it just sends you to the same node droplet - it also has pm2 preinstalled (nginx also)   
+> GOTCHA: you have to install mongodb yourself
+
+#### install MongoDB on Ubuntu
+
+[How To Install MongoDB on Ubuntu 16.04 LTS / Ubuntu 18.04 LTS](https://youtu.be/WH5GgHaEy7E)   
+
+```
+  sudo apt-get install mongodb
+  sudo apt-get update
+```
+
+### to start the mongodb shell   
+
+```
+  mongo
+```
+
+### GOTCHA: to start mongodb service   
+
+```
+    sudo service mongodb start
+```
+> do this if starting the shell fails
 
 [Getting started after deploying NodeJS](https://marketplace.digitalocean.com/apps/nodejs?ipAddress=143.198.5.134#getting-started)   
 
@@ -118,32 +149,88 @@ then you can blindly type and retype to confirm your desired root password.
 
 1. login as root
 2. add a new user
-**'demo' represents name of new user**
+**'newUsername' represents name of new user**
 ```
-$ adduser demo
+$ adduser newUsername
 ```
 
 3. give user root privileges
 ```
-$ gpasswd -a demo sudo
+$ gpasswd -a newUsername sudo
 ```
 
 4. add public key authentication
 - generate key with keygen (already done for root) - (NOTE: i can use the old key that is already there (from my other digitalOcean sites) no keygen needed)
 - 
-- copy the public key to the user (ssh-copy-id must be done from local machine - i navigated to the .ssh dir)
+- copy the public key to the user (**ssh-copy-id must be done from local machine** - i navigated to the .ssh dir)
 ```
-$ ssh-copy-id demo@SERVER_IP_ADDRESS
+$ ssh-copy-id newUsername@SERVER_IP_ADDRESS
 ```
 
+**GOTCHA:** [ssh-copy-id Permission denied (publickey).](https://phoenixnap.com/kb/ssh-permission-denied-publickey)   
+> i decided not to add a password and instead added an ssh key when i created the droplet and now it only want this
+> on login
+
+```
+  sudo nano /etc/ssh/sshd_config
+
+  // in nano - sshd_config
+  PasswordAuthentication yes
+  ChallengeResponseAuthentication no
+```
+
+then restart the SSH service
+```
+  sudo systemctl restart sshd
+```
+> then try ssh-copy-id ... above
 
 
+### Configure SSH Daemon (to disallow remote ssh root access)
+open the following file
+```
+nano /etc/ssh/sshd_config
+```
+**GOTCHA: notice sshd_config not ssh_config**
+
+change this line to no
+```
+PermitRootLogin yes
+```
+> also turn off PasswordAuthentication
+
+save and exit using ctrl-x, y (for yes) and enter to confirm the default file name
+
+### Reload SSH
+```
+$ service ssh restart
+```
+
+[how to restart services in linux](https://www.wikihow.com/Restart-Services-in-Linux)   
+```
+  $ sudo systemctl restart ssh
+```
+**this worked, even though the last time i did it i got not feedback**
+
+**thats it**
+
+[change the sudo or root password](https://phoenixnap.com/kb/change-root-password-ubuntu)   
+
+<!-- 
+██   ██ ███████ ██    ██  ██████  ███████ ███    ██     ██████  ██████   ██████   ██████ ███████ ███████ ███████ 
+██  ██  ██       ██  ██  ██       ██      ████   ██     ██   ██ ██   ██ ██    ██ ██      ██      ██      ██      
+█████   █████     ████   ██   ███ █████   ██ ██  ██     ██████  ██████  ██    ██ ██      █████   ███████ ███████ 
+██  ██  ██         ██    ██    ██ ██      ██  ██ ██     ██      ██   ██ ██    ██ ██      ██           ██      ██ 
+██   ██ ███████    ██     ██████  ███████ ██   ████     ██      ██   ██  ██████   ██████ ███████ ███████ ███████ 
+                                                                                                      
+ -->
 
 ### NOTE: if i didn't already have a key i would have to do this:
 
 ### [how to add ssh keys to droplets](https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/)
 [is it safe to use same ssh key on multiple servers?](https://unix.stackexchange.com/questions/27661/good-practice-to-use-same-ssh-keypair-on-multiple-machines)
 **seems like its ok**
+
 
 ### create SSH key (skip if your local computer has an ssh key already made)
 **i navigated into the target dir (local .ssh dir)**
@@ -179,6 +266,15 @@ output
 ```
 > all your sites can share one public key
 
+<!-- 
+██   ██ ███████ ██    ██  ██████  ███████ ███    ██     ██████  ██████   ██████   ██████ ███████ ███████ ███████ 
+██  ██  ██       ██  ██  ██       ██      ████   ██     ██   ██ ██   ██ ██    ██ ██      ██      ██      ██      
+█████   █████     ████   ██   ███ █████   ██ ██  ██     ██████  ██████  ██    ██ ██      █████   ███████ ███████ 
+██  ██  ██         ██    ██    ██ ██      ██  ██ ██     ██      ██   ██ ██    ██ ██      ██           ██      ██ 
+██   ██ ███████    ██     ██████  ███████ ██   ████     ██      ██   ██  ██████   ██████ ███████ ███████ ███████ 
+                                                                                                      
+ -->
+
 #### Setting Up a Basic Firewall
 
 ```
@@ -202,38 +298,14 @@ output
   $ ufw enable
 ```
 
-### Configure SSH Daemon (to disallow remote ssh root access)   
+#### WinSCP SSH
 
-open the following file
+- file Protocol: SFTP
+- Hostname: ip_address
+- port number: 22
+- user name: server user
 
-```
-  $ nano /etc/ssh/sshd_config
-```
-**GOTCHA: notice sshd_config not ssh_config**
-
-change this line to no
-```
-  $ PermitRootLogin yes
-```
-
-save and exit using ctrl-x, y (for yes) and enter to confirm the default file name
-
-### Reload SSH   
-
-```
-  $ service ssh restart
-```
-
-[how to restart services in linux](https://www.wikihow.com/Restart-Services-in-Linux)   
-
-```
-  $ sudo systemctl restart ssh
-```   
-**this worked, even though the last time i did it i got not feedback**
-
-**thats it**
-
-[change the sudo or root password](https://phoenixnap.com/kb/change-root-password-ubuntu)   
+- Advanced > SSH > Authentication > Private key file: C:\Users\<localUsername>\.ssh\id_rsa.ppk
 
 ### create server blocks   
 
@@ -282,8 +354,6 @@ goto/create the html folder specified on the server block and create the index.h
   echo "hello world!" > index.html 
   // or use example below (recommended)
 
-
-
 ```
 
 > That’s it! Ensure the root and index properties and nginx serves static HTML and JavaScript files.
@@ -303,6 +373,7 @@ goto/create the html folder specified on the server block and create the index.h
       </body>
   </html>
 ```
+> GOTCHA: YOU MUST COMMENT OUT THE LOCATION / SERVER BLOCK FOR THE STATIC PAGE TO WORK
 
 #### change the owner on the sites-available directory and contents
 
@@ -382,6 +453,47 @@ GOTCHA: letsencrypt error [recognizing] subdomain, cloudflare not connecting to 
   sudo systemctl restart nginx
 ```
 
+### Domain Management
+
+#### GOTCHA: use Create dropdown menu to get to domains
+
+### Configure Domain Name
+- Create a Cloudflare account
+- add a target domain name
+
+#### DNS menu
+- goto DNS menu item and add the D.O. ip_address to the first "A" record
+- add example.com to the CNAME after www
+
+#### Domain Name Garage
+- add Cloudflare Nameservers to your domain hosting service custom DNS
+
+#### D.O. Create Record
+- add A record using "@" symbol and ip address create a new record
+- add a record using "www" and also adding the ip address
+
+
+- comment out the location server block in sites-available/example.com to connect to static page
+- GOTCHA: you have to also turn off cloudflares SSL encryption mode
+
+GOTCHA: [How to Fix Cloudflare Error 521: Web Server is Down](https://webpop.io/cloudflare/error-521/)   
+
+```
+  curl http://ip_address
+```
+> In my case the static page was returned.  ultimately cloudflare was forcing 443 https when no ssl certificate or 443 
+> route was created yet.  to fix this i had to turn cloudflare SSL off and downgrade the protocol to http:
+
+- once i got past the server down error and got a white page for both domains i started the SSL process with letsencrypt
+
+#### [installing a node version manager](https://github.com/nvm-sh/nvm)    
+
+```
+  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+```
+> then restart / exit and log back in to terminal (**recommended**) for changes to take place
+> i sourced .bashrc then .bash_profile to force it but its probably easire to ssh back in
+
 [digital ocean nginx, ubuntu 18.04.2 ssl instructions](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04)   
 > also covers certbot auto-renewal
 
@@ -389,6 +501,7 @@ GOTCHA: letsencrypt error [recognizing] subdomain, cloudflare not connecting to 
 NOTE: see 2021 method in letsencrypt.md (install snap)
 
 ### SSL certificate setup   
+> NOTE: SEE SERVERS/LETSENCRYPT
 
 **NOTE: there seems to be an updated instruction for each os version - ubuntu 18.04 doesn't have certbot installed && "Certbot doesn't know how to automatically configure the web server on this system."**   
 
@@ -413,8 +526,6 @@ NOTE: see 2021 method in letsencrypt.md (install snap)
 ```
 
 ### **SKIP SECTION**
-
-
 
 
 #### create an ssl certificate
@@ -446,13 +557,6 @@ sudo certbot --nginx -d example.com -d www.example.com
 > then restart or exit and log back in for changes to take place
 > its easier to exit then worry about the restart file and order you need to do it in.
 
-#### [installing a node version manager](https://github.com/nvm-sh/nvm)    
-
-```
-  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-```
-> then restart / exit and log back in to terminal (**recommended**) for changes to take place
-> i sourced .bashrc then .bash_profile to force it but its probably easire to ssh back in
 
 ### this is a good time to create an alias for logging in
 
