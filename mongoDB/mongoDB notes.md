@@ -449,3 +449,20 @@ drop the index
 ```
 > use markModified
 
+#### [Mongoose: what's up with "_doc"?](https://stackoverflow.com/questions/18821212/mongoose-whats-up-with-doc)   
+
+> why am i using ._doc? 
+> _doc is needed when dealing with a mongodb obj that didn't use ".lean()" to remove the mongodb properties
+
+_doc exist on the mongoose object.
+
+Because mongooseModel.findOne returns the model itself, the model has structure (protected fields). When you try to print the object with console.log it gives you only the data from the database, because console.log will print the object public fields.
+
+If you try something like JSON.stringify then you get to see inside the mongoose model object. (_doc, state ...)
+
+In the case where you want to add more fields in the object and it's not working
+
+const car = model.findOne({_id:'1'})
+car.someNewProp = true // this will not work
+If later you set the property to the object car and you didn't specify in the Model Schema before then Mongoose model is validating if this field exists and if it's the valid type. If the validation fails then the property will not be set.
+

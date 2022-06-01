@@ -70,3 +70,19 @@ _component.js_
 
   menu.[0]
 ```
+
+#### [mapping and looping using each](https://handlebarsjs.com/guide/builtin-helpers.html#each)   
+[How To: Handlebars - Iterate over Arrays with the Each Helper](http://jsdev.wikidot.com/howto:11)   
+
+
+```
+  <ul class="upper-social-icons">
+    {{#each upper_icons}}
+      <li><a href="{{href}}" class="{{link}}" target="_blank"><i class="{{font_icon}}"></i></a></li>
+    {{/each}}
+  </ul>
+```
+
+> GOTCHA: i had an ISSUE with trying to add a helper function to process the @index
+> it failed. I set the helper in the server script but because this is working on the client side it think
+> whever helpers i add to the server fails client side detection

@@ -4,7 +4,8 @@ GOTCHA: the escape dilemma
 
 
 #### Single Stringify on the Server
-viewItemDetails.js (server)
+_viewItemDetails.js (server)_
+
 ```
     let data_str = JSON.stringify(data)
 ```
@@ -14,7 +15,8 @@ hbs.registerHelper('json', function(context) {
 });
 
 
-details.hbs (client)
+_details.hbs (client)_
+
 ```
   window['IMG_URL'] = `${location.origin}/core/alight/xfiles/images/`;
   window['ITEM_DATA'] = htmlDecode('{{data_str}}');
@@ -38,7 +40,8 @@ details.hbs (client)
   console.log("[item data 6] tripple bracket data",ITEM_DATA);
 ```
 
-Single console outputs
+#### Single console outputs   
+
 ```
 [item data 1] htmlDecode {"_id":"5dd5843d19bfc11bec9c96bb","category":"a alright what about another really long title? One that takes up the entire maximum count so that t","title_data":"We asked web developers we admire: "What about building websites has you interested this y","core_data":"","desc_data":"","url_data":"https://css-tricks.com/we-asked-web-developers-we-admire-what-about-building-websites-has-you-interested-this-year/","other_data":"","note_data":"","tag_data":"","meta_data":"{"title":"We%20asked%20web%20developers%20we%20admire%3A%20%22What%20about%20building%20websites%20has%20you%20interested%20this%20y","description":"For%20the%20first%20time%20ever%20here%20on%20CSS-Tricks%2C%20we%27re%20going%20to%20do%20an%20end-of-year%20series%20of%20posts.%20Like%20an%20Advent%20calendar%20riff%2C%20only%20look%20at%20us%2C%20we%27re%20bea","image":"https://css-tricks.com/wp-content/uploads/2019/11/series.png"}","task_data":"","picture":"link","published":true,"extra":"","notification":"","admin":false,"root":false,"container":false,"order":0,"filter":"alpha","modified":"2019-11-20T18:21:49.420Z","ancestor":"5dcc63e58c6b9d3a5c539781","data_type":"link","user_id":"5da54e08c72fdb4a0c765b0f","type":"media","created":"2019-11-20T18:21:49.460Z","__v":0}
 

@@ -72,7 +72,7 @@ add attachment true to all pairs
   db.pairs.updateMany({},{$set:{attachment: true}})// worked
 ```
 
-create a pair for all items
+#### create a pair for all items
 
 ```
   db.items.find({}).forEach(async function(results){
@@ -141,6 +141,8 @@ create a pair for all items
 getMoreInfo.js aggregate sample
 ```
   // item_ancestor
+  // const item_ancestor = "5e2d883a6be8ab12f02ed94b";
+
   let pipeline = [
     {
       '$match': {
@@ -216,38 +218,49 @@ getMoreInfo.js aggregate sample
 [$project in $lookup mongodb](https://stackoverflow.com/questions/53710203/project-in-lookup-mongodb)
 
 ```
-  {
-    '$lookup': {
-      'from': 'pairs', 
-      'let': {
-        'link_id': '$link_id'
-      }, 
-      'pipeline': [
-        {
-          '$match': {
-            '$expr': {
-              '$eq': [
-                '$$link_id', '$host_id'
-              ]
-            }, 
-            'attachment': true
-          }
-        }, {
-          '$project': {
-            'link_id': 1, 
-            '_id': 0
+  let lookup_obj = {
+    'from': 'pairs', 
+    'let': {
+      'link_id': '$link_id'
+    }, 
+    'pipeline': [
+      {
+        '$match': {
+          '$expr': {
+            '$eq': [
+              '$$link_id', '$host_id'
+            ]
+          }, 
+          'attachment': true
+        }
+      }, {
+        '$project': {
+          'link_id': 1, 
+          '_id': 0
+        }
+      }, {
+        '$addFields': {
+          'link_id': {
+            '$toString': '$link_id'
           }
         }
-      ], 
-      'as': 'info_ids'
-    }
+      }
+    ], 
+    'as': 'info_ids'
+  }
+
+
+  {
+    '$lookup': lookup_obj
   }
 ```
 > i had to use let to help me reference a property from the root
 > in match i was able to use the roots variable $/$link_id and match it to host_id in the referenced set (also the pair collection)
 
 
-new $function
+#### new $function operator
+
+[$function (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/function/)   
 
 ```
   '$addfields': {
@@ -266,11 +279,258 @@ new $function
 
 [How to Use Custom Aggregation Expressions in MongoDB 4.4](https://www.mongodb.com/developer/how-to/use-function-accumulator-operators/)   
 
-[$function (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/function/)   
 
 [MongoDB aggregation with $lookup only include (or project) some fields to return from query](https://stackoverflow.com/questions/35583569/mongodb-aggregation-with-lookup-only-include-or-project-some-fields-to-return)   
 
 [$addFields (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#pipe._S_addFields)   
 
-[MongoDB Compass missing aggregation options](https://www.mongodb.com/community/forums/t/mongodb-compass-missing-aggregation-options/4229/3)   
+### After the upgrade to 4.4   
+
+GOTCHA: [MongoDB Compass missing aggregation options](https://www.mongodb.com/community/forums/t/mongodb-compass-missing-aggregation-options/4229/3)   
 > may be what I'm looking for ($function) is not missing, maybe its just a part of $lookup and it works with the upgrade to 4.4
+
+
+### testing $function operator on 4.4 upgrade
+
+```
+  '$addFields': {
+    'info_ids': {
+      '$function': {
+        'body': function(data) {
+          let iIds = [];
+          if(data.length > 0){
+            for(let item of data){
+              let id_str = item.link_id;
+              iIds.push(id_str);
+            }
+            return iIds.join();
+          }else{
+            return "";
+          }
+        }, 
+        'args': [
+          '$info_ids'
+        ], 
+        'lang': 'js'
+      }
+    }
+  }
+```
+// works
+GOTCHA: forEach() didn't work in the function but for of loop does
+
+[$toString (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/toString/)   
+```
+  // Define stage to add convertedZipCode field with the converted zipcode value
+
+  zipConversionStage = {
+    $addFields: {
+        convertedZipCode: { $toString: "$zipcode" }
+    }
+  };
+
+  // Define stage to sort documents by the converted zipcode
+
+  sortStage = {
+    $sort: { "convertedZipCode": 1 }
+  };
+
+  db.orders.aggregate( [
+    zipConversionStage,
+    sortStage
+  ] )
+```
+
+
+#### [.lean() is not needed](https://stackoverflow.com/questions/47768327/mongodb-using-lean-on-aggregate-function)   
+
+```
+  rows = await Pair.aggregate(pipeline).lean();
+```
+
+#### using conditional lookups ($or?)   
+> i need a way to conditionally lookup items based off certain criteria
+
+[$or (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/or/)   
+[$or (used in query)](https://docs.mongodb.com/manual/reference/operator/query/or/)   
+[$facet (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/facet/)   
+[$expr](https://docs.mongodb.com/manual/reference/operator/query/expr/)    
+[$cond]()
+
+#### $or condition
+
+```
+  {
+      '$match': {
+        $or:[{'_id': 'link_id'},{'attachment': false}]
+      }
+    }
+
+```
+#### Create link and host display fields for each pair
+
+```
+  db.pairs.find({_id:ObjectId("5e16b0ae8ee064177cd3f53b")},async function(err, results){
+
+    // fails - has no error callback
+    // error 'projection' field must be of BSON type object.
+
+  });
+
+
+  db.pairs.find({}).forEach(async function(results){
+
+    let host = await db.items.findOne({_id: results.host_id});
+    let link = await db.items.findOne({_id: results.link_id});
+
+    if(host){
+      results.host_display = host.type;
+    }// if
+
+    if(link){
+      results.link_display = link.type;
+    }// if
+
+    db.pairs.findOneAndUpdate({_id:results._id}, {$set: results});  
+
+  });
+```
+GOTCHA: find has no error callback
+// _id:ObjectId("5e16b0ae8ee064177cd3f53b")
+
+#### [using collation](https://docs.mongodb.com/v4.4/reference/collation/)   
+[collation with aggregate]()
+
+```
+  rows = await Pair.aggregate(
+    pipeline, 
+    { 'collation': { 'locale': "en", 'caseLevel': true, 'strength': 2 }}/**fails*/
+  );
+```
+> fails -  Callback must be a function, got [object Object]
+
+[aggregate not a function](https://www.mongodb.com/community/forums/t/collation-is-not-a-function/120679/3)   
+
+**remedy:** use addfields, convert text sort field to lowercase new field
+sort by new field
+
+```
+  if(sort){
+
+    // add a new field
+    // make it title_data to lowercase
+    // sort by the new field
+
+    if (display_console || true) console.log(chalk.yellow(`[getAdvData] sort`), sort);
+
+
+    let sort_obj = sort;
+
+    if(Object.keys(sort).includes("title_data")){
+      pipeline.push({
+        '$addFields': {
+          'sort_title': {
+            '$toLower': '$title_data'
+          }
+        }
+      });
+
+      delete sort_obj.title_data;
+      sort_obj[`sort_title`] = 1;
+      // this works for collation GOTCHA: 
+      // GUIDE
+    }
+  
+    let sort_stage = {
+      '$sort': sort_obj
+    };
+    pipeline.push(sort_stage);
+  }
+```
+[aggregate toLower](https://docs.mongodb.com/manual/reference/operator/aggregation/toLower/)   
+
+#### give pairs project_id(s)
+  
+```
+  db.pairs.find({}).forEach(async function(results){
+
+    let host = await db.items.findOne({_id: results.host_id});
+    let link = await db.items.findOne({_id: results.link_id});
+
+    if(host){
+      results.host_project_id = host.project_id;
+    }// if
+
+    if(link){
+      results.link_project_id = link.project_id;
+    }// if
+
+    db.pairs.findOneAndUpdate({_id:results._id}, {$set: results});  
+
+  });
+```
+
+#### find some orphaned items and see why they exist
+
+> {owner_id:ObjectId('5e16b0ae8ee064177cd3f53b'),host_project_id:{$ne:ObjectId('5e16b0ae8ee064177cd3f53b')}}   
+
+#### 2 places where pairs are created or modified
+
+- getData/pair_item
+
+
+#### comparing 2 fields from the same doc within aggregate
+[Mongodb query with fields in the same documents](https://stackoverflow.com/questions/8433046/mongodb-query-with-fields-in-the-same-documents)
+
+```
+    db.myCollection.find({$expr: {$ne: ["$a1.a", "$a2.a"] } });
+```
+
+my sample
+```
+  //result = client['SunzaoAlight']['pairs'].aggregate([
+    result = db.myCollection.aggregate([
+      {'$match': {
+            'host_type': {'$in': ['project', 'organization', 'user']}, 
+            '$expr': {'$ne':['$link_project_id', '$host_project_id']}
+        }
+      }
+  ]);
+```
+#### updating documents using aggregate
+[aggregation with update](https://stackoverflow.com/questions/19384871/aggregation-with-update-in-mongodb)   
+[$merge (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/merge/)   
+> use $merge at the end of a pipeline to update a collection
+```
+  [
+  {
+    '$match': {
+      'host_type': {
+        '$in': [
+          'project', 'organization', 'user'
+        ]
+      }, 
+      '$expr': {
+        '$ne': [
+          '$link_project_id', '$host_project_id'
+        ]
+      }
+    }
+  }, {
+    '$addFields': {
+      'host_project_id': '$link_project_id'
+    }
+  }, {
+    '$merge': {
+      'into': 'pairs', 
+      'on': '_id', 
+      'whenMatched': 'replace', 
+      'whenNotMatched': 'discard'
+    }
+  }
+]
+```
+> this was executed right inside the compass aggregation tab
+> i replaced host_project_id with link_project_id then merged back into the collection
+
+> GOTCHA: I tried to use merge in the wild with getAdvData.js and it failed

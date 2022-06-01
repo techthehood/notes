@@ -493,3 +493,20 @@ so i ran audits recommendation
 	}
 ```
 **here's part of my working offline experiment - ultimately all i need to do is make the hbs partials routes more dynamic with local and copy the contents of the cdn files**
+
+#### erase unneccessary files from build folder
+
+[clean-webpack-plugin](https://www.npmjs.com/package/clean-webpack-plugin)   
+
+```
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+  ...
+
+  plugins:[
+    ...
+    new HtmlWebpackPlugin({ chunksSortMode: "none" }),
+    new CleanWebpackPlugin(),
+  ],
+  ...
+```

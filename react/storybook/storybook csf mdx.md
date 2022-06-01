@@ -29,6 +29,8 @@ _see: storybook docs recipes above_
 
 [MDX transclusion](https://mdxjs.com/getting-started#documents)   
 
+[transclusion definition](https://en.wikipedia.org/wiki/Transclusion)   
+
 [the gatekeepers hint](https://github.com/storybookjs/storybook/issues/10209)   
 
 > The current workaround is not awful, but involves more code than neccesary:  ????

@@ -108,6 +108,19 @@ working example
 ```
 **set the option b4 each post request**
 
+> GOTCHA: using cors with postman - postman shows "no origin detected"
+> i can use cors with local server but a live server won't allow postman requests under my current cors config.
+
+```
+  if(!origin){
+    if(display_console || true) console.log(`[no origin detected]`,origin);
+    return callback(null, true);
+  }
+```
+> NOTE: actually this passes cors - it does the same thing it does for the valid origin "callback(null, true)"
+[postman access live servers](https://support.postman.com/hc/en-us/articles/211913929-My-request-is-redirected-to-a-GET-request)   
+> there are settings in cors dealing with 301 redirects etc that makes postman unable to access my live server directly   
+
 #### [reporting errors using 'next'](https://expressjs.com/en/guide/error-handling.html)
 
 > if next() fn is give any value it reports as an error

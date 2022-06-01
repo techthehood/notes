@@ -136,12 +136,14 @@ _preview.js_
     docs: {
       container: ({ children, context }) => (
         <DocsContainer context={context}>
-            <div style={{padding: '0 3rem'}}>{children}</div>
+            <div className="d3-storybook-wrapper" style={{padding: '0 3rem'}}>{children}</div>
         </DocsContainer>
       ),
     }
   }}
 ```
+> this setup wraps all the pages content (as children) into this html element which can be controlled by css 
+> inline style element or external stylesheet using className
 
 _meta tag example_
 

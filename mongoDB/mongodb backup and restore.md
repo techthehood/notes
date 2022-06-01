@@ -66,7 +66,7 @@
   mongodump --out=/data/dump/$DEST
 ```
 
-[mongorestore | mongodb docs](https://docs.mongodb.com/database-tools/mongorestore/)   
+#### [mongorestore | mongodb docs](https://docs.mongodb.com/database-tools/mongorestore/)   
 
 > mongorestore: To restore all data to the original database:
 
@@ -86,7 +86,7 @@ NOTE: i didn't use --verbose
 ```
 > works
 
-restore a collection
+#### restore a collection
 
 ```
   mongorestore path-to-bson/dbName/collect.bson --db=dbName --collection=collect

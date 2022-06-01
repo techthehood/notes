@@ -91,6 +91,9 @@ add fields
 
   let updated = await UserItem.updateMany({}, {$rename:{"description": "desc_data"}});// failed until ...
 
+  use DbName
+  db.pairs.updateMany({}, {$rename:{created: "pair_created", modified: "pair_modified"}})// WORKS
+
 ```
 **failed until schema was updated to use description instead of desc_data**
 
@@ -1015,3 +1018,59 @@ Aggregate view "orphaned pairs"
 ```
 > works - $count added later to total returned items
 
+#### comparing 2 fields from the same doc within aggregate
+[Mongodb query with fields in the same documents](https://stackoverflow.com/questions/8433046/mongodb-query-with-fields-in-the-same-documents)
+
+```
+    db.myCollection.find({$expr: {$ne: ["$a1.a", "$a2.a"] } });
+```
+
+my sample
+```
+  //result = client['SunzaoAlight']['pairs'].aggregate([
+    result = db.myCollection.aggregate([
+      {'$match': {
+            'host_type': {'$in': ['project', 'organization', 'user']}, 
+            '$expr': {'$ne':['$link_project_id', '$host_project_id']}
+        }
+      }
+  ]);
+```
+#### updating documents using aggregate
+[aggregation with update](https://stackoverflow.com/questions/19384871/aggregation-with-update-in-mongodb)   
+[$merge (aggregation)](https://docs.mongodb.com/manual/reference/operator/aggregation/merge/)   
+> use $merge at the end of a pipeline to update a collection
+```
+  [
+  {
+    '$match': {
+      'host_type': {
+        '$in': [
+          'project', 'organization', 'user'
+        ]
+      }, 
+      '$expr': {
+        '$ne': [
+          '$link_project_id', '$host_project_id'
+        ]
+      }
+    }
+  }, {
+    '$addFields': {
+      'host_project_id': '$link_project_id'
+    }
+  }, {
+    '$merge': {
+      'into': 'pairs', 
+      'on': '_id', 
+      'whenMatched': 'replace', 
+      'whenNotMatched': 'discard'
+    }
+  }
+]
+```
+> this was executed right inside the compass aggregation tab
+> i replaced host_project_id with link_project_id then merged back into the collection
+
+#### update captions from null to empty
+db.items.updateMany({caption: null},{$set:{caption:""}})
