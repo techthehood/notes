@@ -66,6 +66,14 @@
   mongodump --out=/data/dump/$DEST
 ```
 
+#### my example
+
+```
+  mongodump --db MyDbName --out live_bu/2022-06-06/
+```
+> Inside the destination the db will add a MyDbName directory with all the db contents   
+
+
 #### [mongorestore | mongodb docs](https://docs.mongodb.com/database-tools/mongorestore/)   
 
 > mongorestore: To restore all data to the original database:
@@ -92,3 +100,6 @@ NOTE: i didn't use --verbose
   mongorestore path-to-bson/dbName/collect.bson --db=dbName --collection=collect
 ```
 > GOTCHA: --db is required
+> NOTE: --collection=example is not required
+
+

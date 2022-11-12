@@ -75,3 +75,25 @@ auth: {
 
 
 GOTCHA:  [550 error when sending email through nodemailer](https://stackoverflow.com/questions/61086675/550-error-when-sending-email-through-nodemailer)   
+
+
+[Less secure apps & your Google Account](https://support.google.com/accounts/answer/6010255?hl=en)   
+To help keep your account secure, from May 30, 2022, ​​Google no longer supports the use of third-party apps or devices which ask you to sign in to your Google Account using only your username and password.
+
+Important: This deadline does not apply to Google Workspace or Google Cloud Identity customers. The enforcement date for these customers will be announced on the Workspace blog at a later date.
+
+**Use more secure apps**   
+
+If an app uses less secure sign-in technology, you might not be able to use it with your Google Account.
+
+You can sign in to your Google Account from any third-party app that has the "Sign in with Google" option. You can also sign in to your Google Account using all Google products, like Gmail.
+
+**Use an App Password**   
+
+An App password is a 16-digit passcode that gives a non-Google app or device permission to access your Google Account. Learn more about how to sign in using App Passwords.
+
+[Sign in with App Passwords](https://support.google.com/accounts/answer/185833)   
+
+Tip: App Passwords aren’t recommended and are unnecessary in most cases. To help keep your account secure, use "Sign in with Google" to connect apps to your Google Account. 
+
+An App Password is a 16-digit passcode that gives a less secure app or device permission to access your Google Account. App Passwords can only be used with accounts that have 2-Step Verification turned on.

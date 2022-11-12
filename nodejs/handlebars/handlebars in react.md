@@ -86,3 +86,75 @@ _component.js_
 > GOTCHA: i had an ISSUE with trying to add a helper function to process the @index
 > it failed. I set the helper in the server script but because this is working on the client side it think
 > whever helpers i add to the server fails client side detection
+
+#### accessing parent scoped variables
+[Access a variable outside the scope of a Handlebars.js each loop](https://stackoverflow.com/questions/13645084/access-a-variable-outside-the-scope-of-a-handlebars-js-each-loop)   
+
+#### using multiple templates
+> see jng main Events component
+
+**App.js**
+```
+  <MegaOne component="Events"  {...{ data: main_data.events }} >
+    <Exporter {...{ home: `.custom_head.summit`, delay: 3 }}>
+      <div className="summit head">
+        Comming Soon
+      </div>
+    </Exporter>
+    <Exporter {...{ home: `.custom_cont.summit`, delay: 3 }}>
+      <div dangerouslySetInnerHTML={{ __html: event_custom }} />
+    </Exporter>
+  </MegaOne>
+```
+
+**jng/js/Main/...Events.js**   
+```
+  let has_slider = data.img_slider;
+
+  ...
+
+  const h_cont = has_slider ? htmlContent(data) : staticContent(data);
+
+  return (
+    <div className="Events" ref={ref}>
+      <div dangerouslySetInnerHTML={{ __html: h_cont }} />
+      {children}
+    </div>
+  );
+```
+
+**jng/js/Main/..../Head.js**
+```
+  let h_cont; 
+  
+  switch (mode) {
+    case 'BigHead':
+        h_cont = htmlContent2(data);
+      break;
+  
+      default:
+        h_cont = htmlContent(data);
+      break;
+  }
+
+  return (
+    <div className={`${mode}`}>
+      <div dangerouslySetInnerHTML={{ __html: h_cont}} />
+      {/* <div dangerouslySetInnerHTML={{ __html: template(data) }} /> */}
+    </div>
+  );
+```
+
+#### [skipping dot notation](https://handlebarsjs.com/guide/builtin-helpers.html#with)   
+
+**jng/.../Blog.hbs**
+```
+{{#with main}}
+  <span class="sub-title">{{sub}}</span>
+  <h2 class="title mb-0">{{title1}}
+  <span class="alt-color js-rotating">
+    {{title_bold1}}
+    {{title_bold2}}</span>
+  </span>{{title3}}</h2>
+{{/with}}
+```

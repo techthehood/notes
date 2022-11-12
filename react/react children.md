@@ -1,6 +1,87 @@
 # React childern notes
 *working with react children*
 
+[React.Children docs](https://reactjs.org/docs/react-api.html#reactchildren)   
+
+#### [How to pass props to {this.props.children}](https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children)   
+
+> setup index.js
+
+```
+  const App = () => {
+  // This approach is less type-safe and Typescript friendly since it
+  // looks like you're trying to render `Child` with `sayHello` missing.
+  // It's also confusing to readers of this code.
+  return (
+    <Parent>
+      <Child childName="Billy" />
+      <Child childName="Bob" />
+    </Parent>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("container"));
+```
+
+> the Child component
+```
+  const Child = ({ childName, sayHello }) => (
+    <button onClick={() => sayHello(childName)}>{childName}</button>
+  );
+
+  export default Child;
+```
+
+> inside the Parent component
+```
+import {Children, cloneElement} from 'react'
+// used instead of import React from 'react'
+
+const Parent = ({
+  children,
+}) => {
+
+  const sayHello = ()=>{...};
+
+  const childrenWithProps = React.Children.map(children, child => {
+    // Checking isValidElement is the safe way and avoids a
+    // typescript error too.
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { sayHello });
+    }
+    return child;
+  });
+
+  return <div>{childrenWithProps}</div>
+
+}
+
+export default Parent;
+```
+
+#### or Parent can call children as a function
+
+> Parent component - return value (not using childrenWithProps part of the example above)
+```
+   return <div>{children(sayHello)}</div>
+```
+
+index.js
+```
+  return (
+    <Parent>
+      {(sayHello) => (
+        <React.Fragment>
+          <Child childName="Billy" sayHello={sayHello} />
+          <Child childName="Bob" sayHello={sayHello} />
+        </React.Fragment>
+      )}
+    </Parent>
+  );
+
+```
+IMPORTANT: Child component explicitly calls the prop.sayHello function 
+it doesn't run sayHello just by being a prop
 
 ### [How to pass data to props.children](https://frontarm.com/james-k-nelson/passing-data-props-children/)   
 

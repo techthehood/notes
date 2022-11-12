@@ -5,8 +5,14 @@
 
 - [MongoDB Lookups and Populates: An Unexpected Journey](https://medium.com/cameoeng/mongodb-lookups-and-populates-an-unexpected-journey-940e08e36a94)   
 - [Aggregation Pipeline Stages | MongoDB Docs](https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/)   
-- [Aggregation Pipeline Operators](https://docs.mongodb.com/manual/reference/operator/aggregation/)   
-   
+- [Aggregation Pipeline Operators](https://docs.mongodb.com/manual/reference/operator/aggregation/)  
+
+
+#### [Import pipeline from plain text | Compass](https://www.mongodb.com/docs/compass/current/import-pipeline-from-text/#open-the-new-pipeline-from-plain-text-dialog)   
+> choose a collection from the menu
+> choose aggregations
+> choose the dropdown arrown next to the plus icon under "Documents"
+> select "New Pipeline From Text"
 
 #### backup db
 
@@ -534,3 +540,71 @@ my sample
 > i replaced host_project_id with link_project_id then merged back into the collection
 
 > GOTCHA: I tried to use merge in the wild with getAdvData.js and it failed
+
+
+#### [Return only a fields values](https://stackoverflow.com/questions/33425565/how-to-return-array-of-string-with-mongodb-aggregation)   
+> use distinct or just use map
+
+```
+  host_obj_ary.map((entry)=>{
+    return new ObjectId(entry.host_id);
+  });
+```
+
+#### [return random documents](https://stackoverflow.com/questions/24806721/mongodb-how-to-find-10-random-document-in-a-collection-of-100)   
+
+```
+  {"$sample":{size: 4}}
+```
+if you are using limit, don't.  limit will cause the sample to be limited to the limit size. i had a limit of 4 so the sample of 4 randomly reordered the same first 4 items the limit returned.
+
+# [Add only a field from another collection in MongoDB](https://stackoverflow.com/questions/51010754/add-only-a-field-from-another-collection-in-mongodb)   
+
+> i used compass to modify it from the solutions example - i wanted the entire thing to fit into a single stage
+> so i wouldn't have to make a lot of stages in compass to write and test it.
+
+> nope the single stage didn't work
+```
+   {
+    '$lookup': {
+      'from': 'items', 
+      'let': {
+        'host_id': '$host_id'
+      }, 
+      'pipeline': [
+        {
+          '$match': {
+            '$expr': {
+              '$eq': [
+                '$$host_id', '$_id'
+              ]
+            }
+          }
+        }
+      ], 
+      'as': 'host_cat'
+    }
+  }, {
+    '$addFields': {
+      'category': '$host_cat.title_data'
+    }
+  }, {
+    '$unwind': '$category'
+  }, {
+    '$project': {
+      'host_cat': 0
+    }
+  }
+```
+NOTE: $unwind is needed because $addFields the way i used it:
+```
+  'category': '$host_cat.title_data' 
+```
+turns category's new value into an array
+
+```
+  category: ["travel"]
+```
+
+$unwind turns it back into a string
+

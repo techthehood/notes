@@ -38,7 +38,7 @@
   ...
   @include media.mobile{
     min-height: 250px; 
-    @extend %sv-mobile;// fails
+    @extend %sv-mobile;// FAILS
   }
   ...
 ```
@@ -58,8 +58,8 @@
     ...
     @include media.mobile{
       min-height: 250px; 
-      @include sv-mobile;// works
-      // @extend %sv-mobile;// fails
+      @include sv-mobile;// WORKS
+      // @extend %sv-mobile;// FAILS
     }
     ...
 ```

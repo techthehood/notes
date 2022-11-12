@@ -43,3 +43,35 @@ GOTCHA: Cannot find module 'react/jsx-runtime
 ```
 
 > idk if both fixed the issue or if adding resolve: to webpack did the job.  just updating the bable presets alone failed.   
+
+
+#### GOTCHA progamatically inserted text causes the shrink label to overlap the text in the display   
+> RESOLVED i can force strink control on mui (adv) textareas - this prevents overlap on text inserted programatically otherwise mui doesn't detect that the shrink should change
+[fix shrink limitation docs](https://mui.com/material-ui/react-text-field/#shrink)   
+
+**CustomInput.js**
+```
+  let shrink_ctrl = (exists(props.value) || exists(props.defaultValue)) ? {
+    InputLabelProps:{ shrink: true }
+  } : {};
+
+  ...
+
+  <TextField 
+    {...rest}
+    inputRef={(el) => {
+      register(el,reg_data);
+      inputRef.current = el;
+      if(ref) ref.current = el;
+    }}
+    data-comp={"CustomInput"}
+    // InputLabelProps={{ shrink: true }}
+    {...shrink_ctrl}
+    onFocus={() => {
+      inputRef.current.select();
+    }}
+  ></TextField>
+
+  ...
+
+```

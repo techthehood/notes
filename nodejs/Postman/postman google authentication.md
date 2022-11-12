@@ -84,6 +84,7 @@ use middleware on the server to handle Authorization
 
 #### Advanced:
 
+
 choose the options icon on the collections tab
 choose edit from the dropdown
 choose Authorization tab
@@ -92,6 +93,8 @@ a. paste the endpoint into the token input field
 b. create a reference to the token environmental variable (recommended)
 
 > the individual request has the same "Authorization" setup
+
+#### [pre and post scripts in postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)   
 
 #### setting up the environment
 1. go to the cog/gear (option) icon at the top right of the screen
@@ -121,18 +124,18 @@ copy the jwt if available
 
 
 #### Environmental variable token
-> NOTE: see video 110 advanced postman
+> NOTE: see video #110 "advanced postman"
 type {{ authToken }} in the token input field
 click "update" button
 enter the following script in the "test" panel/ test script section of the login and create requests
-**test runs after the request is received**
+**test runs after the request response is received (post script)**
 
 ```
   if(pm.response.code === 200){
     pm.environment.set("authToken",pm.response.json().token)
   }
 ```
-pm object has the environment variables which can be set with environment.set("varName","value") like localStorage. pm also has .respone.codes, & the .response.json (which is the body)
+pm object has the environment variables which can be set with environment.set("varName","value") like localStorage. pm also has pm.respone.codes, & the pm.response.json (which is the body)
 
 **I can also manually create the authToken environment variable using the gear (Manage Environments) icon in the top right of the screen and pasting in the jwt**
 
@@ -179,6 +182,11 @@ passport JWT Strategy
 	const valid_token = await axios.get(`${location.origin}/api/alight/users/validate_token`);
 ```
 **the custom header is also added to the axios header here (not case sensitive)**
+
+### setup environment variables
+  - choose the environments btn on the left control menubar
+  - choose the plus at the left top of the menu 
+  (hovering says create environment)
 
 [postman API Key](https://learning.postman.com/docs/sending-requests/authorization/#api-key)   
 

@@ -184,6 +184,7 @@ export {
 custom_check.js
 ```
   const custom_check = observer((props) => {
+    // const custom_check = observer(forwardRef((props, ref) => {
     ...
     let coreStore = useContext(CoreContext);// not dynamic
 
@@ -200,6 +201,7 @@ custom_check.js
 
   export default custom_check;
 ```
+> GOTCHA: don't forget to add the observer() around the component declaration so the component can rerender when relavent changes occur to the state. Also NOTE forwardRef inside observer above
 
 #### class based component use
 check_option.js

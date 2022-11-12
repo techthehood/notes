@@ -344,7 +344,11 @@ add a [server] tag and color its background
 
   # blue background w/ black text
   printf "\n$txtblk$bakblu[server] $yellow%s\n" "$PWD"
+
+  // replaces
+  printf "\n$yellow%s\n" "$PWD"
 ```
+
 ### [Manage DNS records](https://www.digitalocean.com/docs/networking/dns/how-to/manage-records/)   
 [DNS quickstart - (not really helpful)](https://www.digitalocean.com/docs/networking/dns/quickstart/)   
 A records(IPv4), AAAA records(IPv6)
@@ -370,3 +374,4 @@ location ~ ^/(static|media)/ {
 ```
   sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
 ```
+> GOTCHA: don't forget to add the .com file in the "from" section

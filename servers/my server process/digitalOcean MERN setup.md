@@ -185,6 +185,65 @@ then restart the SSH service
 ```
 > then try ssh-copy-id ... above
 
+NOTE: an alternate way to do this is to manually replace the auto-detected public key with once you generate yourself
+
+[DigitalOcean Permission denied (publickey) Solution](https://medium.com/gelecex/digitalocean-permission-denied-publickey-solution-6cd963049fce)  
+
+on my laptop:
+
+```
+  cd .ssh
+  cat id_rsa.pub
+```
+> then copy the results "ssh-rsa XXXXXXXXXXXX..." etc
+
+then on the online console
+
+```
+cd .ssh
+nano authorized_keys
+```
+i deleted the contents of this file and paste the results of the ssh-copy-id command
+> "ssh-rsa XXXXXXXXXXXX..." etc
+
+this may also help
+[How to Upload an SSH Public Key to an Existing Droplet](https://docs.digitalocean.com/products/droplets/how-to/add-ssh-keys/to-existing-droplet/)   
+
+Alternatively, instead of opening the file in an editor and pasting your key, you can create the authorized_keys file with your public key added with a single command. If you use this, substitute the contents of your public key into the echo command.
+```
+  echo "ssh-rsa EXAMPLEzaC1yc2E...GvaQ== username@203.0.113.0" >> ~/.ssh/authorized_keys
+```
+
+#### if the non-root user has the same permission denied issue on local ssh connection:
+
+> manually create a .ssh/authorized_keys file for the new non-root user and add the public key data
+
+- from root user cd into the new non-root user dir
+```
+cd ../home/<non-root-user-alias>
+```
+
+- create a new .ssh dir and a new authorized_keys file
+```
+  mkdir .ssh
+  echo > authorized_keys
+  nano authorized_keys
+```
+
+- open a different terminal and run (locally) from the users .ssh folder
+```
+  cat id_rsa.pub
+```
+
+- paste the output into the nano authorized_keys screen
+> "ssh-rsa XXXXXXXXXXXX..." etc
+
+- try ssh into the system again using the new non-root user
+
+```
+  ssh new-non-root-user@your-droplet-ipv4-address
+```
+
 
 ### Configure SSH Daemon (to disallow remote ssh root access)
 open the following file
@@ -216,19 +275,12 @@ $ service ssh restart
 
 [change the sudo or root password](https://phoenixnap.com/kb/change-root-password-ubuntu)   
 
-<!-- 
-██   ██ ███████ ██    ██  ██████  ███████ ███    ██     ██████  ██████   ██████   ██████ ███████ ███████ ███████ 
-██  ██  ██       ██  ██  ██       ██      ████   ██     ██   ██ ██   ██ ██    ██ ██      ██      ██      ██      
-█████   █████     ████   ██   ███ █████   ██ ██  ██     ██████  ██████  ██    ██ ██      █████   ███████ ███████ 
-██  ██  ██         ██    ██    ██ ██      ██  ██ ██     ██      ██   ██ ██    ██ ██      ██           ██      ██ 
-██   ██ ███████    ██     ██████  ███████ ██   ████     ██      ██   ██  ██████   ██████ ███████ ███████ ███████ 
-                                                                                                      
- -->
+## **KEY GEN PROCESS**
 
 ### NOTE: if i didn't already have a key i would have to do this:
 
 ### [how to add ssh keys to droplets](https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/)
-[is it safe to use same ssh key on multiple servers?](https://unix.stackexchange.com/questions/27661/good-practice-to-use-same-ssh-keypair-on-multiple-machines)
+[is it safe to use same ssh key on multiple servers?](https://unix.stackexchan  ge.com/questions/27661/good-practice-to-use-same-ssh-keypair-on-multiple-machines)
 **seems like its ok**
 
 
@@ -266,14 +318,7 @@ output
 ```
 > all your sites can share one public key
 
-<!-- 
-██   ██ ███████ ██    ██  ██████  ███████ ███    ██     ██████  ██████   ██████   ██████ ███████ ███████ ███████ 
-██  ██  ██       ██  ██  ██       ██      ████   ██     ██   ██ ██   ██ ██    ██ ██      ██      ██      ██      
-█████   █████     ████   ██   ███ █████   ██ ██  ██     ██████  ██████  ██    ██ ██      █████   ███████ ███████ 
-██  ██  ██         ██    ██    ██ ██      ██  ██ ██     ██      ██   ██ ██    ██ ██      ██           ██      ██ 
-██   ██ ███████    ██     ██████  ███████ ██   ████     ██      ██   ██  ██████   ██████ ███████ ███████ ███████ 
-                                                                                                      
- -->
+**END KEY GEN PROCESS**
 
 #### Setting Up a Basic Firewall
 
@@ -306,6 +351,8 @@ output
 - user name: server user
 
 - Advanced > SSH > Authentication > Private key file: C:\Users\<localUsername>\.ssh\id_rsa.ppk
+
+ NOTE: IMPORTANT: cloned a previously working site in winSCP and changed the ip address
 
 ### create server blocks   
 
@@ -373,7 +420,7 @@ goto/create the html folder specified on the server block and create the index.h
       </body>
   </html>
 ```
-> GOTCHA: YOU MUST COMMENT OUT THE LOCATION / SERVER BLOCK FOR THE STATIC PAGE TO WORK
+> GOTCHA: IMPORTANT: YOU MUST COMMENT OUT THE NODEJS LOCATION / SERVER BLOCK FOR THE STATIC PAGE TO WORK
 
 #### change the owner on the sites-available directory and contents
 
@@ -381,27 +428,35 @@ goto/create the html folder specified on the server block and create the index.h
 
 ```
 
-#### creating symbolic links from these files to the sites-enabled directory   
-  
+#### creating symbolic links from these files to the sites-enabled directory
 ```
-  $ sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+  $ sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/ 
+  //WORKS
+  !or 
+  $ sudo ln -s sites-available/example.com sites-enabled/ 
+  // FAILS
 ```
+> GOTCHA: don't forget to add the .com file in the "from" section
+
+
 
 [How to Remove Symbolic Link in Linux with Example](https://linoxide.com/linux-how-to/remove-symbolic-link/)    
 
-**failed**
+**FAILED**
 
 ```
   sudo rm beta.example.com
 
 ```   
 
-**works**   
+**WORKS**   
 
 ```
 
   unlink beta.example.com
 ```
+
+NOTE: deleting them from winSCP also WORKS
 
 [How To Set Up Nginx Server Blocks (Virtual Hosts) on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04)   
 
@@ -493,6 +548,8 @@ GOTCHA: [How to Fix Cloudflare Error 521: Web Server is Down](https://webpop.io/
 ```
 > then restart / exit and log back in to terminal (**recommended**) for changes to take place
 > i sourced .bashrc then .bash_profile to force it but its probably easire to ssh back in
+
+> see also nodejs **node version manager.md**
 
 [digital ocean nginx, ubuntu 18.04.2 ssl instructions](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04)   
 > also covers certbot auto-renewal
@@ -604,4 +661,95 @@ nano .bash_profile
   pm2 start app.js --name "my-api"
 ```
 
+### install node version manager
+> see /nodejs/node version mananger.md
 
+
+
+## GOTCHA: npm install (transfer to a new vps)   
+> there are nvm/node, npm and pm2 version issues that can be expected when moving package.json files over from another environment.
+
+i started out by installing the latest version of node using nvm install
+nvm current // 18.10.0
+
+Error: Please, upgrade your dependencies to the actual version of core-js@3
+
+[suggested fix](https://stackoverflow.com/questions/59354180/error-please-upgrade-your-dependencies-to-the-actual-version-of-core-js3)   
+
+```
+  npm install --save core-js@^3
+```
+
+still failed FAILED - other things broke
+
+roll back to an earlier version of node
+
+```
+  nvm list
+  nvm install 8
+  nvm use 8
+  //Now using node v8.17.0 (npm v6.13.4)
+```
+
+WORKS - this seems to work (no errors only fixes)
+
+found 26 vulnerabilities (4 low, 8 moderate, 13 high, 1 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+#### GOTCHA: SyntaxError: Unexpected token import
+
+/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:30
+0|jng | import(url.pathToFileURL(process.env.pm_exec_path));
+
+```
+  npm -v
+  // pm2 -v 5.2.0
+```
+
+rollback pm2 to v4.2.1
+```
+  pm2@4.2.1
+```
+
+pm2 v5.2.0 persists
+
+#### [Uninstalling PM2 completely on Ubuntu](https://github.com/Unitech/pm2/issues/1466)   
+
+```
+  pm2 kill
+  sudo npm remove pm2 -g
+  #test with :
+  which pm2
+```
+
+[install pm2 on ubuntu](https://pm2.io/docs/runtime/guide/installation/)
+> NOTE: IMPORTANT: i forgot to use sudo for the global install
+
+```
+  sudo npm i pm2@4.2.1 -g
+```
+
+nvm v8.17.0
+pm2 v4.2.1
+
+there is a port descrepancy - i need to detect the server name
+
+src/server.js
+```
+console.log(`[server.js] HOSTNAME`, HOSTNAME);
+console.log(`[server.js] os hostname`, os.hostname());
+console.log(`[server.js] SITE_SERVER`, SITE_SERVER);
+console.log(`[server.js] BETA_PORT`, BETA_PORT);
+```
+
+keys.js
+```
+  // HOSTNAME: process.env.DOMAIN_NAME.split(".")[0],
+  HOSTNAME: process.env.HOSTNAME,
+```
+> originally i had keys detecting the domain name and separating the TLD from the name
+> idk why i needed to be so fancy - even though i previously named the droplet/host server the same as the domain name.  but this new droplet will host more sites so its impractical to name the host server the same thing as one of the domains
+
+i added HOSTNAME to .env - this value should be the same as the droplet server the site is hosted on
+
+if local - this will detect to using port 8080 otherwise it will use server ports live or beta on further conditions

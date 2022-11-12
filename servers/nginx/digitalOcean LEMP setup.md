@@ -125,7 +125,7 @@ PermitRootLogin yes
 save and exit using ctrl-x, y (for yes) and enter to confirm the default file name
 
 ### Reload SSH
-**not this one**
+**not this one use systemctl instructions below**
 ```
 $ service ssh restart
 ```
@@ -194,7 +194,7 @@ change the permissions to the user
 The bindfs solution  
 [How to Install ‘bindfs’ on Ubuntu 18.04](https://www.talkerland.com/2018/08/20/howard/how-to-install-bindfs-on-ubuntu-18-04/)   
 
-## FOR MORE ON FILE PERMISSIONS SEE 'chmod file permissions.md'
+## FOR MORE ON FILE PERMISSIONS SEE '../chmod file permissions.md'
 >Create the directory for example.com as follows, using the -p flag to create any necessary parent directories:
 
 ```

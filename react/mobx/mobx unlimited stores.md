@@ -6,6 +6,7 @@ core.js
   import {createCoreStore, removeCoreStore} from './coreStore';
 
   const Core = observer((props) => {
+    // const Core = observer(forwardRef((props, ref) => {
     ...
 
     const coreStore = createCoreStore(state.main_IUN);

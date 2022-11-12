@@ -42,3 +42,9 @@ $desktop: 1199px;
     @include b();
   }
 ```
+
+#### Using a placeholder selector in a media query   
+
+**GOTCHA: failed - can not @extend selector across media queries**
+
+> see scss notes.md

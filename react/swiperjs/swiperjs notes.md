@@ -132,7 +132,7 @@ how can i reference the swiper within the component
 > i can use the callback prop to connect the swiper instance to a useRef.current variable
 > i can use swiper instance .realIndex to help set the state.activeIndex value
 
-how can i detect which slide is active and pass that to a function so i can show corresponding info externally?
+#### how can i detect which slide is active and pass that to a function so i can show corresponding info externally?
 
 > swiper has an onSlideChange property that fires with each swipe
 ```
@@ -153,3 +153,30 @@ how can i detect which slide is active and pass that to a function so i can show
 ```
 > GOTCHA: swiper_ref.current.?? throws an error during load - it needs an if statement to check for existing values before trying to use the referenced swiper instance.   
 > GOTCHA:  in loop mode the first slide uses both zero index and list.length (last slide index) due to duplication and wrap around - activeIndex is inaccurate in this instance because it uses both values. try realIndex
+
+> i used this with WWA component
+
+```
+  let inner = use_data.map((details, ndx) => {
+    // NOW: i need a component selector here and use the template prop
+    const d_cont = detailsHtmlContent(details);
+    let a_cls = activeIndex == ndx ? "active" : "";
+    ...
+
+
+  swiper.on('slideChange', () => {
+      // debugger;
+      if (swiper_ref.current) {
+        console.log('slide activeIndex', swiper_ref.current.activeIndex);
+        console.log('slide realIndex', swiper_ref.current.realIndex);
+        console.log('slide previousIndex', swiper_ref.current.previousIndex);
+        setActiveIndex(swiper_ref.current.realIndex);
+      }
+    });
+```
+
+#### [auto height](https://stackoverflow.com/questions/25946896/swiper-height-auto-resize)   
+
+```
+
+```

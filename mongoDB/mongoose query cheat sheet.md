@@ -587,6 +587,27 @@ tasks
 
   db.getCollection('items').find({task_data:{$ne:[]}})
 ```
+
+#### update a collection using data from another collection
+> test to see if it works  
+
+```
+  db.items.find({_id: ObjectId("5e2d883a6be8ab12f02eda07")}).forEach(function(entry){
+   let eId = entry._id;
+   db.pairs.updateMany({link_id: eId},{$set:{init_date: entry.created}})
+  });
+```
+WORKS
+
+> Try it on all items
+
+```
+  db.items.find({}).forEach(function(entry){
+   let eId = entry._id;
+   db.pairs.updateMany({link_id: eId},{$set:{init_date: entry.created}})
+  });
+```
+
 #### test queries for transferring non draftjs formatted note values to desc_data
 ```
 db.getCollection('items').find({note_data:{$ne:""}})
@@ -861,18 +882,18 @@ db.getCollection('items').find({title_data: {$in:[/reasons your/i]}})
 
 > According to [Mongoose documentation](https://mongoosejs.com/docs/schematypes.html#mixed), Mixed is a schema-less type, you can change the value to anything else you like, but Mongoose loses the ability to auto detect and save those changes. To tell Mongoose that the value of a Mixed type has changed, you need to call doc.markModified(path), passing the path to the Mixed type you just changed
 
-- tag: modify
+- tag: modify, save object, update object, object update,
 
 #### Create inside find test
 
 ```
   db.mariochars.find({}).forEach(function(err, results){
     db.fight.insertOne({hero:results.name, enemy:"mushroom"});
-  })// failed
+  })// FAILED
 
   db.mariochars.find({}).forEach(function(results){
     db.fight.insertOne({hero:results.name, enemy:"mushroom"});
-  })// worked
+  })// WORKED
 ```
 > GOTCHA: [forEach doesn't need err](https://docs.mongodb.com/manual/reference/method/cursor.forEach/)   
 
@@ -1074,3 +1095,47 @@ my sample
 
 #### update captions from null to empty
 db.items.updateMany({caption: null},{$set:{caption:""}})
+
+#### mongodb find return ids as array   
+[mongodb: return an array of document ids](https://stackoverflow.com/questions/19058502/mongodb-return-an-array-of-document-ids)      
+
+```
+  watching = await Network.distinct("host.id",{"link.id":project_id, watch: true});
+```
+  WORKS - gets one field and returns an array
+
+  ```
+
+  //db.getCollection('pairs').find({_id: ObjectId('5e2d883a6be8ab12f02ed94c')}).forEach(async function(results){
+  db.getCollection('pairs').find({}).forEach(async function(results){
+
+    // console.log(`[]`,results)
+
+    results.pair_caption = typeof results.pair_caption != "object" ? {
+      mode: "default", 
+      text: results.pair_caption,
+      editor: results.editor_id,
+    } : results.pair_caption;
+
+    // console.log("[setLinkData] links", results.pair_caption);
+
+    //results.markModified("pair_caption");// i may not need this
+
+    //db.getCollection('pairs').save(results);// .save is DEPRECATED
+    db.getCollection('pairs').updateOne({_id: results._id}, {$set:{pair_caption: results.pair_caption}});
+  });
+  ```
+  > finally WORKS
+
+  [mongodb $type](https://www.mongodb.com/docs/manual/reference/operator/aggregation/type/)
+  [type not equal | mongodb](https://stackoverflow.com/questions/20744123/query-with-type-not-equal-in-mongodb)   
+
+  ```
+    {pair_caption:{$type: "object"}}
+    {pair_caption:{$not:{$type: "object"}}}
+
+
+    {"pair_caption.text":{$ne: ""}}
+    {pair_caption: {$type: "string"}} 
+    db.getCollection('pairs').updateMany({"pair_caption.text":{$ne: ""}},{$set:{"pair_caption.mode":"user"}})
+  ```
